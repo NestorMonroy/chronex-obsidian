@@ -77,7 +77,7 @@ export class ObjectiveServiceWithVault {
       await vault.createFile(notePath, content);
 
       // 5. CREAR FOLDERNTE
-      await FolderNoteService.createFolderNote(folderPath, {
+      await FolderNoteService.createFolderNote(folderPath, objectiveId, {
         type: 'objetivo',
         title: input.objectiveName,
         description: input.description,

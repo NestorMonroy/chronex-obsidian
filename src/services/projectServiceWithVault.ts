@@ -101,7 +101,7 @@ export class ProjectServiceWithVault {
       const subfolders = ['objetivos', 'documentos', 'recursos'];
       for (const subfolder of subfolders) {
         const subfolderPath = `${folderPath}/${subfolder}`;
-        await FolderNoteService.createFolderNote(subfolderPath, {
+        await FolderNoteService.createFolderNote(subfolderPath, "carpeta", {
           type: 'carpeta',
           title: subfolder.charAt(0).toUpperCase() + subfolder.slice(1),
           description: `Carpeta para almacenar ${subfolder}`,

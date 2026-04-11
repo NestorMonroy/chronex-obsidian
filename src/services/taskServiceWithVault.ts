@@ -79,7 +79,7 @@ export class TaskServiceWithVault {
       await vault.createFile(notePath, content);
 
       // Crear FOLDERNTE
-      await FolderNoteService.createFolderNote(folderPath, {
+      await FolderNoteService.createFolderNote(folderPath, taskId, {
         type: 'tarea',
         title: input.taskName,
         description: input.description,

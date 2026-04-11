@@ -48,7 +48,7 @@ export class DeleteServiceWithVault {
       }
 
       // 2. AUTO-DELETE: Eliminar FolderNote
-      await FolderNoteService.deleteFolderNote(input.folderPath);
+      await FolderNoteService.deleteFolderNote(input.folderPath, input.entityId);
 
       // 3. ELIMINAR CARPETA COMPLETA
       const folderExists = await vault.folderExists(input.folderPath);

@@ -1,41 +1,37 @@
 /**
  * FolderNoteService - Sistema profesional de carpeta + nota
  * 
- * LÓGICA DE FOLDER NOTE (NUESTRO PROPIO SISTEMA):
+ * El nombre del archivo folderNote es el ID de la entidad:
+ * - PROJ-202604-ABC.md para proyectos
+ * - OBJ-202604-XYZ.md para objetivos
+ * - TSK-202604-LMN.md para tareas
+ * - DOC-202604-RST.md para documentos
  * 
- * - folderNoteName: CONFIGURABLE (no hardcodeado)
- * - folderNoteHide: Ocultar archivo del árbol
- * - folderNoteAutoRename: Actualizar automáticamente cuando metadatos cambian
- * - folderDelete2Note: Eliminar nota cuando carpeta se borra
- * 
- * DIFERENCIA con _about_:
- * - FLEXIBLE: nombre variable según config
- * - INTELIGENTE: auto-rename en metadatos
- * - OCULTO: no contamina árbol de archivos
+ * VENTAJAS:
+ * - Único e identificable
+ * - Fácil de buscar y rastrear
+ * - Cada entidad tiene su propio "espejo"
+ * - Sin conflictos de nombres
  */
 
 import { ObsidianVaultAdapter } from '../adapters/ObsidianVaultAdapter';
 
 export interface FolderNoteConfig {
-  folderNoteName: string;           // Nombre del archivo: "_index_", "_meta_", "_info_", etc
-  folderNoteHide: boolean;          // Ocultar del árbol de archivos
-  folderNoteAutoRename: boolean;    // Auto-actualizar cuando metadatos cambian
-  folderDelete2Note: boolean;       // Eliminar nota cuando carpeta se borra
-  folderNoteType: 'inside' | 'outside';  // inside = dentro de carpeta, outside = fuera
-  folderNoteStrInit: string;        // Template inicial
+  folderNoteHide: boolean;
+  folderNoteAutoRename: boolean;
+  folderDelete2Note: boolean;
+  folderNoteType: 'inside' | 'outside';
 }
 
 export interface FolderNoteData {
-  type: string;           // 'proyecto', 'objetivo', 'tarea', 'documento', 'carpeta'
+  type: string;
   title: string;
   description?: string;
   parentId?: string;
   dateCreated: string;
   status: string;
   icon?: string;
-  // Auto-rename fields
   lastModified?: string;
-  autoRenameVersion?: number;
 }
 
 export class FolderNoteService {
@@ -50,16 +46,17 @@ export class FolderNoteService {
   }
 
   /**
-   * Crear folder note
+   * Crear folder note con nombre = ID
    */
   static async createFolderNote(
     folderPath: string,
+    entityId: string,
     data: FolderNoteData
   ): Promise<void> {
     const vault = ObsidianVaultAdapter.getInstance();
 
     try {
-      const notePath = `${folderPath}/${this.config.folderNoteName}`;
+      const notePath = `${folderPath}/${entityId}.md`;
       const content = this.generateFolderNoteContent(data);
 
       await vault.createFile(notePath, content, true);
@@ -75,6 +72,7 @@ export class FolderNoteService {
    */
   static async updateFolderNoteOnMetadataChange(
     folderPath: string,
+    entityId: string,
     oldData: FolderNoteData,
     newData: FolderNoteData
   ): Promise<void> {
@@ -83,7 +81,7 @@ export class FolderNoteService {
     }
 
     try {
-      const notePath = `${folderPath}/${this.config.folderNoteName}`;
+      const notePath = `${folderPath}/${entityId}.md`;
       const exists = await vault.fileExists(notePath);
 
       if (!exists) {
@@ -111,13 +109,16 @@ export class FolderNoteService {
   /**
    * AUTO-DELETE: Eliminar folder note cuando carpeta se borra
    */
-  static async deleteFolderNote(folderPath: string): Promise<void> {
+  static async deleteFolderNote(
+    folderPath: string,
+    entityId: string
+  ): Promise<void> {
     if (!this.config.folderDelete2Note) {
       return;
     }
 
     try {
-      const notePath = `${folderPath}/${this.config.folderNoteName}`;
+      const notePath = `${folderPath}/${entityId}.md`;
       await vault.deleteFile(notePath);
 
       console.log(`[FolderNote] Deleted: ${notePath}`);
@@ -129,20 +130,26 @@ export class FolderNoteService {
   /**
    * Verificar si existe folder note
    */
-  static async hasFolderNote(folderPath: string): Promise<boolean> {
+  static async hasFolderNote(
+    folderPath: string,
+    entityId: string
+  ): Promise<boolean> {
     const vault = ObsidianVaultAdapter.getInstance();
-    const notePath = `${folderPath}/${this.config.folderNoteName}`;
+    const notePath = `${folderPath}/${entityId}.md`;
     return vault.fileExists(notePath);
   }
 
   /**
    * Leer folder note
    */
-  static async readFolderNote(folderPath: string): Promise<string | null> {
+  static async readFolderNote(
+    folderPath: string,
+    entityId: string
+  ): Promise<string | null> {
     const vault = ObsidianVaultAdapter.getInstance();
 
     try {
-      const notePath = `${folderPath}/${this.config.folderNoteName}`;
+      const notePath = `${folderPath}/${entityId}.md`;
       const exists = await vault.fileExists(notePath);
 
       if (!exists) {
@@ -198,7 +205,7 @@ ${data.description || 'Sin descripción'}
 <!-- Contenido automático -->
 
 ---
-*Generado por obsidian-repo plugin*
+*Espejo generado por obsidian-repo*
 `;
   }
 
@@ -221,22 +228,10 @@ ${data.description || 'Sin descripción'}
    */
   static getDefaultConfig(): FolderNoteConfig {
     return {
-      folderNoteName: '_index_',        // Configurable, no hardcodeado
-      folderNoteHide: true,
+      folderNoteHide: false,
       folderNoteAutoRename: true,
       folderDelete2Note: true,
-      folderNoteType: 'inside',
-      folderNoteStrInit: `---
-type: {type}
-title: {title}
-cssclass: folder-note gridlist
-obsidianUIMode: preview
----
-
-# {title}
-
-{description}
-`
+      folderNoteType: 'inside'
     };
   }
 

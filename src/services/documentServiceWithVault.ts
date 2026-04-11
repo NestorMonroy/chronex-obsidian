@@ -77,7 +77,7 @@ export class DocumentServiceWithVault {
       await vault.createFile(notePath, content);
 
       // CREAR FOLDERNTE
-      await FolderNoteService.createFolderNote(folderPath, {
+      await FolderNoteService.createFolderNote(folderPath, documentId, {
         type: 'documento',
         title: input.documentName,
         description: input.description,
