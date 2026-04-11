@@ -10,10 +10,9 @@
  */
 
 // Constantes
-// TODO: FASE 2 - Usar estas constantes en la implementación
-// const VALID_CHARACTERS = /^[a-zA-Z0-9\-_\s]+$/;
-// const MIN_LENGTH = 3;
-// const MAX_LENGTH = 255;
+const VALID_CHARACTERS = /^[a-zA-Z0-9\-_\s]+$/;
+const MIN_LENGTH = 3;
+const MAX_LENGTH = 255;
 
 /**
  * Valida entrada común según reglas PASO 2
@@ -26,30 +25,64 @@
  *
  * @returns {Object} { isValid: boolean, errors: string[] }
  *
- * @throws {TypeError} Si input no es string
+ * @throws {TypeError} Si options es inválido
  *
  * @example
  * const result = validateCommonInput('Mi Proyecto');
  * if (result.isValid) {
  *   console.log('Válido');
+ * } else {
+ *   console.log('Errores:', result.errors);
  * }
  *
- * @todo Implementar validación completa (FASE 2)
+ * @todo Agregar soporte para caracteres acentuados en FASE 3
  */
 export function validateCommonInput(input, options = {}) {
-  // TODO: FASE 2 - Implementar
+  const errors = [];
 
-  // Validaciones esperadas:
-  // 1. Input es string no-vacío
-  // 2. Input >= MIN_LENGTH (3)
-  // 3. Input <= MAX_LENGTH (255)
-  // 4. Input contiene solo caracteres válidos
-  // 5. Retornar { isValid, errors }
+  // Validación 1: Verificar que input sea string no-vacío
+  if (input === null || input === undefined) {
+    errors.push('Input no puede ser null o undefined');
+    return { isValid: false, errors };
+  }
 
-  console.debug('validateCommonInput stub:', { input, options });
+  if (typeof input !== 'string') {
+    errors.push('Input debe ser una cadena de texto (string)');
+    return { isValid: false, errors };
+  }
+
+  if (input.length === 0) {
+    errors.push('Input no puede estar vacío');
+    return { isValid: false, errors };
+  }
+
+  // Obtener límites de opciones
+  const minLength = options.minLength ?? MIN_LENGTH;
+  const maxLength = options.maxLength ?? MAX_LENGTH;
+  const pattern = options.pattern ?? VALID_CHARACTERS;
+
+  // Validación 2: Longitud mínima (basada en longitud original)
+  if (input.length < minLength) {
+    errors.push(`Input debe tener mínimo ${minLength} caracteres (actual: ${input.length})`);
+  }
+
+  // Validación 3: Longitud máxima
+  if (input.length > maxLength) {
+    errors.push(`Input debe tener máximo ${maxLength} caracteres (actual: ${input.length})`);
+  }
+
+  // Validación 4: Caracteres válidos
+  if (!pattern.test(input)) {
+    errors.push('Input contiene caracteres inválidos');
+  }
+
+  // Validación 5: No solo espacios
+  if (input.trim().length === 0) {
+    errors.push('Input no puede contener solo espacios');
+  }
 
   return {
-    isValid: true,
-    errors: []
+    isValid: errors.length === 0,
+    errors
   };
 }
