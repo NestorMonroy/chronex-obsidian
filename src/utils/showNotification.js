@@ -22,11 +22,14 @@
  * showNotification('Operación completada', 'success');
  * showNotification('Error en la operación', 'error', { duration: 5000 });
  *
- * @todo Integrar con Obsidian.Notice en FASE 3
+ * @todo Integrar con Obsidian.Notice en FASE 4
  */
+
+import { formatNotification } from './helpers/formatter.js';
+
 export function showNotification(message, type = 'info', options = {}) {
   const duration = options.duration ?? 3000;
-  const notification = { message, type, duration };
-  console.log(`[${type.toUpperCase()}] ${message}`);
+  const notification = formatNotification(message, type, duration);
+  console.log(`[${notification.type.toUpperCase()}] ${notification.message}`);
   return notification;
 }

@@ -3,10 +3,12 @@
  * Convierte títulos a nombres de archivo válidos (kebab-case)
  * 
  * @module src/utils/getFileName
- * @version 1.0.0
+ * @version 1.1.0 (refactorizado en FASE 3)
  * @author Nestor
  * @date 2026-04-11
  */
+
+import { normalizeText } from './helpers/normalize.js';
 
 /**
  * Convierte un título a nombre de archivo válido
@@ -21,7 +23,7 @@
  * getFileName('Mi Proyecto') // 'mi-proyecto.md'
  * getFileName('Programación 2025') // 'programacion-2025.md'
  *
- * @todo Agregar soporte para caracteres acentuados en FASE 3
+ * @todo Agregar soporte para caracteres acentuados opcionales en FASE 4
  */
 export function getFileName(title, options = {}) {
   const separator = options.separator ?? '-';
@@ -31,17 +33,11 @@ export function getFileName(title, options = {}) {
     return 'archivo.md';
   }
 
-  // Normalizar: eliminar acentos y convertir a minúsculas
-  const normalized = title
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '');
-
-  // Remover caracteres especiales, mantener solo alfanuméricos y espacios
-  const cleaned = normalized.replace(/[^a-z0-9\s]/g, '');
+  // Normalizar usando helper: minúsculas, acentos, caracteres especiales
+  const normalized = normalizeText(title);
 
   // Reemplazar espacios con separador
-  const fileName = cleaned.replace(/\s+/g, separator).replace(/^-+|-+$/g, '');
+  const fileName = normalized.replace(/\s+/g, separator).replace(/^-+|-+$/g, '');
 
   // Retornar con extensión .md
   return (fileName || 'archivo') + '.md';

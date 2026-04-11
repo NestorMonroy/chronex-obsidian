@@ -27,8 +27,11 @@
  * const customId = generateUniqueId({ prefix: 'user' });
  * // "user-1686000030567-a1b2c3d4e5f6"
  *
- * @todo Agregar validación de opciones en FASE 3
+ * @todo Agregar validación de opciones en FASE 4
  */
+
+import { bytesToHex } from './helpers/hexEncoder.js';
+
 export function generateUniqueId(options = {}) {
   const prefix = options.prefix ?? 'id';
   const randomBytes = options.randomBytes ?? 6;
@@ -45,10 +48,8 @@ export function generateUniqueId(options = {}) {
   const buffer = new Uint8Array(randomBytes);
   globalThis.crypto.getRandomValues(buffer);
 
-  // Convertir a hexadecimal
-  const randomHex = Array.from(buffer)
-    .map(byte => byte.toString(16).padStart(2, '0'))
-    .join('');
+  // Convertir a hexadecimal usando helper
+  const randomHex = bytesToHex(buffer);
 
   return `${prefix}-${timestamp}-${randomHex}`;
 }

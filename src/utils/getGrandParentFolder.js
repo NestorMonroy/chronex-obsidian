@@ -27,16 +27,17 @@
  * getGrandParentFolder('file.md')
  * // '.'
  *
- * @todo Mejorar manejo de rutas con UNC en FASE 3
+ * @todo Mejorar manejo de rutas con UNC en FASE 4
  */
+
+import { splitPath, joinPath } from './helpers/pathUtils.js';
+
 export function getGrandParentFolder(filePath, options = {}) {
-  const separator = options.separator ?? '/';
-  const normalized = filePath.replace(/\\/g, '/');
-  const parts = normalized.split('/').filter(p => p.length > 0);
+  const parts = splitPath(filePath);
   
   if (parts.length <= 2) {
     return '.';
   }
   
-  return parts.slice(0, -2).join('/');
+  return joinPath(...parts.slice(0, -2));
 }
