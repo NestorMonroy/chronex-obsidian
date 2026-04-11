@@ -1,75 +1,92 @@
 /**
- * DeleteServiceWithVault - Eliminar entidades del vault
- * UC-020: Eliminar proyectos, objetivos, tareas, documentos
+ * DeleteServiceWithVault - Eliminación con Auto-Delete FolderNote + IndexSync
+ * 
+ * Cuando borras una entidad:
+ * 1. Carpeta se elimina
+ * 2. FolderNote se auto-elimina (deleteFolderNote)
+ * 3. .index.json se auto-actualiza (deleteIndexEntry)
+ * 
+ * TODO AUTOMÁTICO. SINCRONIZACIÓN PERFECTA.
  */
 
 import { ObsidianVaultAdapter } from '../adapters/ObsidianVaultAdapter';
+import { FolderNoteService } from './folderNoteService';
+import { IndexSyncService } from './indexSyncService';
+import { Validator } from '../utils/validators';
 
-export interface DeleteEntityWithVaultResult {
+export interface DeleteEntityInput {
+  entityId: string;
+  entityType: 'proyecto' | 'objetivo' | 'tarea' | 'documento';
+  folderPath: string;
+  permanent?: boolean; // true = borrar todo, false = mover a trash
+}
+
+export interface DeleteEntityResult {
   success: boolean;
-  entityPath?: string;
+  entityId?: string;
   message?: string;
   error?: string;
 }
 
 export class DeleteServiceWithVault {
+  /**
+   * Eliminar entidad con auto-cleanup completo
+   */
   static async deleteEntityWithVault(
-    entityFolderPath: string
-  ): Promise<DeleteEntityWithVaultResult> {
+    input: DeleteEntityInput
+  ): Promise<DeleteEntityResult> {
     const vault = ObsidianVaultAdapter.getInstance();
 
     try {
-      // 1. VALIDAR QUE EXISTE
-      const folderExists = await vault.folderExists(entityFolderPath);
-      if (!folderExists) {
+      // 1. VALIDAR
+      const validation = Validator.validateDeleteInput(input);
+      if (!validation.valid) {
         return {
           success: false,
-          error: `Folder not found: ${entityFolderPath}`,
+          error: `Validation failed: ${validation.errors?.join(', ')}`,
         };
       }
 
-      // 2. ELIMINAR CARPETA RECURSIVAMENTE
-      await vault.deleteFolder(entityFolderPath);
+      // 2. AUTO-DELETE: Eliminar FolderNote
+      await FolderNoteService.deleteFolderNote(input.folderPath);
 
-      vault.showSuccessNotice(`Entidad eliminada: ${entityFolderPath}`);
+      // 3. ELIMINAR CARPETA COMPLETA
+      const folderExists = await vault.folderExists(input.folderPath);
+      if (folderExists) {
+        await vault.deleteFolder(input.folderPath);
+      }
+
+      // 4. AUTO-SYNC: Eliminar del índice global
+      await IndexSyncService.deleteIndexEntry(
+        input.entityType,
+        input.entityId
+      );
+
+      vault.showSuccessNotice(
+        `${input.entityType} "${input.entityId}" eliminado!`
+      );
+
+      console.log(`[DeleteService] Entity deleted:`, {
+        entityId: input.entityId,
+        entityType: input.entityType,
+        folderPath: input.folderPath,
+      });
 
       return {
         success: true,
-        entityPath: entityFolderPath,
-        message: `Entity deleted: ${entityFolderPath}`,
+        entityId: input.entityId,
+        message: `${input.entityType} deleted successfully!`,
       };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
       vault.showErrorNotice(`Error deleting entity: ${errorMessage}`);
-      return { success: false, error: errorMessage };
+
+      console.error('[DeleteService] Error:', error);
+
+      return {
+        success: false,
+        error: errorMessage,
+      };
     }
   }
-
-  static async deleteProject(projectFolderPath: string): Promise<DeleteEntityWithVaultResult> {
-    return this.deleteEntityWithVault(projectFolderPath);
-  }
-
-  static async deleteObjective(
-    objectiveFolderPath: string
-  ): Promise<DeleteEntityWithVaultResult> {
-    return this.deleteEntityWithVault(objectiveFolderPath);
-  }
-
-  static async deleteTask(taskFolderPath: string): Promise<DeleteEntityWithVaultResult> {
-    return this.deleteEntityWithVault(taskFolderPath);
-  }
-
-  static async deleteDocument(
-    documentFolderPath: string
-  ): Promise<DeleteEntityWithVaultResult> {
-    return this.deleteEntityWithVault(documentFolderPath);
-  }
 }
-
-export const deleteServiceWithVault = {
-  delete: (path: string) => DeleteServiceWithVault.deleteEntityWithVault(path),
-  project: (path: string) => DeleteServiceWithVault.deleteProject(path),
-  objective: (path: string) => DeleteServiceWithVault.deleteObjective(path),
-  task: (path: string) => DeleteServiceWithVault.deleteTask(path),
-  document: (path: string) => DeleteServiceWithVault.deleteDocument(path),
-};

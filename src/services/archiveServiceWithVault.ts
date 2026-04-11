@@ -1,117 +1,106 @@
 /**
- * ArchiveServiceWithVault - Archivar/Desarchivar entidades
- * UC-021: Archivar proyectos, objetivos, tareas
+ * ArchiveServiceWithVault - Archivación con Auto-Update FolderNote + IndexSync
+ * 
+ * Cuando archivas una entidad:
+ * 1. README.md cambia status a 'archivado'
+ * 2. FolderNote se auto-actualiza (status: archivado)
+ * 3. .index.json se auto-sincroniza
+ * 
+ * TODO AUTOMÁTICO. SINCRONIZACIÓN PERFECTA.
  */
 
 import { ObsidianVaultAdapter } from '../adapters/ObsidianVaultAdapter';
+import { FolderNoteService } from './folderNoteService';
+import { IndexSyncService } from './indexSyncService';
+import { Validator } from '../utils/validators';
 
-export interface ArchiveEntityWithVaultResult {
+export interface ArchiveEntityInput {
+  entityId: string;
+  entityType: 'proyecto' | 'objetivo' | 'tarea' | 'documento';
+  folderPath: string;
+  archive: boolean; // true = archivar, false = desarchivar
+}
+
+export interface ArchiveEntityResult {
   success: boolean;
-  entityPath?: string;
-  status?: string;
-  archivedDate?: string;
+  entityId?: string;
   message?: string;
   error?: string;
 }
 
 export class ArchiveServiceWithVault {
+  /**
+   * Archivar/Desarchivar entidad con auto-update completo
+   */
   static async archiveEntityWithVault(
-    entityFilePath: string
-  ): Promise<ArchiveEntityWithVaultResult> {
+    input: ArchiveEntityInput
+  ): Promise<ArchiveEntityResult> {
     const vault = ObsidianVaultAdapter.getInstance();
 
     try {
-      // 1. LEER ARCHIVO
-      const content = await vault.readFile(entityFilePath);
+      // 1. VALIDAR
+      const validation = Validator.validateArchiveInput(input);
+      if (!validation.valid) {
+        return {
+          success: false,
+          error: `Validation failed: ${validation.errors?.join(', ')}`,
+        };
+      }
 
-      // 2. ACTUALIZAR FRONTMATTER
-      const archivedDate = new Date().toISOString().split('T')[0];
-      const updates = {
-        status: 'archivado',
-        archivedDate,
-      };
+      // 2. LEER README.md ACTUAL
+      const readmePath = `${input.folderPath}/README.md`;
+      const oldContent = await vault.readFile(readmePath);
 
-      await vault.updateFrontmatter(entityFilePath, updates);
+      // 3. ACTUALIZAR STATUS EN README.md
+      const newStatus = input.archive ? 'archivado' : 'activo';
+      const newContent = oldContent.replace(
+        /status: (.*)/g,
+        `status: ${newStatus}`
+      );
+      await vault.updateFile(readmePath, newContent);
 
-      vault.showSuccessNotice(`Entidad archivada`);
+      // 4. AUTO-UPDATE: Actualizar FolderNote
+      await FolderNoteService.updateFolderNoteOnMetadataChange(
+        input.folderPath,
+        { status: input.archive ? 'activo' : 'archivado' },
+        { status: newStatus }
+      );
+
+      // 5. AUTO-SYNC: Actualizar índice global
+      await IndexSyncService.updateIndexEntry(
+        input.entityType,
+        input.entityId,
+        {
+          status: newStatus,
+          path: input.folderPath
+        }
+      );
+
+      vault.showSuccessNotice(
+        `${input.entityType} "${input.entityId}" ${newStatus}!`
+      );
+
+      console.log(`[ArchiveService] Entity archived:`, {
+        entityId: input.entityId,
+        entityType: input.entityType,
+        newStatus,
+      });
 
       return {
         success: true,
-        entityPath: entityFilePath,
-        status: 'archivado',
-        archivedDate,
-        message: `Entity archived successfully`,
+        entityId: input.entityId,
+        message: `${input.entityType} ${newStatus} successfully!`,
       };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
       vault.showErrorNotice(`Error archiving entity: ${errorMessage}`);
-      return { success: false, error: errorMessage };
-    }
-  }
 
-  static async unarchiveEntityWithVault(
-    entityFilePath: string,
-    restoreStatus: string = 'activo'
-  ): Promise<ArchiveEntityWithVaultResult> {
-    const vault = ObsidianVaultAdapter.getInstance();
-
-    try {
-      const updates = {
-        status: restoreStatus,
-      };
-
-      await vault.updateFrontmatter(entityFilePath, updates);
-
-      vault.showSuccessNotice(`Entidad desarchivada`);
+      console.error('[ArchiveService] Error:', error);
 
       return {
-        success: true,
-        entityPath: entityFilePath,
-        status: restoreStatus,
-        message: `Entity unarchived successfully`,
+        success: false,
+        error: errorMessage,
       };
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      vault.showErrorNotice(`Error unarchiving entity: ${errorMessage}`);
-      return { success: false, error: errorMessage };
     }
   }
-
-  static async archiveProject(projectFilePath: string): Promise<ArchiveEntityWithVaultResult> {
-    return this.archiveEntityWithVault(projectFilePath);
-  }
-
-  static async unarchiveProject(projectFilePath: string): Promise<ArchiveEntityWithVaultResult> {
-    return this.unarchiveEntityWithVault(projectFilePath, 'activo');
-  }
-
-  static async archiveObjective(objectiveFilePath: string): Promise<ArchiveEntityWithVaultResult> {
-    return this.archiveEntityWithVault(objectiveFilePath);
-  }
-
-  static async unarchiveObjective(
-    objectiveFilePath: string
-  ): Promise<ArchiveEntityWithVaultResult> {
-    return this.unarchiveEntityWithVault(objectiveFilePath, 'activo');
-  }
-
-  static async archiveTask(taskFilePath: string): Promise<ArchiveEntityWithVaultResult> {
-    return this.archiveEntityWithVault(taskFilePath);
-  }
-
-  static async unarchiveTask(taskFilePath: string): Promise<ArchiveEntityWithVaultResult> {
-    return this.unarchiveEntityWithVault(taskFilePath, 'pendiente');
-  }
 }
-
-export const archiveServiceWithVault = {
-  archive: (path: string) => ArchiveServiceWithVault.archiveEntityWithVault(path),
-  unarchive: (path: string, status?: string) =>
-    ArchiveServiceWithVault.unarchiveEntityWithVault(path, status),
-  archiveProject: (path: string) => ArchiveServiceWithVault.archiveProject(path),
-  unarchiveProject: (path: string) => ArchiveServiceWithVault.unarchiveProject(path),
-  archiveObjective: (path: string) => ArchiveServiceWithVault.archiveObjective(path),
-  unarchiveObjective: (path: string) => ArchiveServiceWithVault.unarchiveObjective(path),
-  archiveTask: (path: string) => ArchiveServiceWithVault.archiveTask(path),
-  unarchiveTask: (path: string) => ArchiveServiceWithVault.unarchiveTask(path),
-};

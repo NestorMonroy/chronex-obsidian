@@ -1,108 +1,159 @@
 /**
- * EditServiceWithVault - Editar entidades en el vault
- * UC-019: Editar propiedades de proyectos, objetivos, tareas
+ * EditServiceWithVault - Edición con Auto-Rename FolderNote + IndexSync
+ * 
+ * Cuando editas una entidad:
+ * 1. README.md se actualiza
+ * 2. FolderNote se auto-renombra (updateFolderNoteOnMetadataChange)
+ * 3. .index.json se auto-sincroniza (updateIndexEntry)
+ * 
+ * TODO AUTOMÁTICO. CERO PASOS MANUALES.
  */
 
 import { ObsidianVaultAdapter } from '../adapters/ObsidianVaultAdapter';
+import { FolderNoteService } from './folderNoteService';
+import { IndexSyncService } from './indexSyncService';
+import { IdGenerator } from '../utils/generateUniqueId';
+import { Validator } from '../utils/validators';
 
-export interface EditEntityWithVaultInput {
-  entityPath: string; // Ruta completa al archivo README.md
-  updates: Record<string, any>;
+export interface EditEntityInput {
+  entityId: string;
+  entityType: 'proyecto' | 'objetivo' | 'tarea' | 'documento';
+  updates: {
+    title?: string;
+    description?: string;
+    status?: string;
+    priority?: string;
+    [key: string]: any;
+  };
+  folderPath: string;
 }
 
-export interface EditEntityWithVaultResult {
+export interface EditEntityResult {
   success: boolean;
-  entityPath?: string;
-  updated?: string[];
+  entityId?: string;
   message?: string;
   error?: string;
 }
 
 export class EditServiceWithVault {
+  /**
+   * Editar entidad con auto-sync completo
+   */
   static async editEntityWithVault(
-    input: EditEntityWithVaultInput
-  ): Promise<EditEntityWithVaultResult> {
+    input: EditEntityInput
+  ): Promise<EditEntityResult> {
     const vault = ObsidianVaultAdapter.getInstance();
 
     try {
       // 1. VALIDAR
-      if (!input.updates || Object.keys(input.updates).length === 0) {
+      const validation = Validator.validateEditInput(input);
+      if (!validation.valid) {
         return {
           success: false,
-          error: 'updates cannot be empty',
+          error: `Validation failed: ${validation.errors?.join(', ')}`,
         };
       }
 
-      // 2. LEER ARCHIVO ACTUAL
-      const content = await vault.readFile(input.entityPath);
+      // 2. LEER README.md ACTUAL
+      const readmePath = `${input.folderPath}/README.md`;
+      const oldContent = await vault.readFile(readmePath);
+      const oldData = this.parseFrontmatter(oldContent);
 
-      // 3. ACTUALIZAR FRONTMATTER
-      const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
-      if (!frontmatterMatch) {
-        return {
-          success: false,
-          error: `Invalid frontmatter in file: ${input.entityPath}`,
-        };
-      }
+      // 3. ACTUALIZAR README.md
+      const newContent = this.mergeContent(oldContent, input.updates);
+      await vault.updateFile(readmePath, newContent);
 
-      const [, existingFrontmatter, bodyContent] = frontmatterMatch;
-      const frontmatterLines = existingFrontmatter.split('\n');
-      const existingData: Record<string, number> = {};
+      // 4. AUTO-RENAME: Actualizar FolderNote
+      const newData = { ...oldData, ...input.updates };
+      await FolderNoteService.updateFolderNoteOnMetadataChange(
+        input.folderPath,
+        oldData,
+        newData
+      );
 
-      // Parse existing frontmatter
-      frontmatterLines.forEach((line, index) => {
-        const [key] = line.split(': ');
-        if (key) {
-          existingData[key.trim()] = index;
+      // 5. AUTO-SYNC: Actualizar índice global
+      await IndexSyncService.updateIndexEntry(
+        input.entityType,
+        input.entityId,
+        {
+          title: input.updates.title || oldData.title,
+          description: input.updates.description || oldData.description,
+          status: input.updates.status || oldData.status,
+          priority: input.updates.priority || oldData.priority,
+          path: input.folderPath
         }
+      );
+
+      vault.showSuccessNotice(
+        `${input.entityType} "${input.updates.title || oldData.title}" actualizado!`
+      );
+
+      console.log(`[EditService] Entity updated:`, {
+        entityId: input.entityId,
+        entityType: input.entityType,
+        updates: input.updates,
       });
-
-      // Update with new values
-      const updated: string[] = [];
-      for (const [key, value] of Object.entries(input.updates)) {
-        if (existingData.hasOwnProperty(key)) {
-          frontmatterLines[existingData[key]] = `${key}: ${value}`;
-        } else {
-          frontmatterLines.push(`${key}: ${value}`);
-        }
-        updated.push(key);
-      }
-
-      // 4. GUARDAR CAMBIOS
-      const newFrontmatter = frontmatterLines.join('\n');
-      const newContent = `---\n${newFrontmatter}\n---\n${bodyContent}`;
-
-      await vault.updateFile(input.entityPath, newContent);
-
-      vault.showSuccessNotice(`Entidad actualizada (${updated.length} campos)`);
 
       return {
         success: true,
-        entityPath: input.entityPath,
-        updated,
-        message: `Updated ${updated.length} fields`,
+        entityId: input.entityId,
+        message: `${input.entityType} updated successfully!`,
       };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
-      vault.showErrorNotice(`Error editing entity: ${errorMessage}`);
-      return { success: false, error: errorMessage };
+      vault.showErrorNotice(`Error updating entity: ${errorMessage}`);
+
+      console.error('[EditService] Error:', error);
+
+      return {
+        success: false,
+        error: errorMessage,
+      };
     }
   }
 
-  static async updateStatus(
-    entityPath: string,
-    newStatus: string
-  ): Promise<EditEntityWithVaultResult> {
-    return this.editEntityWithVault({
-      entityPath,
-      updates: { status: newStatus },
+  /**
+   * Parsear frontmatter de contenido
+   */
+  private static parseFrontmatter(content: string): Record<string, any> {
+    const match = content.match(/^---\n([\s\S]*?)\n---/);
+    if (!match) return {};
+
+    const data: Record<string, any> = {};
+    match[1].split('\n').forEach((line) => {
+      const [key, ...valueParts] = line.split(': ');
+      if (key && valueParts.length > 0) {
+        data[key.trim()] = valueParts.join(': ').trim();
+      }
     });
+
+    return data;
+  }
+
+  /**
+   * Fusionar contenido con actualizaciones
+   */
+  private static mergeContent(
+    oldContent: string,
+    updates: Record<string, any>
+  ): string {
+    const match = oldContent.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+    if (!match) return oldContent;
+
+    const frontmatterLines = match[1].split('\n');
+    const body = match[2];
+
+    // Actualizar frontmatter
+    const newFrontmatter = frontmatterLines
+      .map((line) => {
+        const [key] = line.split(': ');
+        if (key && updates[key.trim()]) {
+          return `${key}: ${updates[key.trim()]}`;
+        }
+        return line;
+      })
+      .join('\n');
+
+    return `---\n${newFrontmatter}\n---\n${body}`;
   }
 }
-
-export const editServiceWithVault = {
-  edit: (input: EditEntityWithVaultInput) =>
-    EditServiceWithVault.editEntityWithVault(input),
-  updateStatus: (path: string, status: string) =>
-    EditServiceWithVault.updateStatus(path, status),
-};
