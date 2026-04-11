@@ -205,6 +205,198 @@ Tarea creada automáticamente con obsidian-repo plugin.
       return [];
     }
   }
+
+  // ==================== NUEVOS MÉTODOS (SEMANA 1) ====================
+
+  static async getTaskById(taskId: string): Promise<TaskWithVaultResult | null> {
+    const vault = ObsidianVaultAdapter.getInstance();
+
+    try {
+      const allTasks = await this.listTasksFromVault();
+      const task = allTasks.find((t) => t.taskId === taskId);
+
+      if (!task) {
+        return null;
+      }
+
+      return task;
+    } catch (error) {
+      console.error('[TaskService] Error getting task by id:', error);
+      return null;
+    }
+  }
+
+  static async updateTaskWithVault(
+    taskId: string,
+    updates: Partial<TaskWithVaultInput>
+  ): Promise<TaskWithVaultResult> {
+    const vault = ObsidianVaultAdapter.getInstance();
+
+    try {
+      // 1. OBTENER TAREA ACTUAL
+      const currentTask = await this.getTaskById(taskId);
+      if (!currentTask) {
+        return {
+          success: false,
+          error: `Task "${taskId}" not found`,
+        };
+      }
+
+      // 2. ACTUALIZAR FRONTMATTER
+      const updatedFrontmatter = {
+        ...currentTask.frontmatter,
+        title: updates.taskName || currentTask.frontmatter?.title,
+        description: updates.description ?? currentTask.frontmatter?.description,
+        priority: updates.priority || currentTask.frontmatter?.priority,
+        dueDate: updates.dueDate || currentTask.frontmatter?.dueDate,
+      };
+
+      // 3. GENERAR NUEVO CONTENIDO
+      const newContent = this.generateTaskContent(updatedFrontmatter);
+
+      // 4. ESCRIBIR ARCHIVO
+      await vault.writeFile(currentTask.notePath!, newContent);
+
+      // 5. SINCRONIZAR .index.json
+      await IndexSyncService.updateIndexEntry('tarea', taskId, {
+        title: updatedFrontmatter.title,
+        path: currentTask.folderPath,
+        description: updatedFrontmatter.description,
+        status: updatedFrontmatter.status || 'pendiente',
+        priority: updatedFrontmatter.priority,
+      });
+
+      vault.showSuccessNotice(`Tarea "${updatedFrontmatter.title}" actualizada!`);
+
+      return {
+        success: true,
+        taskId,
+        folderPath: currentTask.folderPath,
+        notePath: currentTask.notePath,
+        frontmatter: updatedFrontmatter,
+        message: `Task "${updatedFrontmatter.title}" updated successfully!`,
+      };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      vault.showErrorNotice(`Error updating task: ${errorMessage}`);
+      return { success: false, error: errorMessage };
+    }
+  }
+
+  static async deleteTaskWithVault(taskId: string): Promise<TaskWithVaultResult> {
+    const vault = ObsidianVaultAdapter.getInstance();
+
+    try {
+      // 1. OBTENER TAREA
+      const task = await this.getTaskById(taskId);
+      if (!task) {
+        return {
+          success: false,
+          error: `Task "${taskId}" not found`,
+        };
+      }
+
+      // 2. ELIMINAR CARPETA
+      if (task.folderPath) {
+        await vault.deleteFolder(task.folderPath);
+      }
+
+      // 3. ACTUALIZAR .index.json
+      await IndexSyncService.deleteIndexEntry('tarea', taskId);
+
+      vault.showSuccessNotice(`Tarea "${task.frontmatter?.title}" eliminada!`);
+
+      return {
+        success: true,
+        taskId,
+        message: `Task "${task.frontmatter?.title}" deleted successfully!`,
+      };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      vault.showErrorNotice(`Error deleting task: ${errorMessage}`);
+      return { success: false, error: errorMessage };
+    }
+  }
+
+  static parseTaskContent(content: string): {
+    subtasks: Array<{
+      content: string;
+      completed: boolean;
+      priority?: string;
+      hasDates: boolean;
+    }>;
+  } {
+    try {
+      const lines = content.split('\n');
+      const subtasks: Array<{
+        content: string;
+        completed: boolean;
+        priority?: string;
+        hasDates: boolean;
+      }> = [];
+
+      lines.forEach((line) => {
+        // Detectar línea de checkbox: - [ ] o - [x]
+        const checkboxMatch = line.match(/^\s*-\s+\[([ xX])\]\s+(.*)/);
+        if (!checkboxMatch) return;
+
+        const completed = /[xX]/.test(checkboxMatch[1]);
+        const lineContent = checkboxMatch[2];
+
+        // Extraer prioridad (emojis de gantt-calendar)
+        const priorityMap: Record<string, string> = {
+          '🔺': 'CRÍTICA',
+          '⏫': 'ALTA',
+          '🔼': 'MEDIA',
+          '🔽': 'BAJA',
+          '⏬': 'MUY BAJA',
+        };
+
+        let priority: string | undefined;
+        for (const [emoji, level] of Object.entries(priorityMap)) {
+          if (lineContent.includes(emoji)) {
+            priority = level;
+            break;
+          }
+        }
+
+        // Detectar si tiene fechas (patrón YYYY-MM-DD)
+        const hasDates = /\d{4}-\d{2}-\d{2}/.test(lineContent);
+
+        subtasks.push({
+          content: lineContent.trim(),
+          completed,
+          priority,
+          hasDates,
+        });
+      });
+
+      return { subtasks };
+    } catch (error) {
+      console.error('[TaskService] Error parsing task content:', error);
+      return { subtasks: [] };
+    }
+  }
+
+  static calculateProgress(
+    content: string
+  ): {
+    total: number;
+    completed: number;
+    percentage: number;
+  } {
+    try {
+      const parsed = this.parseTaskContent(content);
+      const total = parsed.subtasks.length;
+      const completed = parsed.subtasks.filter((s) => s.completed).length;
+      const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+      return { total, completed, percentage };
+    } catch (error) {
+      console.error('[TaskService] Error calculating progress:', error);
+      return { total: 0, completed: 0, percentage: 0 };
+    }
+  }
 }
 
 export const taskServiceWithVault = {
@@ -212,4 +404,14 @@ export const taskServiceWithVault = {
     TaskServiceWithVault.createTaskWithVault(input),
   list: (objectiveId?: string) =>
     TaskServiceWithVault.listTasksFromVault(objectiveId),
+  get: (taskId: string) =>
+    TaskServiceWithVault.getTaskById(taskId),
+  update: (taskId: string, updates: Partial<TaskWithVaultInput>) =>
+    TaskServiceWithVault.updateTaskWithVault(taskId, updates),
+  delete: (taskId: string) =>
+    TaskServiceWithVault.deleteTaskWithVault(taskId),
+  parseContent: (content: string) =>
+    TaskServiceWithVault.parseTaskContent(content),
+  calculateProgress: (content: string) =>
+    TaskServiceWithVault.calculateProgress(content),
 };
