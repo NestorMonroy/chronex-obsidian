@@ -239,7 +239,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
         dueDate: null
       };
 
-      const validator = require('../../src/services/obsidian-tasks/validateParsedTask').validateParsedTask;
+      const validator = require('../../src/services/task-parser/validateParsedTask').validateParsedTask;
       const validation = validator(task);
 
       expect(validation.valid).toBe(true);
@@ -254,7 +254,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
         tags: []
       };
 
-      const validator = require('../../src/services/obsidian-tasks/validateParsedTask').validateParsedTask;
+      const validator = require('../../src/services/task-parser/validateParsedTask').validateParsedTask;
       const validation = validator(task);
 
       expect(validation.valid).toBe(false);
@@ -263,7 +263,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
 
     test('debe validar status válidos: TODO, IN_PROGRESS, DONE, CANCELLED', () => {
       const validStatuses = ['TODO', 'IN_PROGRESS', 'DONE', 'CANCELLED'];
-      const validator = require('../../src/services/obsidian-tasks/validateParsedTask').validateParsedTask;
+      const validator = require('../../src/services/task-parser/validateParsedTask').validateParsedTask;
 
       validStatuses.forEach(status => {
         const task = {
@@ -286,7 +286,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
         tags: []
       };
 
-      const validator = require('../../src/services/obsidian-tasks/validateParsedTask').validateParsedTask;
+      const validator = require('../../src/services/task-parser/validateParsedTask').validateParsedTask;
       const validation = validator(task);
 
       expect(validation.valid).toBe(false);
@@ -302,7 +302,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
         tags: []
       };
 
-      const validator = require('../../src/services/obsidian-tasks/validateParsedTask').validateParsedTask;
+      const validator = require('../../src/services/task-parser/validateParsedTask').validateParsedTask;
       const validation = validator(task);
 
       expect(validation.valid).toBe(false);
@@ -317,7 +317,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
         tags: 'not-an-array'
       };
 
-      const validator = require('../../src/services/obsidian-tasks/validateParsedTask').validateParsedTask;
+      const validator = require('../../src/services/task-parser/validateParsedTask').validateParsedTask;
       const validation = validator(task);
 
       expect(validation.valid).toBe(false);
@@ -334,7 +334,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
         '- [/] Tarea 3'
       ];
 
-      const parser = require('../../src/services/obsidian-tasks/parseMultipleLines').parseMultipleLines;
+      const parser = require('../../src/services/task-parser/parseMultipleLines').parseMultipleLines;
       const results = parser(lines, baseLocation);
 
       expect(results).toHaveLength(3);
@@ -350,7 +350,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
         '- [ ] Tarea 3'
       ];
 
-      const parser = require('../../src/services/obsidian-tasks/parseMultipleLines').parseMultipleLines;
+      const parser = require('../../src/services/task-parser/parseMultipleLines').parseMultipleLines;
       const results = parser(lines, baseLocation);
 
       expect(results[0].metadata.lineNumber).toBe(1);
@@ -365,7 +365,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
         '- [x] Válida también'
       ];
 
-      const parser = require('../../src/services/obsidian-tasks/parseMultipleLines').parseMultipleLines;
+      const parser = require('../../src/services/task-parser/parseMultipleLines').parseMultipleLines;
       const results = parser(lines, baseLocation);
 
       expect(results[0].success).toBe(true);
@@ -450,7 +450,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
         tags: []
       };
 
-      const validator = require('../../src/services/obsidian-tasks/validateParsedTask').validateParsedTask;
+      const validator = require('../../src/services/task-parser/validateParsedTask').validateParsedTask;
       const validation = validator(task);
 
       expect(validation.valid).toBe(false);
@@ -473,7 +473,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
       const lines = Array(100).fill('- [ ] Tarea de prueba 📅 2026-05-15 ⏫ #test');
       const startTime = performance.now();
 
-      require('../../src/services/obsidian-tasks/parseMultipleLines').parseMultipleLines(lines, baseLocation);
+      require('../../src/services/task-parser/parseMultipleLines').parseMultipleLines(lines, baseLocation);
 
       const duration = performance.now() - startTime;
       expect(duration).toBeLessThan(200);
