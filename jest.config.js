@@ -1,10 +1,26 @@
 export default {
+  preset: 'ts-jest',
   testEnvironment: 'node',
+  roots: ['<rootDir>'],
   testMatch: [
-    '**/tests/**/*.test.js',
-    '**/?(*.)+(spec|test).js'
+    '<rootDir>/tests/**/*.test.ts'
   ],
+  moduleFileExtensions: ['ts', 'js', 'json'],
   testTimeout: 10000,
-  setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
-  verbose: true
+  verbose: true,
+  transform: {
+    '^.+\\.ts$': ['ts-jest', {
+      tsconfig: {
+        module: 'commonjs',
+        target: 'ES2017',
+        lib: ['ES2017'],
+        strict: true,
+        esModuleInterop: true,
+        skipLibCheck: true,
+        forceConsistentCasingInFileNames: true,
+        resolveJsonModule: true,
+        moduleResolution: 'node'
+      }
+    }]
+  }
 };

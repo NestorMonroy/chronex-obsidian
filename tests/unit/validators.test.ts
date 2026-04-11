@@ -2,7 +2,7 @@
  * Tests para UC-SYS01: Validar Entrada de Usuario
  */
 
-import { Validator, ValidationRule, validate } from '../src/utils/validators';
+import { Validator, ValidationRule, validate } from '../../src/utils/validators';
 
 describe('UC-SYS01: Validator', () => {
   describe('validateName', () => {

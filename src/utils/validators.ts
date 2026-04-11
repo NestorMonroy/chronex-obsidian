@@ -262,6 +262,7 @@ export class Validator {
   static validateEmail(value: string | null | undefined): ValidationResult {
     if (!value) {
       return { valid: true, value: '' }; // Opcional
+    }
 
     if (!this.REGEX_EMAIL.test(value)) {
       return {

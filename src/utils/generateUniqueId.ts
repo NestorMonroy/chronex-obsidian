@@ -8,6 +8,17 @@
  * @see /docs/specification/use-cases/UC-SYS02-generate-unique-id.md
  */
 
+// Importar crypto dinámicamente para soportar tanto Node.js como navegador
+let cryptoModule: any;
+
+try {
+  // En Node.js
+  cryptoModule = require('crypto').webcrypto;
+} catch {
+  // En navegador
+  cryptoModule = typeof window !== 'undefined' ? window.crypto : null;
+}
+
 /**
  * Tipos de ID por entidad
  */
@@ -35,12 +46,12 @@ export class IdGenerator {
    */
   static generateRandomPart(length: number = 5): string {
     // Verificar disponibilidad de crypto API
-    if (typeof window === 'undefined' || !window.crypto) {
+    if (!cryptoModule) {
       throw new Error('Web Crypto API no disponible');
     }
 
     const chars = new Uint8Array(length);
-    window.crypto.getRandomValues(chars);
+    cryptoModule.getRandomValues(chars);
 
     let result = '';
     for (let i = 0; i < length; i++) {
