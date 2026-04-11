@@ -4,7 +4,7 @@
  */
 
 import { CachedTask } from '../../services/dataManager/types';
-import { GanttChartData } from './GanttRenderer';
+import { GanttChartData } from './ganttRenderer';
 
 export class GanttTask {
   private cachedTask: CachedTask;

@@ -3,6 +3,6 @@
  * Exportación principal
  */
 
-export { GanttRenderer } from './GanttRenderer';
-export { GanttTask } from './GanttTask';
-export type { GanttConfig, GanttChartData } from './GanttRenderer';
+export { GanttRenderer } from './ganttRenderer';
+export { GanttTask } from './ganttTask';
+export type { GanttConfig, GanttChartData } from './ganttRenderer';

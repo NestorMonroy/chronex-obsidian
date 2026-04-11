@@ -5,7 +5,7 @@
 
 import { CachedTask } from '../../services/dataManager/types';
 import { dataManager } from '../../services/dataManager';
-import { GanttTask } from './GanttTask';
+import { GanttTask } } from './ganttTask';
 
 export interface GanttConfig {
   container: HTMLElement;

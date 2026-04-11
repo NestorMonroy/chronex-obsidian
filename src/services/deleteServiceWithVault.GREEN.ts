@@ -3,7 +3,7 @@
  * UC-020: Eliminar Entidad (7 tests)
  */
 
-import { ObsidianVaultAdapter } from '../adapters/ObsidianVaultAdapter';
+import { ObsidianVaultAdapter } } from './obsidianVaultAdapter';
 import { FolderNoteService } from './folderNoteService';
 import { IndexSyncService } from './indexSyncService';
 

@@ -3,9 +3,9 @@
  * TaskCache, EventEmitter, DataManager
  */
 
-import { TaskCache } from './TaskCache';
-import { EventEmitter } from './EventEmitter';
-import { DataManager } from './DataManager';
+import { TaskCache } } from './taskCache';
+import { EventEmitter } } from './eventEmitter';
+import { DataManager } } from './dataManager';
 import { CachedTask, TaskChangeEvent } from './types';
 
 describe('DataManager - SEMANA 2', () => {

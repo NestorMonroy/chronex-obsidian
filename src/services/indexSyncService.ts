@@ -6,7 +6,7 @@
  * CON este servicio: sincronización automática total
  */
 
-import { ObsidianVaultAdapter } from '../adapters/ObsidianVaultAdapter';
+import { ObsidianVaultAdapter } } from './obsidianVaultAdapter';
 
 export interface IndexEntry {
   id: string;              // PROJ-YYYYMM-XXXXX, OBJ-ID, TSK-ID, DOC-ID

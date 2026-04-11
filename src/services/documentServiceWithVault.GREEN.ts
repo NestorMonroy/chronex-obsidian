@@ -3,7 +3,7 @@
  * UC-013: Crear Documento (10 tests)
  */
 
-import { ObsidianVaultAdapter } from '../adapters/ObsidianVaultAdapter';
+import { ObsidianVaultAdapter } } from './obsidianVaultAdapter';
 import { FolderNoteService } from './folderNoteService';
 import { IndexSyncService } from './indexSyncService';
 import { IdGenerator } from '../utils/generateUniqueId';

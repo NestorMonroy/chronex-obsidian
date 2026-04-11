@@ -3,7 +3,7 @@
  * UC-021: Archivar Entidad (9 tests)
  */
 
-import { ObsidianVaultAdapter } from '../adapters/ObsidianVaultAdapter';
+import { ObsidianVaultAdapter } } from './obsidianVaultAdapter';
 import { FolderNoteService } from './folderNoteService';
 import { IndexSyncService } from './indexSyncService';
 

@@ -40,9 +40,9 @@ import { CrossPluginFlow } from './services/crossPluginFlow';
 import { Validator } from './utils/validators';
 import { IdGenerator } from './utils/generateUniqueId';
 
-import { ProjectsView, PROJECTS_VIEW_TYPE } from './views/ProjectsView';
-import { TasksCalendarView, TASKS_CALENDAR_VIEW_TYPE } from './views/TasksCalendarView';
-import { KanbanView, KANBAN_VIEW_TYPE } from './views/KanbanView';
+import { ProjectsView }, PROJECTS_VIEW_TYPE } from './projectsView';
+import { TasksCalendarView }, TASKS_CALENDAR_VIEW_TYPE } from './tasksCalendarView';
+import { KanbanView }, KANBAN_VIEW_TYPE } from './kanbanView';
 import { FolderNoteService } from './services/folderNoteService';
 
 import './views/views.css';

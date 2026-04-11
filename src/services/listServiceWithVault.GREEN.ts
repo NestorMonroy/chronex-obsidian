@@ -3,7 +3,7 @@
  * UC-015: Listar Proyectos (7 tests)
  */
 
-import { ObsidianVaultAdapter } from '../adapters/ObsidianVaultAdapter';
+import { ObsidianVaultAdapter } } from './obsidianVaultAdapter';
 
 export interface ListProjectsOutput {
   success: boolean;

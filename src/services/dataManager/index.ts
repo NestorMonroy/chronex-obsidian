@@ -3,9 +3,9 @@
  * Exportación principal
  */
 
-export { DataManager, dataManager } from './DataManager';
-export { TaskCache } from './TaskCache';
-export { EventEmitter } from './EventEmitter';
+export { DataManager, dataManager } from './dataManager';
+export { TaskCache } from './taskCache';
+export { EventEmitter } from './eventEmitter';
 export type {
   CachedTask,
   CacheOptions,

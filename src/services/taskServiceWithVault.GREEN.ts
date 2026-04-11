@@ -3,7 +3,7 @@
  * UC-012: Crear Tarea (8 tests)
  */
 
-import { ObsidianVaultAdapter } from '../adapters/ObsidianVaultAdapter';
+import { ObsidianVaultAdapter } } from './obsidianVaultAdapter';
 import { FolderNoteService } from './folderNoteService';
 import { IndexSyncService } from './indexSyncService';
 import { IdGenerator } from '../utils/generateUniqueId';
