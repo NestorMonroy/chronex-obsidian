@@ -9,13 +9,13 @@
  * 2. Generar ID único
  * 3. Crear estructura de carpetas
  * 4. Crear README.md con frontmatter y contenido
- * 5. Crear _about_.md con FolderAboutService
+ * 5. Crear _about_.md con FolderNoteService
  * 6. Registrar en índice de proyectos
  * 7. Notificar usuario
  */
 
 import { ObsidianVaultAdapter } from '../adapters/ObsidianVaultAdapter';
-import { FolderAboutService } from './folderAboutService';
+import { FolderNoteService } from './folderNoteService';
 import { ProjectService } from './createProject';
 import { IdGenerator } from '../utils/generateUniqueId';
 import { Validator } from '../utils/validators';
@@ -87,27 +87,27 @@ export class ProjectServiceWithVault {
       await vault.createFile(notePath, content);
 
       // 5. CREAR _about_.md CON FOLDERABOUTSERVICE
-      await FolderAboutService.createAboutNote(folderPath, {
+      await FolderNoteService.createAboutNote(folderPath, {
         type: 'proyecto',
         title: input.projectName,
         description: input.description,
         dateCreated,
         status: 'activo',
-        icon: '📁'
+        icon: 'PRJ'
       });
 
       // 6. CREAR _about_ PARA SUBCARPETAS
       const subfolders = ['objetivos', 'documentos', 'recursos'];
       for (const subfolder of subfolders) {
         const subfolderPath = `${folderPath}/${subfolder}`;
-        await FolderAboutService.createAboutNote(subfolderPath, {
+        await FolderNoteService.createAboutNote(subfolderPath, {
           type: 'carpeta',
           title: subfolder.charAt(0).toUpperCase() + subfolder.slice(1),
           description: `Carpeta para almacenar ${subfolder}`,
           parentId: projectId,
           dateCreated,
           status: 'activo',
-          icon: '📂'
+          icon: 'FLD'
         });
       }
 

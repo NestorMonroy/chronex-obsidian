@@ -337,11 +337,11 @@ export class ObsidianVaultAdapter {
   }
 
   showErrorNotice(message: string, timeout: number = 5000): void {
-    new Notice(`❌ ${message}`, timeout);
+    new Notice(`Error: ${message}`, timeout);
   }
 
   showSuccessNotice(message: string, timeout: number = 5000): void {
-    new Notice(`✅ ${message}`, timeout);
+    new Notice(`Success: ${message}`, timeout);
   }
 }
 

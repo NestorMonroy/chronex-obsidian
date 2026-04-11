@@ -4,7 +4,7 @@
  */
 
 import { ObsidianVaultAdapter } from '../adapters/ObsidianVaultAdapter';
-import { FolderAboutService } from './folderAboutService';
+import { FolderNoteService } from './folderNoteService';
 import { IdGenerator } from '../utils/generateUniqueId';
 import { Validator } from '../utils/validators';
 
@@ -75,14 +75,14 @@ export class ObjectiveServiceWithVault {
       await vault.createFile(notePath, content);
 
       // 5. CREAR _about_.md
-      await FolderAboutService.createAboutNote(folderPath, {
+      await FolderNoteService.createAboutNote(folderPath, {
         type: 'objetivo',
         title: input.objectiveName,
         description: input.description,
         parentId: input.parentProjectId,
         dateCreated,
         status: 'activo',
-        icon: '🎯'
+        icon: 'OBJ'
       });
 
       vault.showSuccessNotice(`Objetivo "${input.objectiveName}" creado!`);

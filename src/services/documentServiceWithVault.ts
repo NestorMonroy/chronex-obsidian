@@ -1,11 +1,11 @@
-import { FolderAboutService } from './folderAboutService';
+import { FolderNoteService } from './folderNoteService';
 /**
  * DocumentServiceWithVault - Integración Real con Obsidian Vault
  * Crea documentos en la estructura de repositorios
  */
 
 import { ObsidianVaultAdapter } from '../adapters/ObsidianVaultAdapter';
-import { FolderAboutService } from './folderAboutService';
+import { FolderNoteService } from './folderNoteService';
 import { IdGenerator } from '../utils/generateUniqueId';
 import { Validator } from '../utils/validators';
 
@@ -75,14 +75,14 @@ export class DocumentServiceWithVault {
       await vault.createFile(notePath, content);
 
       // CREAR _about_.md
-      await FolderAboutService.createAboutNote(folderPath, {
+      await FolderNoteService.createAboutNote(folderPath, {
         type: 'documento',
         title: input.documentName,
         description: input.description,
         parentId: input.category,
         dateCreated,
         status: 'activo',
-        icon: '📄'
+        icon: 'DOC'
       });
 
       vault.showSuccessNotice(`Documento "${input.documentName}" creado!`);

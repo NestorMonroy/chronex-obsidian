@@ -4,7 +4,7 @@
  */
 
 import { ObsidianVaultAdapter } from '../adapters/ObsidianVaultAdapter';
-import { FolderAboutService } from './folderAboutService';
+import { FolderNoteService } from './folderNoteService';
 import { IdGenerator } from '../utils/generateUniqueId';
 import { Validator } from '../utils/validators';
 
@@ -77,14 +77,14 @@ export class TaskServiceWithVault {
       await vault.createFile(notePath, content);
 
       // Crear _about_.md
-      await FolderAboutService.createAboutNote(folderPath, {
+      await FolderNoteService.createAboutNote(folderPath, {
         type: 'tarea',
         title: input.taskName,
         description: input.description,
         parentObjectiveId: input.parentObjectiveId,
         dateCreated,
         status: 'pendiente',
-        icon: '✅'
+        icon: 'TSK'
       });
 
       vault.showSuccessNotice(`Tarea "${input.taskName}" creada!`);

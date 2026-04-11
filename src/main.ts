@@ -43,10 +43,10 @@ import { IdGenerator } from './utils/generateUniqueId';
 import { ProjectsView, PROJECTS_VIEW_TYPE } from './views/ProjectsView';
 import { TasksCalendarView, TASKS_CALENDAR_VIEW_TYPE } from './views/TasksCalendarView';
 import { KanbanView, KANBAN_VIEW_TYPE } from './views/KanbanView';
-import { FolderAboutService } from './services/folderAboutService';
+import { FolderNoteService } from './services/folderNoteService';
 
 import './views/views.css';
-import './views/folderAbout.css';
+import './views/folderNote.css';
 
 // Interfaz de configuración del plugin
 interface ObsidianRepoSettings {
@@ -289,15 +289,15 @@ export default class ObsidianRepoPlugin extends Plugin {
       });
 
       if (result.success) {
-        new Notice(`✅ Project "${projectName}" created!`);
+        new Notice(`Project "${projectName}" created successfully!`);
         if (this.settings.enableLogging) {
           console.log('[obsidian-repo] Project created:', result.projectId);
         }
       } else {
-        new Notice(`❌ Error: ${result.error}`);
+        new Notice(`Error: ${result.error}`);
       }
     } catch (error) {
-      new Notice(`❌ Error creating project: ${error}`);
+      new Notice(`Error creating project: ${error}`);
       console.error('[obsidian-repo] Error:', error);
     }
   }
@@ -321,12 +321,12 @@ export default class ObsidianRepoPlugin extends Plugin {
       });
 
       if (result.success) {
-        new Notice(`✅ Objective "${objectiveName}" created!`);
+        new Notice(`Objective "${objectiveName}" created!`);
       } else {
-        new Notice(`❌ Error: ${result.error}`);
+        new Notice(`Error: ${result.error}`);
       }
     } catch (error) {
-      new Notice(`❌ Error creating objective: ${error}`);
+      new Notice(`Error creating objective: ${error}`);
     }
   }
 
@@ -351,12 +351,12 @@ export default class ObsidianRepoPlugin extends Plugin {
       });
 
       if (result.success) {
-        new Notice(`✅ Task "${taskName}" created!`);
+        new Notice(`Task "${taskName}" created!`);
       } else {
-        new Notice(`❌ Error: ${result.error}`);
+        new Notice(`Error: ${result.error}`);
       }
     } catch (error) {
-      new Notice(`❌ Error creating task: ${error}`);
+      new Notice(`Error creating task: ${error}`);
     }
   }
 
@@ -375,12 +375,12 @@ export default class ObsidianRepoPlugin extends Plugin {
       });
 
       if (result.success) {
-        new Notice(`✅ Document "${documentName}" created!`);
+        new Notice(`Document "${documentName}" created!`);
       } else {
-        new Notice(`❌ Error: ${result.error}`);
+        new Notice(`Error: ${result.error}`);
       }
     } catch (error) {
-      new Notice(`❌ Error creating document: ${error}`);
+      new Notice(`Error creating document: ${error}`);
     }
   }
 
@@ -399,7 +399,7 @@ export default class ObsidianRepoPlugin extends Plugin {
 
       new Notice(`Projects:\n${projectList}`);
     } catch (error) {
-      new Notice(`❌ Error listing projects: ${error}`);
+      new Notice(`Error listing projects: ${error}`);
       console.error('[obsidian-repo] Error:', error);
     }
   }
