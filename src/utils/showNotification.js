@@ -1,12 +1,32 @@
 /**
- * Módulo: Mostrar notificación al usuario
+ * Módulo: Mostrar notificación
+ * Muestra notificaciones al usuario en varios niveles
+ * 
  * @module src/utils/showNotification
  * @version 1.0.0
- * @todo Implementar en FASE 2
+ * @author Nestor
+ * @date 2026-04-11
  */
-export function showNotification(message, type = 'info') {
-  // TODO: FASE 2 - Usar app.notice o QuickAdd notifications
-  const prefix = `[${type.toUpperCase()}]`;
-  // eslint-disable-next-line no-console
-  console.log(prefix, message);
+
+/**
+ * Muestra una notificación al usuario
+ *
+ * @param {string} message - Mensaje a mostrar
+ * @param {string} type - Tipo de notificación (success|error|warning|info)
+ * @param {Object} options - Opciones de notificación
+ * @param {number} options.duration - Duración en ms (default: 3000)
+ *
+ * @returns {Object} Objeto de notificación mostrada
+ *
+ * @example
+ * showNotification('Operación completada', 'success');
+ * showNotification('Error en la operación', 'error', { duration: 5000 });
+ *
+ * @todo Integrar con Obsidian.Notice en FASE 3
+ */
+export function showNotification(message, type = 'info', options = {}) {
+  const duration = options.duration ?? 3000;
+  const notification = { message, type, duration };
+  console.log(`[${type.toUpperCase()}] ${message}`);
+  return notification;
 }
