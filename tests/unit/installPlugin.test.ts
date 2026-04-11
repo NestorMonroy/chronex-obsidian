@@ -7,7 +7,7 @@
  * @see /docs/specification/use-cases/uc-p01-install-plugin.md
  */
 
-import { PluginInstaller } from '../../src/services/uc-p01-install-plugin';
+import { PluginInstaller } from '../../src/services/installPlugin';
 
 describe('UC-P01: Instalar Plugin', () => {
   

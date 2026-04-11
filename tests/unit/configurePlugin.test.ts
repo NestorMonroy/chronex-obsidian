@@ -7,7 +7,7 @@
  * @see /docs/specification/use-cases/uc-p02-configure-plugin.md
  */
 
-import { PluginConfig, SettingsManager } from '../../src/services/uc-p02-configure-plugin';
+import { PluginConfig, SettingsManager } from '../../src/services/configurePlugin';
 
 describe('UC-P02: Configurar Plugin', () => {
   

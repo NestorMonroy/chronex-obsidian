@@ -8,7 +8,7 @@
  * @see /docs/specification/use-cases/uc-int01-quickadd-integration.md
  */
 
-import { QuickAddIntegration, MacroConfig, ScriptTemplate } from '../../src/services/uc-int01-quickadd-integration';
+import { QuickAddIntegration, MacroConfig, ScriptTemplate } from '../../src/services/quickaddIntegration';
 
 describe('UC-INT01: QuickAdd Integration', () => {
   

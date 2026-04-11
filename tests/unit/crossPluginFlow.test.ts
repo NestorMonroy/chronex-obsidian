@@ -14,7 +14,7 @@
  * @see /docs/specification/use-cases/uc-int03-cross-plugin-flow.md
  */
 
-import { CrossPluginFlow, FlowInput, FlowResult } from '../../src/services/uc-int03-cross-plugin-flow';
+import { CrossPluginFlow, FlowInput, FlowResult } from '../../src/services/crossPluginFlow';
 
 describe('UC-INT03: Cross-plugin Flow', () => {
   

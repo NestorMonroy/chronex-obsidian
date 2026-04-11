@@ -8,7 +8,7 @@
  * @see /docs/specification/use-cases/uc-int02-templater-integration.md
  */
 
-import { TemplaterIntegration, TemplateConfig, TemplateData } from '../../src/services/uc-int02-templater-integration';
+import { TemplaterIntegration, TemplateConfig, TemplateData } from '../../src/services/templaterIntegration';
 
 describe('UC-INT02: Templater Integration', () => {
   
