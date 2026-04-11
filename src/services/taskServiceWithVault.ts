@@ -3,6 +3,8 @@
  * Crea tareas dentro de objetivos
  */
 
+import { FolderNoteService } from './folderNoteService';
+import { IndexSyncService } from './indexSyncService';
 import { ObsidianVaultAdapter } from '../adapters/ObsidianVaultAdapter';
 import { FolderNoteService } from './folderNoteService';
 import { IdGenerator } from '../utils/generateUniqueId';
@@ -76,15 +78,25 @@ export class TaskServiceWithVault {
 
       await vault.createFile(notePath, content);
 
-      // Crear _about_.md
-      await FolderNoteService.createAboutNote(folderPath, {
+      // Crear FOLDERNTE
+      await FolderNoteService.createFolderNote(folderPath, {
         type: 'tarea',
         title: input.taskName,
         description: input.description,
-        parentObjectiveId: input.parentObjectiveId,
+        parentId: input.parentObjectiveId,
         dateCreated,
         status: 'pendiente',
-        icon: 'TSK'
+        icon: '✅'
+      });
+
+      // SINCRONIZAR CON ÍNDICE GLOBAL
+      await IndexSyncService.updateIndexEntry('tarea', taskId, {
+        title: input.taskName,
+        path: folderPath,
+        description: input.description,
+        status: 'pendiente',
+        priority: input.priority || 'MEDIA',
+        dateCreated
       });
 
       vault.showSuccessNotice(`Tarea "${input.taskName}" creada!`);

@@ -4,6 +4,8 @@ import { FolderNoteService } from './folderNoteService';
  * Crea documentos en la estructura de repositorios
  */
 
+import { FolderNoteService } from './folderNoteService';
+import { IndexSyncService } from './indexSyncService';
 import { ObsidianVaultAdapter } from '../adapters/ObsidianVaultAdapter';
 import { FolderNoteService } from './folderNoteService';
 import { IdGenerator } from '../utils/generateUniqueId';
@@ -74,15 +76,25 @@ export class DocumentServiceWithVault {
 
       await vault.createFile(notePath, content);
 
-      // CREAR _about_.md
-      await FolderNoteService.createAboutNote(folderPath, {
+      // CREAR FOLDERNTE
+      await FolderNoteService.createFolderNote(folderPath, {
         type: 'documento',
         title: input.documentName,
         description: input.description,
         parentId: input.category,
         dateCreated,
         status: 'activo',
-        icon: 'DOC'
+        icon: '📄'
+      });
+
+      // SINCRONIZAR CON ÍNDICE GLOBAL
+      await IndexSyncService.updateIndexEntry('documento', documentId, {
+        title: input.documentName,
+        path: folderPath,
+        description: input.description,
+        status: 'activo',
+        priority: 'MEDIA',
+        dateCreated
       });
 
       vault.showSuccessNotice(`Documento "${input.documentName}" creado!`);

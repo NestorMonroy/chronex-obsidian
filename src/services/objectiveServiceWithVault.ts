@@ -3,6 +3,8 @@
  * Crea objetivos dentro de proyectos existentes
  */
 
+import { FolderNoteService } from './folderNoteService';
+import { IndexSyncService } from './indexSyncService';
 import { ObsidianVaultAdapter } from '../adapters/ObsidianVaultAdapter';
 import { FolderNoteService } from './folderNoteService';
 import { IdGenerator } from '../utils/generateUniqueId';
@@ -74,15 +76,25 @@ export class ObjectiveServiceWithVault {
 
       await vault.createFile(notePath, content);
 
-      // 5. CREAR _about_.md
-      await FolderNoteService.createAboutNote(folderPath, {
+      // 5. CREAR FOLDERNTE
+      await FolderNoteService.createFolderNote(folderPath, {
         type: 'objetivo',
         title: input.objectiveName,
         description: input.description,
         parentId: input.parentProjectId,
         dateCreated,
         status: 'activo',
-        icon: 'OBJ'
+        icon: '🎯'
+      });
+
+      // 5B. SINCRONIZAR CON ÍNDICE GLOBAL
+      await IndexSyncService.updateIndexEntry('objetivo', objectiveId, {
+        title: input.objectiveName,
+        path: folderPath,
+        description: input.description,
+        status: 'activo',
+        priority: input.priority || 'MEDIA',
+        dateCreated
       });
 
       vault.showSuccessNotice(`Objetivo "${input.objectiveName}" creado!`);

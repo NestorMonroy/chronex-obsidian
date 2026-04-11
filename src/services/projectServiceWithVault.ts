@@ -16,6 +16,7 @@
 
 import { ObsidianVaultAdapter } from '../adapters/ObsidianVaultAdapter';
 import { FolderNoteService } from './folderNoteService';
+import { IndexSyncService } from './indexSyncService';
 import { ProjectService } from './createProject';
 import { IdGenerator } from '../utils/generateUniqueId';
 import { Validator } from '../utils/validators';
@@ -96,22 +97,22 @@ export class ProjectServiceWithVault {
         icon: 'PRJ'
       });
 
-      // 6. CREAR _about_ PARA SUBCARPETAS
+      // 6. CREAR FOLDERNTE PARA SUBCARPETAS
       const subfolders = ['objetivos', 'documentos', 'recursos'];
       for (const subfolder of subfolders) {
         const subfolderPath = `${folderPath}/${subfolder}`;
-        await FolderNoteService.createAboutNote(subfolderPath, {
+        await FolderNoteService.createFolderNote(subfolderPath, {
           type: 'carpeta',
           title: subfolder.charAt(0).toUpperCase() + subfolder.slice(1),
           description: `Carpeta para almacenar ${subfolder}`,
           parentId: projectId,
           dateCreated,
           status: 'activo',
-          icon: 'FLD'
+          icon: '📂'
         });
       }
 
-      // 7. REGISTRAR EN ÍNDICE
+      // 7. REGISTRAR EN ÍNDICE LOCAL
       await this.addToIndex(projectId, {
         projectName: input.projectName,
         description: input.description,
@@ -120,7 +121,17 @@ export class ProjectServiceWithVault {
         folderPath,
       });
 
-      // 6. NOTIFICAR
+      // 7B. SINCRONIZAR CON ÍNDICE GLOBAL
+      await IndexSyncService.updateIndexEntry('proyecto', projectId, {
+        title: input.projectName,
+        path: folderPath,
+        description: input.description,
+        status: 'activo',
+        priority: input.priority || 'MEDIA',
+        dateCreated
+      });
+
+      // 8. NOTIFICAR
       vault.showSuccessNotice(`Proyecto "${input.projectName}" creado exitosamente!`);
 
       console.log(`[ProjectService] Project created:`, {
