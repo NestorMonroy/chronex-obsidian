@@ -557,7 +557,85 @@ FrontmatterError
 
 ═══════════════════════════════════════════════════════════════════════════════
 
-## 10. ESTADO FINAL ESPERADO
+## 10. COMPATIBILIDAD CON BOTONES EXISTENTES
+
+### 10.1 Botones Identificados en 100-INBOX.md
+
+**Botones YA EXISTENTES en la bóveda:**
+
+```
+1. button-home-principal
+   Localización: 100-INBOX.md
+   Propósito: Navegación al home principal
+   Estructura: Referencia por ID
+
+2. button-add-fugaz
+   Localización: 100-INBOX.md (dentro de ad-flex/ad-blank)
+   Propósito: Crear notas fugaces (fleeting notes)
+   Estructura: Referencia dentro de admonitions
+```
+
+### 10.2 Requisitos de Compatibilidad
+
+UC-056 **DEBE MANTENER COMPATIBILIDAD** con botones existentes:
+
+✅ **NO ROMPER** referencias por ID (`button-*`)
+✅ **SOPORTAR** botones dentro de admonitions (ad-flex, ad-blank)
+✅ **MANTENER** patrón de backticks (`button-id`)
+✅ **FUNCIONAR** sin interferir con estructura existente
+✅ **AGREGAR** SVGs sin quebrar referencias
+
+### 10.3 Patrón de Compatibilidad
+
+```
+ACTUAL (100-INBOX.md):
+  `button-home-principal`
+  `button-add-fugaz`
+
+COMPATIBLE CON UC-056:
+  [🏠_SVG Home](button://home)  ← Mantiene funcionalidad
+  [➕_SVG Fugaz](button://add?type=fugaz)  ← Mejora UI
+  
+  PERO: Sigue siendo compatible con referencias por ID
+```
+
+### 10.4 Tests de Compatibilidad
+
+Agregar a `vaultWriter.test.ts`:
+
+```typescript
+describe('VaultWriter - Backwards Compatibility', () => {
+  test('debe respetar button-home-principal existente')
+  test('debe respetar button-add-fugaz existente')
+  test('debe soportar botones dentro de ad-flex/ad-blank')
+  test('debe mantener referencias backtick funcionales')
+  test('debe agregar SVGs sin romper referencias existentes')
+  test('debe detectar y preservar estructura de admonitions')
+})
+```
+
+### 10.5 VaultWriter Compatibilidad
+
+Métodos adicionales:
+
+```typescript
+// Detectar referencias existentes
+detectButtonReferences(content: string): string[]
+
+// Mapear ID a configuración de botón
+getButtonConfigById(buttonId: string): ButtonConfig
+
+// Preservar estructura de admonitions
+preserveAdmonitionStructure(content: string): string
+
+// Inyectar SVG sin romper referencias
+injectSvgIntoReference(reference: string, svgIcon: string): string
+```
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+## 11. ESTADO FINAL ESPERADO
 
 Después de UC-056:
 
@@ -567,6 +645,8 @@ Después de UC-056:
 ✅ 95% FUNCIONALIDAD
 ✅ SISTEMA COMPLETO LECTURA-PROCESAMIENTO-ESCRITURA
 ✅ BOTONES INTEGRADOS Y FUNCIONALES
+✅ **COMPATIBILIDAD CON BOTONES EXISTENTES**
+✅ SIN ROMPER NADA QUE YA FUNCIONA
 
 SISTEMA OPERACIONAL EN OBSIDIAN SIN DEPENDENCIAS EXTERNAS
 
@@ -577,6 +657,6 @@ FIN DE ESPECIFICACIÓN UC-056
 
 Autor: Nestor + Claude
 Fecha: 2026-04-11
-Estado: ESPECIFICACIÓN COMPLETA - LISTO PARA TDD RED
+Estado: ESPECIFICACIÓN COMPLETA + COMPATIBILIDAD - LISTO PARA TDD RED
 
 ═══════════════════════════════════════════════════════════════════════════════
