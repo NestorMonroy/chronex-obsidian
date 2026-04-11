@@ -11,7 +11,7 @@
  * ✅ Archivo: vaultReader.test.ts
  */
 
-import { describe, test, expect, beforeEach, vi } from '@jest/globals';
+import { describe, test, expect, beforeEach, jest } from '@jest/globals';
 
 /**
  * Mock tipos de Obsidian
@@ -58,18 +58,18 @@ describe('UC-054: vaultReader - Vault Reader', () => {
     // Mock Obsidian App
     mockApp = {
       vault: {
-        getMarkdownFiles: vi.fn(() => [
+        getMarkdownFiles: jest.fn(() => [
           { path: 'inbox.md', name: 'inbox', extension: 'md' } as TFile,
           { path: 'daily/2026-04-11.md', name: '2026-04-11', extension: 'md' } as TFile
         ]),
-        read: vi.fn(async (file: TFile) => {
+        read: jest.fn(async (file: TFile) => {
           if (file.path === 'inbox.md') {
             return '- [ ] Task 1\n- [x] Task 2\n- [ ] Task 3';
           }
           return '';
         }),
-        modify: vi.fn(),
-        getAbstractFileByPath: vi.fn()
+        modify: jest.fn(),
+        getAbstractFileByPath: jest.fn()
       }
     };
 
@@ -210,7 +210,7 @@ describe('UC-054: vaultReader - Vault Reader', () => {
 
     test('debe retornar tasks vacío si no hay tasks', async () => {
       // Mock que no hay archivos con tasks
-      (mockApp.vault!.getMarkdownFiles as any) = vi.fn(() => []);
+      (mockApp.vault!.getMarkdownFiles as any) = jest.fn(() => []);
 
       const allTasks = await vaultReader.getAllTasks();
 
@@ -364,7 +364,7 @@ describe('UC-054: vaultReader - Vault Reader', () => {
       const file: TFile = { path: 'unicode.md', name: 'unicode', extension: 'md' };
 
       // Mock devuelve contenido con unicode
-      (mockApp.vault!.read as any) = vi.fn(async () => {
+      (mockApp.vault!.read as any) = jest.fn(async () => {
         return '- [ ] Tarea con acentos: café, niño, etc';
       });
 
