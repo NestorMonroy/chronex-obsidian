@@ -11,7 +11,7 @@
  * @see /docs/specification/use-cases/UC-008-create-project.md
  */
 
-import { ProjectService, CreateProjectInput, ProjectResult } from '../../src/services/uc-008-create-project';
+import { ProjectService, CreateProjectInput, ProjectResult } from '../../src/services/createProject';
 
 describe('UC-008: Create Project (TIER 1 MVP)', () => {
   

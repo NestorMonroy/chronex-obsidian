@@ -2,7 +2,7 @@
  * Tests para UC-012: Create Task (TIER 1 MVP)
  */
 
-import { TaskService, CreateTaskInput, TaskResult } from '../../src/services/uc-012-create-task';
+import { TaskService, CreateTaskInput, TaskResult } from '../../src/services/createTask';
 
 describe('UC-012: Create Task (TIER 1 MVP)', () => {
   

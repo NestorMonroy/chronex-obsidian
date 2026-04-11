@@ -2,7 +2,7 @@
  * Tests para UC-010: Create Objective (TIER 1 MVP)
  */
 
-import { ObjectiveService, CreateObjectiveInput, ObjectiveResult } from '../../src/services/uc-010-create-objective';
+import { ObjectiveService, CreateObjectiveInput, ObjectiveResult } from '../../src/services/createObjective';
 
 describe('UC-010: Create Objective (TIER 1 MVP)', () => {
   
