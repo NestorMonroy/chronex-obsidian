@@ -44,7 +44,7 @@ describe('UC-049: dualParser - Compatibilidad Dual', () => {
   let dualParser: any;
 
   beforeEach(() => {
-    const DualParser = require('../../src/services/obsidian-tasks/dualParser').DualParser;
+    const DualParser = require('../../src/services/task-parser/dualParser').DualParser;
     dualParser = new DualParser();
   });
 

@@ -1,7 +1,12 @@
 /**
  * UC-040: parseTaskFromLine
  * 
- * Parsea una línea markdown a un objeto Task
+ * NUESTRO SISTEMA INDEPENDIENTE de parsing de tareas.
+ * 
+ * Inspirado en formato obsidian-tasks, pero 100% NUESTRO CÓDIGO.
+ * Sin dependencias externas.
+ * 
+ * Parsea líneas markdown a objetos Task
  */
 
 import type {

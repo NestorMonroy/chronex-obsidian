@@ -1,10 +1,12 @@
-# obsidian-tasks
+# task-parser
 
 ## Descripción
 
-Sistema de integración con obsidian-tasks para parsing y manipulación robusto de tareas markdown.
+**NUESTRO SISTEMA INDEPENDIENTE** de parsing y gestión de tareas.
 
-Compatible 100% con formato markdown de obsidian-tasks.
+Inspirado en el formato de obsidian-tasks, pero **100% NUESTRO**, sin dependencias externas.
+
+Sistema robusto, extensible y configurable para parsear, validar y gestionar tareas en formato markdown.
 
 ## Módulos
 

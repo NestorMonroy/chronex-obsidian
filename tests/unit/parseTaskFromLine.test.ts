@@ -57,7 +57,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
       const line = '- [ ] Mi tarea simple';
       
       // ACT
-      const result = require('../../src/services/obsidian-tasks/parseTaskFromLine').parseTaskFromLine(
+      const result = require('../../src/services/task-parser/parseTaskFromLine').parseTaskFromLine(
         line,
         baseLocation
       );
@@ -73,7 +73,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
 
     test('debe parsear tarea completada [x]', () => {
       const line = '- [x] Tarea completada';
-      const result = require('../../src/services/obsidian-tasks/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
+      const result = require('../../src/services/task-parser/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
 
       expect(result.success).toBe(true);
       expect(result.task.status).toBe('DONE');
@@ -82,7 +82,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
 
     test('debe parsear tarea en progreso [/]', () => {
       const line = '- [/] Tarea en progreso';
-      const result = require('../../src/services/obsidian-tasks/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
+      const result = require('../../src/services/task-parser/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
 
       expect(result.success).toBe(true);
       expect(result.task.status).toBe('IN_PROGRESS');
@@ -90,7 +90,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
 
     test('debe parsear tarea cancelada [-]', () => {
       const line = '- [-] Tarea cancelada';
-      const result = require('../../src/services/obsidian-tasks/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
+      const result = require('../../src/services/task-parser/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
 
       expect(result.success).toBe(true);
       expect(result.task.status).toBe('CANCELLED');
@@ -98,7 +98,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
 
     test('debe soportar asterisco (*) como marcador de lista', () => {
       const line = '* [x] Tarea con asterisco';
-      const result = require('../../src/services/obsidian-tasks/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
+      const result = require('../../src/services/task-parser/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
 
       expect(result.success).toBe(true);
       expect(result.task.description).toBe('Tarea con asterisco');
@@ -106,7 +106,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
 
     test('debe soportar indentación', () => {
       const line = '  - [ ] Tarea indentada';
-      const result = require('../../src/services/obsidian-tasks/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
+      const result = require('../../src/services/task-parser/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
 
       expect(result.success).toBe(true);
       expect(result.task.description).toBe('Tarea indentada');
@@ -117,7 +117,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
   describe('parseTaskFromLine - Extracción de propiedades', () => {
     test('debe extraer fecha due (📅 YYYY-MM-DD)', () => {
       const line = '- [ ] Tarea 📅 2026-05-15';
-      const result = require('../../src/services/obsidian-tasks/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
+      const result = require('../../src/services/task-parser/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
 
       expect(result.success).toBe(true);
       expect(result.task.dueDate).toBe('2026-05-15');
@@ -125,7 +125,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
 
     test('debe extraer fecha scheduled (🗓️ YYYY-MM-DD)', () => {
       const line = '- [ ] Tarea 🗓️ 2026-04-20';
-      const result = require('../../src/services/obsidian-tasks/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
+      const result = require('../../src/services/task-parser/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
 
       expect(result.success).toBe(true);
       expect(result.task.scheduledDate).toBe('2026-04-20');
@@ -133,7 +133,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
 
     test('debe extraer prioridad alta (⏫)', () => {
       const line = '- [ ] Tarea urgente ⏫';
-      const result = require('../../src/services/obsidian-tasks/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
+      const result = require('../../src/services/task-parser/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
 
       expect(result.success).toBe(true);
       expect(result.task.priority).toBe('ALTA');
@@ -141,7 +141,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
 
     test('debe extraer prioridad baja (⏬)', () => {
       const line = '- [ ] Tarea sin urgencia ⏬';
-      const result = require('../../src/services/obsidian-tasks/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
+      const result = require('../../src/services/task-parser/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
 
       expect(result.success).toBe(true);
       expect(result.task.priority).toBe('BAJA');
@@ -149,7 +149,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
 
     test('debe extraer tags (#tag1 #tag2)', () => {
       const line = '- [ ] Tarea #work #importante #urgente';
-      const result = require('../../src/services/obsidian-tasks/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
+      const result = require('../../src/services/task-parser/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
 
       expect(result.success).toBe(true);
       expect(result.task.tags).toContain('work');
@@ -160,7 +160,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
 
     test('debe extraer block link (^block-id)', () => {
       const line = '- [ ] Tarea importante ^block-123';
-      const result = require('../../src/services/obsidian-tasks/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
+      const result = require('../../src/services/task-parser/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
 
       expect(result.success).toBe(true);
       expect(result.task.blockLink).toBe('^block-123');
@@ -168,7 +168,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
 
     test('debe parsear tarea COMPLEJA con múltiples propiedades', () => {
       const line = '- [x] Implementar API 📅 2026-05-15 🗓️ 2026-04-20 ⏫ #dev #api ^PROJ-001';
-      const result = require('../../src/services/obsidian-tasks/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
+      const result = require('../../src/services/task-parser/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
 
       expect(result.success).toBe(true);
       expect(result.task.description).toBe('Implementar API');
@@ -185,7 +185,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
   // ==================== VALIDACIÓN ====================
   describe('parseTaskFromLine - Validación de input', () => {
     test('debe rechazar input vacío (empty string)', () => {
-      const result = require('../../src/services/obsidian-tasks/parseTaskFromLine').parseTaskFromLine('', baseLocation);
+      const result = require('../../src/services/task-parser/parseTaskFromLine').parseTaskFromLine('', baseLocation);
 
       expect(result.success).toBe(false);
       expect(result.error).toBeDefined();
@@ -193,35 +193,35 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
     });
 
     test('debe rechazar null como input', () => {
-      const result = require('../../src/services/obsidian-tasks/parseTaskFromLine').parseTaskFromLine(null, baseLocation);
+      const result = require('../../src/services/task-parser/parseTaskFromLine').parseTaskFromLine(null, baseLocation);
 
       expect(result.success).toBe(false);
       expect(result.error).toBeDefined();
     });
 
     test('debe rechazar undefined como input', () => {
-      const result = require('../../src/services/obsidian-tasks/parseTaskFromLine').parseTaskFromLine(undefined, baseLocation);
+      const result = require('../../src/services/task-parser/parseTaskFromLine').parseTaskFromLine(undefined, baseLocation);
 
       expect(result.success).toBe(false);
       expect(result.error).toBeDefined();
     });
 
     test('debe rechazar línea que NO es tarea (sin [ ])', () => {
-      const result = require('../../src/services/obsidian-tasks/parseTaskFromLine').parseTaskFromLine('Texto normal sin tarea', baseLocation);
+      const result = require('../../src/services/task-parser/parseTaskFromLine').parseTaskFromLine('Texto normal sin tarea', baseLocation);
 
       expect(result.success).toBe(false);
       expect(result.error).toContain('task');
     });
 
     test('debe rechazar línea que no comienza con - o *', () => {
-      const result = require('../../src/services/obsidian-tasks/parseTaskFromLine').parseTaskFromLine('+ [ ] Tarea con +', baseLocation);
+      const result = require('../../src/services/task-parser/parseTaskFromLine').parseTaskFromLine('+ [ ] Tarea con +', baseLocation);
 
       expect(result.success).toBe(false);
     });
 
     test('debe trimear whitespace antes de procesar', () => {
       const line = '  \n  - [ ] Tarea con espacios  \n  ';
-      const result = require('../../src/services/obsidian-tasks/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
+      const result = require('../../src/services/task-parser/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
 
       expect(result.success).toBe(true);
       expect(result.task.description).toBe('Tarea con espacios');
@@ -378,7 +378,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
   describe('ParsedTaskResult - Metadata correcta', () => {
     test('debe incluir metadata en resultado exitoso', () => {
       const line = '- [ ] Test';
-      const result = require('../../src/services/obsidian-tasks/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
+      const result = require('../../src/services/task-parser/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
 
       expect(result.metadata).toBeDefined();
       expect(result.metadata.filePath).toBe('inbox.md');
@@ -388,7 +388,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
     });
 
     test('debe incluir metadata en resultado con error', () => {
-      const result = require('../../src/services/obsidian-tasks/parseTaskFromLine').parseTaskFromLine('', baseLocation);
+      const result = require('../../src/services/task-parser/parseTaskFromLine').parseTaskFromLine('', baseLocation);
 
       expect(result.metadata).toBeDefined();
       expect(result.metadata.filePath).toBe('inbox.md');
@@ -397,7 +397,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
 
     test('debe retornar timestamp válido (ISO 8601)', () => {
       const line = '- [ ] Test';
-      const result = require('../../src/services/obsidian-tasks/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
+      const result = require('../../src/services/task-parser/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
 
       const date = new Date(result.metadata.parsedAt);
       expect(date.getTime()).toBeTruthy();
@@ -410,7 +410,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
     test('debe manejar descripción muy larga (500+ caracteres)', () => {
       const longDescription = 'A'.repeat(500);
       const line = `- [ ] ${longDescription}`;
-      const result = require('../../src/services/obsidian-tasks/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
+      const result = require('../../src/services/task-parser/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
 
       expect(result.success).toBe(true);
       expect(result.task.description).toBe(longDescription);
@@ -418,7 +418,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
 
     test('debe manejar múltiples espacios entre propiedades', () => {
       const line = '- [ ]   Tarea   📅   2026-05-15   ⏫';
-      const result = require('../../src/services/obsidian-tasks/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
+      const result = require('../../src/services/task-parser/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
 
       expect(result.success).toBe(true);
       expect(result.task.dueDate).toBe('2026-05-15');
@@ -427,7 +427,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
 
     test('debe manejar caracteres especiales en descripción', () => {
       const line = '- [ ] Tarea con "comillas" y \'apóstrofos\' & símbolos % $ @';
-      const result = require('../../src/services/obsidian-tasks/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
+      const result = require('../../src/services/task-parser/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
 
       expect(result.success).toBe(true);
       expect(result.task.description).toContain('comillas');
@@ -435,7 +435,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
 
     test('debe manejar emojis en descripción (no como propiedades)', () => {
       const line = '- [ ] Tarea 🎉 con emoji 😀';
-      const result = require('../../src/services/obsidian-tasks/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
+      const result = require('../../src/services/task-parser/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
 
       expect(result.success).toBe(true);
       expect(result.task.description).toContain('emoji');
@@ -463,7 +463,7 @@ describe('UC-040: parseTaskFromLine - Parsing Basic', () => {
       const line = '- [x] Tarea 📅 2026-05-15 ⏫ #tag1 #tag2 ^block-id';
       const startTime = performance.now();
 
-      require('../../src/services/obsidian-tasks/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
+      require('../../src/services/task-parser/parseTaskFromLine').parseTaskFromLine(line, baseLocation);
 
       const duration = performance.now() - startTime;
       expect(duration).toBeLessThan(5);

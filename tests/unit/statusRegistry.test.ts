@@ -46,7 +46,7 @@ describe('UC-043: statusRegistry - Status Registry', () => {
   beforeEach(() => {
     // Importar registry limpio para cada test
     // En implementación, será una clase que se instancia
-    const StatusRegistry = require('../../src/services/obsidian-tasks/statusRegistry').StatusRegistry;
+    const StatusRegistry = require('../../src/services/task-parser/statusRegistry').StatusRegistry;
     registry = new StatusRegistry();
   });
 
