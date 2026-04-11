@@ -10,7 +10,7 @@ status: Especificación Completada
 
 # UC-004: CREAR PILAR
 
-## 1. IDENTIFICACIÓN
+## 1. IDENTIFICACI�[SPEC]N
 
 | Atributo | Valor |
 |----------|-------|
@@ -20,14 +20,14 @@ status: Especificación Completada
 | **Estado** | Especificación Completada |
 | **Responsable** | Especificador de Casos de Uso |
 | **Fecha Creación** | 2026-04-11 |
-| **Fecha Última Actualización** | 2026-04-11 |
+| **Fecha �[REF]ltima Actualización** | 2026-04-11 |
 | **Prioridad** | MEDIA (Sprint 1-2) |
 | **Complejidad** | MEDIA |
 | **Operaciones Atómicas** | OP-001, OP-002, OP-005, OP-006, OP-008, OP-011, OP-012, OP-013, OP-014, OP-015 |
 
 ---
 
-## 2. DESCRIPCIÓN BREVE
+## 2. DESCRIPCI�[SPEC]N BREVE
 
 El usuario invoca macro "Crear Pilar" a través de command palette de Obsidian. El sistema QuickAdd carga el script createPillar.js que solicita nombre del pilar y estado (Active, Inactive). Valida entrada, genera ID único, obtiene fecha de creación y carpeta padre, construye estructura de carpetas, asigna variables de template, ejecuta template pillar.md y crea archivo final. El usuario recibe notificación de éxito. Un pilar es un concepto o área temática fundamental que contiene notas relacionadas.
 
@@ -156,7 +156,7 @@ El usuario ejecuta macro que dispara proceso de 12 pasos que culmina en la creac
 - Validar _input_name <= 255 caracteres
 - Validar _input_name contiene solo: letras, números, guiones, espacios
 - Validar _input_status es uno de: "Active", "Inactive"
-- Si cualquier validación falla → Lanzar excepción
+- Si cualquier validación falla Lanzar excepción
 
 **Componentes invocados**: validationOperations.validateCommonInput()
 
@@ -164,7 +164,7 @@ El usuario ejecuta macro que dispara proceso de 12 pasos que culmina en la creac
 
 ---
 
-#### **Paso 6: Generar ID Único (OP-003)**
+#### **Paso 6: Generar ID �[REF]nico (OP-003)**
 
 **Actor**: createPillar.js
 
@@ -233,7 +233,7 @@ El usuario ejecuta macro que dispara proceso de 12 pasos que culmina en la creac
 
 **Acción**:
 - Obtener autor actual (getAuthorName())
-- Normalizar estado a minúsculas: "Active" → "active"
+- Normalizar estado a minúsculas: "Active" "active"
 - Construir tags: [estado, "pilar"]
 - Crear objeto _pillar_metadata con estructura completa:
   - id
@@ -267,7 +267,7 @@ El usuario ejecuta macro que dispara proceso de 12 pasos que culmina en la creac
 
 **Acción**:
 - Construir ruta de estructura: pillars/{status}/{id}/
-- Normalizar estado a minúsculas: "Active" → "active"
+- Normalizar estado a minúsculas: "Active" "active"
 - Construir ruta completa: pillars/active/{id}/
 - Asignar a variable _folder_structure
 
@@ -333,7 +333,7 @@ tags:
 
 Conceptos, principios y patrones fundamentales de arquitectura de software
 
-## Áreas Clave
+## �[DIR]reas Clave
 
 - [ ] Diseño de sistemas
 - [ ] Patrones arquitectónicos
@@ -374,10 +374,10 @@ Conceptos, principios y patrones fundamentales de arquitectura de software
 **Resultado esperado**: Archivo creado en ruta correcta con contenido completo
 
 **Manejo de errores**:
-- Carpeta no puede ser creada → Excepción E-005
-- Archivo ya existe → Excepción E-006
-- Permisos insuficientes → Excepción E-007
-- Espacio en disco → Excepción E-008
+- Carpeta no puede ser creada Excepción E-005
+- Archivo ya existe Excepción E-006
+- Permisos insuficientes Excepción E-007
+- Espacio en disco Excepción E-008
 
 ---
 
@@ -628,7 +628,7 @@ stateDiagram-v2
 
 ---
 
-## 11. NOTAS DE IMPLEMENTACIÓN
+## 11. NOTAS DE IMPLEMENTACI�[SPEC]N
 
 ### Librería y Dependencias
 
@@ -641,13 +641,13 @@ stateDiagram-v2
 ### Testing Strategy
 
 **UC-004 requiere tests para:**
-- ✓ Usuario ingresa nombre válido → éxito
-- ✓ Usuario selecciona estado Active → estructura pillars/active/
-- ✓ Usuario selecciona estado Inactive → estructura pillars/inactive/
-- ✓ Archivo creado contiene YAML válido → parseable
-- ✓ Template variables reemplazadas → sin placeholders literales
-- ✓ Usuario cancela durante prompt → ningún cambio
-- ✓ Carpeta estructura creada correctamente → verificar filesystem
+- [DONE][DONE][SPEC] Usuario ingresa nombre válido éxito
+- [DONE][DONE][SPEC] Usuario selecciona estado Active estructura pillars/active/
+- [DONE][DONE][SPEC] Usuario selecciona estado Inactive estructura pillars/inactive/
+- [DONE][DONE][SPEC] Archivo creado contiene YAML válido parseable
+- [DONE][DONE][SPEC] Template variables reemplazadas sin placeholders literales
+- [DONE][DONE][SPEC] Usuario cancela durante prompt ningún cambio
+- [DONE][DONE][SPEC] Carpeta estructura creada correctamente verificar filesystem
 
 ---
 
@@ -670,7 +670,7 @@ stateDiagram-v2
 
 ---
 
-## 13. CRITERIOS DE ACEPTACIÓN
+## 13. CRITERIOS DE ACEPTACI�[SPEC]N
 
 **UC-004 es COMPLETADO cuando:**
 
@@ -714,4 +714,4 @@ stateDiagram-v2
 **Documento**: UC-004-CREAR-PILAR.md
 **Versión**: 1.0.0
 **Fecha**: 2026-04-11
-**Estado**: ESPECIFICACIÓN COMPLETADA - LISTO PARA IMPLEMENTACIÓN
+**Estado**: ESPECIFICACI�[SPEC]N COMPLETADA - LISTO PARA IMPLEMENTACI�[SPEC]N

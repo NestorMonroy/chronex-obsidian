@@ -1,6 +1,6 @@
 ```yaml
 type: Documento Técnico
-title: PASO 1 V4 - IDENTIFICACIÓN DE STAKEHOLDERS
+title: PASO 1 V4 - IDENTIFICACI�[SPEC]N DE STAKEHOLDERS
 version: 4.0.0
 scope: ACTIVIDAD 1 - Obsidian Vault - QuickAdd Scripts
 date: 2026-04-11
@@ -8,12 +8,12 @@ language: Español Mexicano - Técnico Profesional
 status: Análisis Completado
 ```
 
-# PASO 1 V4: IDENTIFICACIÓN DE STAKEHOLDERS
+# PASO 1 V4: IDENTIFICACI�[SPEC]N DE STAKEHOLDERS
 ## Análisis de Actores y Responsabilidades
 
 ---
 
-## INTRODUCCIÓN
+## INTRODUCCI�[SPEC]N
 
 Este documento identifica y caracteriza los 6 stakeholders que participan en el sistema ACTIVIDAD 1 del vault Obsidian. Cada stakeholder tiene responsabilidades específicas, interacciones definidas y dependencias con otros actores.
 
@@ -152,7 +152,7 @@ Las templates de QuickAdd son archivos Markdown con placeholders especiales ({{V
 
 ---
 
-## 5. MÓDULOS DE SCRIPT (UTILITIES)
+## 5. M�[SPEC]DULOS DE SCRIPT (UTILITIES)
 
 **Código:** SH-005
 **Clasificación:** Actor Secundario (Code - Auxiliary)
@@ -271,9 +271,9 @@ Ejemplo: Usuario crea un repositorio nuevo
 
 ---
 
-## PUNTOS CRÍTICOS DE INTERACCIÓN
+## PUNTOS CRÍTICOS DE INTERACCI�[SPEC]N
 
-### Punto Crítico 1: Usuario → QuickAdd
+### Punto Crítico 1: Usuario QuickAdd
 **Descripción:** Usuario inicia macro a través de command palette
 
 **Validaciones Necesarias:**
@@ -288,7 +288,7 @@ Ejemplo: Usuario crea un repositorio nuevo
 
 ---
 
-### Punto Crítico 2: QuickAdd → Scripts/Modules
+### Punto Crítico 2: QuickAdd Scripts/Modules
 **Descripción:** QuickAdd pasa contexto a scripts JavaScript
 
 **Validaciones Necesarias:**
@@ -303,7 +303,7 @@ Ejemplo: Usuario crea un repositorio nuevo
 
 ---
 
-### Punto Crítico 3: Modules → Obsidian API
+### Punto Crítico 3: Modules Obsidian API
 **Descripción:** Módulos realizan operaciones en vault
 
 **Validaciones Necesarias:**
@@ -318,7 +318,7 @@ Ejemplo: Usuario crea un repositorio nuevo
 
 ---
 
-### Punto Crítico 4: Templates → Obsidian
+### Punto Crítico 4: Templates Obsidian
 **Descripción:** Templates reemplazan placeholders y crean archivos
 
 **Validaciones Necesarias:**
@@ -333,7 +333,7 @@ Ejemplo: Usuario crea un repositorio nuevo
 
 ---
 
-## RESPONSABILIDADES POR OPERACIÓN ATÓMICA
+## RESPONSABILIDADES POR OPERACI�[SPEC]N AT�[SPEC]MICA
 
 Cada operación atómica (las 15 identificadas en PASO 1) involucra stakeholders específicos:
 
@@ -363,13 +363,13 @@ Cada operación atómica (las 15 identificadas en PASO 1) involucra stakeholders
 | Matriz interacción | No | Sí, incluida |
 | Flujo datos | Mencionado | Ejemplo completo documentado |
 | Puntos críticos | No | 4 identificados y analizados |
-| Operación × Stakeholder | No | Matriz documentada |
+| Operación �[ARCH] Stakeholder | No | Matriz documentada |
 | Validaciones | Implícitas | Explícitas por punto |
 | Riesgos | No documentado | Documentados por punto |
 
 ---
 
-## VALIDACIÓN CONTRA CONVENCIONES
+## VALIDACI�[SPEC]N CONTRA CONVENCIONES
 
 Este análisis de stakeholders valida contra:
 
@@ -387,7 +387,7 @@ Este análisis de stakeholders valida contra:
 
 ---
 
-## CONCLUSIÓN
+## CONCLUSI�[SPEC]N
 
 Los 6 stakeholders forman un sistema bien definido con responsabilidades claras:
 

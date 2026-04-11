@@ -9,15 +9,15 @@ status: Diagramas Mermaid completos
 ```
 
 # PASO 3: DIAGRAMAS DE ACTORES
-## Visualizaciones de Relaciones Actor↔UC y Dependencias
+## Visualizaciones de Relaciones Actor[DONE]��UC y Dependencias
 
 ---
 
-## INTRODUCCIÓN
+## INTRODUCCI�[SPEC]N
 
 Este artefacto proporciona **4 diagramas Mermaid** que visualizan:
 
-1. **Diagrama 1**: Relación Actor → UC (quién participa en qué)
+1. **Diagrama 1**: Relación Actor UC (quién participa en qué)
 2. **Diagrama 2**: Flujo de datos entre actores
 3. **Diagrama 3**: Dependencias entre UCs
 4. **Diagrama 4**: Timeline de ejecución
@@ -26,7 +26,7 @@ Los diagramas complementan la matriz textual de ARTEFACTO 2.
 
 ---
 
-## DIAGRAMA 1: RELACIÓN ACTOR → UC
+## DIAGRAMA 1: RELACI�[SPEC]N ACTOR UC
 
 ### Descripción
 Muestra qué actores participan en cada UC. Cada nodo UC se conecta a los actores que intervienen.
@@ -35,12 +35,12 @@ Muestra qué actores participan en cada UC. Cada nodo UC se conecta a los actore
 
 ```mermaid
 graph TB
-    Usuario["👤 Usuario (Nestor)"]
-    QuickAdd["⚙️ QuickAdd Plugin"]
-    Obsidian["📁 Obsidian Core"]
-    Utils["🔧 Módulos Utils/"]
-    Template["📝 Template Engine"]
-    MetadataCache["💾 MetadataCache"]
+    Usuario["[SPEC][SPEC]�� Usuario (Nestor)"]
+    QuickAdd["[DONE][REF]�[ARCH][ARCH][ARCH] QuickAdd Plugin"]
+    Obsidian["[SPEC][SPEC][SPEC][DIR] Obsidian Core"]
+    Utils["[SPEC][SPEC]�� Módulos Utils/"]
+    Template["[SPEC][SPEC][SPEC][CONV] Template Engine"]
+    MetadataCache["[SPEC][SPEC]�� MetadataCache"]
     
     UC001["UC-001: Crear Repositorio"]
     UC002["UC-002: Crear Tarea"]
@@ -122,7 +122,7 @@ sequenceDiagram
     U->>Q: 3. Ingresa "Mi Proyecto" + selecciona "Work"
     
     Q->>Utils: 4. validateCommonInput(input)
-    Utils->>Q: 5. Retorna: válido ✓
+    Utils->>Q: 5. Retorna: válido [DONE][DONE][SPEC]
     
     Q->>Utils: 6. generateUniqueId()
     Utils->>Q: 7. Retorna: id-naq5a4-...
@@ -199,7 +199,7 @@ graph LR
 ```
 
 ### Interpretación
-- **Flecha sólida**: Dependencia real (UC-001 → UC-005)
+- **Flecha sólida**: Dependencia real (UC-001 UC-005)
 - **Línea punteada**: Independencia (UCs 2, 3, 4)
 - **Color verde**: UC base (UC-001)
 - **Color naranja**: UC dependiente (UC-005)
@@ -211,7 +211,7 @@ graph LR
 
 ---
 
-## DIAGRAMA 4: OPERACIONES ATÓMICAS REUTILIZADAS
+## DIAGRAMA 4: OPERACIONES AT�[SPEC]MICAS REUTILIZADAS
 
 ### Descripción
 Muestra qué operaciones atómicas (OP-001 a OP-015) se reutilizan en cada UC.
@@ -222,7 +222,7 @@ Muestra qué operaciones atómicas (OP-001 a OP-015) se reutilizan en cada UC.
 graph TB
     OP001["OP-001: Obtener Entrada"]
     OP002["OP-002: Validar Entrada"]
-    OP003["OP-003: Gen ID Único"]
+    OP003["OP-003: Gen ID �[REF]nico"]
     OP005["OP-005: Obtener Fecha"]
     OP006["OP-006: Nombre Archivo"]
     OP007["OP-007: Obtener Metadata"]
@@ -292,7 +292,7 @@ graph TB
 
 ---
 
-## DIAGRAMA 5: TIMELINE DE EJECUCIÓN
+## DIAGRAMA 5: TIMELINE DE EJECUCI�[SPEC]N
 
 ### Descripción
 Muestra el tiempo relativo de ejecución de cada UC, asumiendo que se ejecutan en paralelo donde es posible.
@@ -439,7 +439,7 @@ graph TB
 
 | Diagrama | Propósito | Insight Clave |
 |----------|-----------|---|
-| **Diagrama 1** | Actor → UC | 6 actores, 5 UCs, 26 interacciones |
+| **Diagrama 1** | Actor UC | 6 actores, 5 UCs, 26 interacciones |
 | **Diagrama 2** | Flujo de datos | 25 pasos secuenciales en UC-001 |
 | **Diagrama 3** | Dependencias | UC-005 requiere UC-001 |
 | **Diagrama 4** | Operaciones | 10 OPs reutilizadas en todos los UCs |
@@ -449,7 +449,7 @@ graph TB
 
 ---
 
-## CONCLUSIÓN
+## CONCLUSI�[SPEC]N
 
 Los diagramas visualizan:
 1. **Participación**: Cada actor en cada UC
@@ -463,6 +463,6 @@ Los diagramas visualizan:
 ---
 
 **DOCUMENTO**: PASO3-DIAGRAMA-ACTORES.md
-**VERSIÓN**: 1.0.0
+**VERSI�[SPEC]N**: 1.0.0
 **FECHA**: 2026-04-11
 **ESTADO**: DIAGRAMAS COMPLETADOS - VISUALIZACIONES LISTAS

@@ -36,13 +36,13 @@ Pilar conceptual dedicado a {{VALUE:pillarName}}. Contenedor para conocimiento, 
 
 ---
 
-## √Åreas Clave
+## √[DIR]reas Clave
 
-- [ ] √Årea 1
-- [ ] √Årea 2
-- [ ] √Årea 3
-- [ ] √Årea 4
-- [ ] √Årea 5
+- [ ] √[DIR]rea 1
+- [ ] √[DIR]rea 2
+- [ ] √[DIR]rea 3
+- [ ] √[DIR]rea 4
+- [ ] √[DIR]rea 5
 
 ---
 
@@ -114,18 +114,18 @@ Descripci√≥n y explicaci√≥n del concepto 3.
 
 ```
 {{VALUE:pillarName}}
-‚îú‚îÄ‚îÄ Fundamentos
-‚îÇ   ‚îú‚îÄ‚îÄ Concepto 1
-‚îÇ   ‚îú‚îÄ‚îÄ Concepto 2
-‚îÇ   ‚îî‚îÄ‚îÄ Concepto 3
-‚îú‚îÄ‚îÄ Aplicaciones
-‚îÇ   ‚îú‚îÄ‚îÄ Uso 1
-‚îÇ   ‚îú‚îÄ‚îÄ Uso 2
-‚îÇ   ‚îî‚îÄ‚îÄ Uso 3
-‚îî‚îÄ‚îÄ Avanzado
-    ‚îú‚îÄ‚îÄ Tema 1
-    ‚îú‚îÄ‚îÄ Tema 2
-    ‚îî‚îÄ‚îÄ Tema 3
+[DONE]î[DONE][DONE]î[READY][DONE]î[READY] Fundamentos
+[DONE]îÇ   [DONE]î[DONE][DONE]î[READY][DONE]î[READY] Concepto 1
+[DONE]îÇ   [DONE]î[DONE][DONE]î[READY][DONE]î[READY] Concepto 2
+[DONE]îÇ   [DONE]îî[DONE]î[READY][DONE]î[READY] Concepto 3
+[DONE]î[DONE][DONE]î[READY][DONE]î[READY] Aplicaciones
+[DONE]îÇ   [DONE]î[DONE][DONE]î[READY][DONE]î[READY] Uso 1
+[DONE]îÇ   [DONE]î[DONE][DONE]î[READY][DONE]î[READY] Uso 2
+[DONE]îÇ   [DONE]îî[DONE]î[READY][DONE]î[READY] Uso 3
+[DONE]îî[DONE]î[READY][DONE]î[READY] Avanzado
+    [DONE]î[DONE][DONE]î[READY][DONE]î[READY] Tema 1
+    [DONE]î[DONE][DONE]î[READY][DONE]î[READY] Tema 2
+    [DONE]îî[DONE]î[READY][DONE]î[READY] Tema 3
 ```
 
 ---
@@ -181,5 +181,5 @@ Registrar aqu√≠ el progreso y reflexiones sobre el aprendizaje en este pilar.
 
 ---
 
-**√öltima actualizaci√≥n:** {{VALUE:createdDate}}  
+**√[REF]ltima actualizaci√≥n:** {{VALUE:createdDate}}  
 **Autor:** {{VALUE:authorName}}

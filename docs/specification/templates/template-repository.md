@@ -29,10 +29,10 @@ Repositorio dedicado a {{VALUE:repositoryName}}. Contenedor principal para organ
 
 ```
 {{VALUE:repositoryName}}/
-â”œâ”€â”€ notes/          Notas generales del repositorio
-â”œâ”€â”€ tasks/          Tareas asociadas
-â”œâ”€â”€ references/     Archivos de referencia
-â””â”€â”€ archive/        Contenido archivado
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] notes/          Notas generales del repositorio
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] tasks/          Tareas asociadas
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] references/     Archivos de referencia
+[DONE]””[DONE]”[READY][DONE]”[READY] archive/        Contenido archivado
 ```
 
 ---
@@ -99,5 +99,5 @@ Define el propÃ³sito y alcance de este repositorio.
 
 ---
 
-**Ãšltima actualizaciÃ³n:** {{VALUE:createdDate}}  
+**Ã[REF]ltima actualizaciÃ³n:** {{VALUE:createdDate}}  
 **Autor:** {{VALUE:authorName}}

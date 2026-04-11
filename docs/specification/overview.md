@@ -13,7 +13,7 @@ status: Ãndice de 5 UCs formales
 
 ---
 
-## INTRODUCCIÃ“N
+## INTRODUCCIÃ[SPEC]N
 
 PASO 2 documenta formalmente los 5 casos de uso (UCs) del sistema ACTIVIDAD 1. Cada UC describe un flujo completo desde la perspectiva del usuario, identificando actores, precondiciones, pasos detallados, flujos alternativos, postcondiciones y criterios de aceptaciÃ³n.
 
@@ -74,8 +74,8 @@ Cada documento UC-XXX contiene:
 
 | SecciÃ³n | Contenido |
 |---------|----------|
-| **1. IDENTIFICACIÃ“N** | ID, Nombre, VersiÃ³n, Estado, Prioridad, Complejidad |
-| **2. DESCRIPCIÃ“N BREVE** | PÃ¡rrafo narrativo del UC en contexto |
+| **1. IDENTIFICACIÃ[SPEC]N** | ID, Nombre, VersiÃ³n, Estado, Prioridad, Complejidad |
+| **2. DESCRIPCIÃ[SPEC]N BREVE** | PÃ¡rrafo narrativo del UC en contexto |
 | **3. ACTORES INVOLUCRADOS** | Usuario, QuickAdd, Obsidian, Modules, Template |
 | **4. PRECONDICIONES** | QuÃ© debe ser verdad antes de iniciar UC |
 | **5. FLUJO PRINCIPAL** | Pasos 1-N detallados (Actor/AcciÃ³n/Resultado) |
@@ -84,14 +84,14 @@ Cada documento UC-XXX contiene:
 | **8. PUNTOS CRÃTICOS** | DÃ³nde pueden ocurrir fallos |
 | **9. EXCEPCIONES** | Errores posibles y manejo |
 | **10. DIAGRAMAS** | Secuencia, Estados, Arquitectura (Mermaid) |
-| **11. NOTAS DE IMPLEMENTACIÃ“N** | Patrones, librerÃ­as, estrategia testing |
-| **12. TRAZABILIDAD** | Operaciones atÃ³micas â†” CÃ³digo |
-| **13. CRITERIOS DE ACEPTACIÃ“N** | Checklist de completitud |
+| **11. NOTAS DE IMPLEMENTACIÃ[SPEC]N** | Patrones, librerÃ­as, estrategia testing |
+| **12. TRAZABILIDAD** | Operaciones atÃ³micas [DONE]†” CÃ³digo |
+| **13. CRITERIOS DE ACEPTACIÃ[SPEC]N** | Checklist de completitud |
 | **14. REFERENCIAS** | Links a PASO 1 V4, convenciones, cÃ³digo |
 
 ---
 
-## RELACIÃ“N CON PASO 1 V4
+## RELACIÃ[SPEC]N CON PASO 1 V4
 
 Cada UC mapea directamente a operaciones atÃ³micas de PASO 1 V4:
 
@@ -105,7 +105,7 @@ Cada UC mapea directamente a operaciones atÃ³micas de PASO 1 V4:
 
 ---
 
-## RELACIÃ“N CON CONVENCIONES
+## RELACIÃ[SPEC]N CON CONVENCIONES
 
 Cada UC valida contra:
 
@@ -138,33 +138,33 @@ Cada UC valida contra:
 
 ---
 
-## FLUJO COMÃšN A TODOS LOS UCs
+## FLUJO COMÃ[REF]N A TODOS LOS UCs
 
 Todos los UCs siguen patrÃ³n similar:
 
 ```
 Usuario inicia macro
-    â†“
+    
 QuickAdd carga script orquestador
-    â†“
+    
 Obtener entrada usuario (OP-001)
-    â†“
+    
 Validar entrada (OP-002)
-    â†“
+    
 Generar ID Ãºnico (OP-003)
-    â†“
+    
 Obtener metadata (OP-005, OP-007)
-    â†“
+    
 Procesar especÃ­fico (OP-011)
-    â†“
+    
 Asignar variables (OP-012)
-    â†“
+    
 Ejecutar template (OP-013)
-    â†“
+    
 Crear archivo (OP-014)
-    â†“
+    
 Mostrar notificaciÃ³n (OP-015)
-    â†“
+    
 Completado
 ```
 
@@ -177,26 +177,26 @@ Las diferencias estÃ¡n en OP-011 (lÃ³gica especÃ­fica) y estructura de datos.
 ### Diagrama 1: RelaciÃ³n entre 5 UCs
 
 ```
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚          SISTEMA ACTIVIDAD 1 (QuickAdd)         â”‚
-â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
-â”‚                                                 â”‚
-â”‚  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â” â”‚
-â”‚  â”‚UC-001    â”‚  â”‚UC-002    â”‚  â”‚UC-003        â”‚ â”‚
-â”‚  â”‚Crear     â”‚  â”‚Crear     â”‚  â”‚Crear         â”‚ â”‚
-â”‚  â”‚Repositorioâ”‚  â”‚Tarea     â”‚  â”‚Proyecto      â”‚ â”‚
-â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜ â”‚
-â”‚       â†‘              â†‘               â†‘          â”‚
-â”‚       â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜          â”‚
-â”‚                 PatrÃ³n comÃºn                    â”‚
-â”‚                                                 â”‚
-â”‚  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”                 â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â” â”‚
-â”‚  â”‚UC-004    â”‚                 â”‚UC-005        â”‚ â”‚
-â”‚  â”‚Crear     â”‚                 â”‚Crear Nota    â”‚ â”‚
-â”‚  â”‚Pilar     â”‚â†â”€â”€â”€â”€â”€relacionadoâ”€â†’de Pilar     â”‚ â”‚
-â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜                 â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜ â”‚
-â”‚                                                 â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+[DONE]”Œ[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”
+[DONE]”‚          SISTEMA ACTIVIDAD 1 (QuickAdd)         [DONE]”‚
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”¤
+[DONE]”‚                                                 [DONE]”‚
+[DONE]”‚  [DONE]”Œ[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”  [DONE]”Œ[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”  [DONE]”Œ[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]” [DONE]”‚
+[DONE]”‚  [DONE]”‚UC-001    [DONE]”‚  [DONE]”‚UC-002    [DONE]”‚  [DONE]”‚UC-003        [DONE]”‚ [DONE]”‚
+[DONE]”‚  [DONE]”‚Crear     [DONE]”‚  [DONE]”‚Crear     [DONE]”‚  [DONE]”‚Crear         [DONE]”‚ [DONE]”‚
+[DONE]”‚  [DONE]”‚Repositorio[DONE]”‚  [DONE]”‚Tarea     [DONE]”‚  [DONE]”‚Proyecto      [DONE]”‚ [DONE]”‚
+[DONE]”‚  [DONE]””[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”˜  [DONE]””[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”˜  [DONE]””[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”˜ [DONE]”‚
+[DONE]”‚                                              [DONE]”‚
+[DONE]”‚       [DONE]””[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”´[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”˜          [DONE]”‚
+[DONE]”‚                 PatrÃ³n comÃºn                    [DONE]”‚
+[DONE]”‚                                                 [DONE]”‚
+[DONE]”‚  [DONE]”Œ[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”                 [DONE]”Œ[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]” [DONE]”‚
+[DONE]”‚  [DONE]”‚UC-004    [DONE]”‚                 [DONE]”‚UC-005        [DONE]”‚ [DONE]”‚
+[DONE]”‚  [DONE]”‚Crear     [DONE]”‚                 [DONE]”‚Crear Nota    [DONE]”‚ [DONE]”‚
+[DONE]”‚  [DONE]”‚Pilar     [DONE]”‚[DONE]†[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY]relacionado[DONE]”[READY][DONE]†’de Pilar     [DONE]”‚ [DONE]”‚
+[DONE]”‚  [DONE]””[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”˜                 [DONE]””[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”˜ [DONE]”‚
+[DONE]”‚                                                 [DONE]”‚
+[DONE]””[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”˜
 ```
 
 ---
@@ -205,19 +205,19 @@ Las diferencias estÃ¡n en OP-011 (lÃ³gica especÃ­fica) y estructura de datos.
 
 ### Para Ejecutivo (30 minutos)
 1. Esta pÃ¡gina (INDEX)
-2. SecciÃ³n "DESCRIPCIÃ“N BREVE" de cada UC
-3. SecciÃ³n "CRITERIOS DE ACEPTACIÃ“N" de cada UC
+2. SecciÃ³n "DESCRIPCIÃ[SPEC]N BREVE" de cada UC
+3. SecciÃ³n "CRITERIOS DE ACEPTACIÃ[SPEC]N" de cada UC
 
 ### Para Arquitecto (3 horas)
 1. Esta pÃ¡gina (INDEX)
 2. FLUJO PRINCIPAL + DIAGRAMAS de cada UC
 3. PUNTOS CRÃTICOS y EXCEPCIONES de cada UC
-4. NOTAS DE IMPLEMENTACIÃ“N de cada UC
+4. NOTAS DE IMPLEMENTACIÃ[SPEC]N de cada UC
 
 ### Para Developer (1-2 horas por UC)
 1. UC completo (secciones 1-14)
 2. Mapeo de operaciones atÃ³micas (SecciÃ³n TRAZABILIDAD)
-3. Code skeleton en NOTAS DE IMPLEMENTACIÃ“N
+3. Code skeleton en NOTAS DE IMPLEMENTACIÃ[SPEC]N
 4. Criterios de aceptaciÃ³n (SecciÃ³n 13)
 
 ---
@@ -262,33 +262,33 @@ Las diferencias estÃ¡n en OP-011 (lÃ³gica especÃ­fica) y estructura de datos.
 
 ---
 
-## PRÃ“XIMOS PASOS
+## PRÃ[SPEC]XIMOS PASOS
 
 DespuÃ©s de completar 5 UCs formales:
 
 ```
 PASO 2 (ACTUAL)
-â”œâ”€â”€ UC-001: Crear Repositorio
-â”œâ”€â”€ UC-002: Crear Tarea
-â”œâ”€â”€ UC-003: Crear Proyecto
-â”œâ”€â”€ UC-004: Crear Pilar
-â””â”€â”€ UC-005: Crear Nota de Pilar
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] UC-001: Crear Repositorio
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] UC-002: Crear Tarea
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] UC-003: Crear Proyecto
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] UC-004: Crear Pilar
+[DONE]””[DONE]”[READY][DONE]”[READY] UC-005: Crear Nota de Pilar
 
-â†“ (validaciÃ³n y aceptaciÃ³n de 5 UCs)
+[DONE]†[SPEC] (validaciÃ³n y aceptaciÃ³n de 5 UCs)
 
 PASO 3: Detalle de Flujos
-â”œâ”€â”€ Describir cada paso con precisiÃ³n
-â”œâ”€â”€ Documentar todas las variantes
-â””â”€â”€ Crear casos de prueba
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] Describir cada paso con precisiÃ³n
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] Documentar todas las variantes
+[DONE]””[DONE]”[READY][DONE]”[READY] Crear casos de prueba
 
-â†“
+[DONE]†[SPEC]
 
 PASO 4: ImplementaciÃ³n (RefactorizaciÃ³n)
-â”œâ”€â”€ Ejecutar ROADMAP (Fases 1-5)
-â”œâ”€â”€ Codificar segÃºn PASO 2 UCs
-â””â”€â”€ Testear contra criterios aceptaciÃ³n
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] Ejecutar ROADMAP (Fases 1-5)
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] Codificar segÃºn PASO 2 UCs
+[DONE]””[DONE]”[READY][DONE]”[READY] Testear contra criterios aceptaciÃ³n
 
-â†“
+[DONE]†[SPEC]
 
 PASO 5: Testing + Release
 ```
@@ -309,7 +309,7 @@ PASO 5: Testing + Release
 
 ---
 
-## VALIDACIÃ“N DE PASO 2
+## VALIDACIÃ[SPEC]N DE PASO 2
 
 Cada UC serÃ¡ validado cuando:
 
@@ -326,7 +326,7 @@ Cada UC serÃ¡ validado cuando:
 
 ---
 
-## CONCLUSIÃ“N
+## CONCLUSIÃ[SPEC]N
 
 PASO 2 formaliza los 5 casos de uso de ACTIVIDAD 1, proporcionando especificaciÃ³n ejecutable y testeable para desarrolladores.
 
@@ -335,7 +335,7 @@ Cada UC es independiente pero parte de sistema coherente, utilizando patrÃ³n com
 ---
 
 **DOCUMENTO**: PASO2-INDEX.md
-**VERSIÃ“N**: 1.0.0
+**VERSIÃ[SPEC]N**: 1.0.0
 **FECHA**: 2026-04-11
 **ESTADO**: ÃNDICE COMPLETADO - LISTO PARA ARTEFACTOS SIGUIENTES
 

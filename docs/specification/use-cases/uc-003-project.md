@@ -10,7 +10,7 @@ status: Especificación Completada
 
 # UC-003: CREAR PROYECTO
 
-## 1. IDENTIFICACIÓN
+## 1. IDENTIFICACI�[SPEC]N
 
 | Atributo | Valor |
 |----------|-------|
@@ -20,14 +20,14 @@ status: Especificación Completada
 | **Estado** | Especificación Completada |
 | **Responsable** | Especificador de Casos de Uso |
 | **Fecha Creación** | 2026-04-11 |
-| **Fecha Última Actualización** | 2026-04-11 |
+| **Fecha �[REF]ltima Actualización** | 2026-04-11 |
 | **Prioridad** | ALTA (Sprint 1) |
 | **Complejidad** | MEDIA |
 | **Operaciones Atómicas** | OP-001, OP-002, OP-003, OP-005, OP-006, OP-007, OP-008, OP-010, OP-011, OP-012, OP-013, OP-014, OP-015 |
 
 ---
 
-## 2. DESCRIPCIÓN BREVE
+## 2. DESCRIPCI�[SPEC]N BREVE
 
 El usuario invoca macro "Crear Proyecto" a través de command palette de Obsidian. El sistema QuickAdd carga el script createProject.js que solicita nombre del proyecto, estado (Active, Paused, Planning) y descripción. Valida entrada, genera ID único, obtiene fecha de creación, metadata y carpeta padre, construye estructura de carpetas por estado, asigna variables de template, ejecuta template project.md y crea archivo final en carpeta estructurada. El usuario recibe notificación de éxito con información del proyecto creado.
 
@@ -172,7 +172,7 @@ El usuario ejecuta macro que dispara proceso de 14 pasos que culmina en la creac
 - Validar _input_name <= 255 caracteres
 - Validar _input_name contiene solo: letras, números, guiones, espacios
 - Validar _input_status es uno de: "Active", "Paused", "Planning"
-- Si cualquier validación falla → Lanzar excepción
+- Si cualquier validación falla Lanzar excepción
 
 **Componentes invocados**: validationOperations.validateCommonInput()
 
@@ -180,7 +180,7 @@ El usuario ejecuta macro que dispara proceso de 14 pasos que culmina en la creac
 
 ---
 
-#### **Paso 7: Generar ID Único (OP-003)**
+#### **Paso 7: Generar ID �[REF]nico (OP-003)**
 
 **Actor**: createProject.js
 
@@ -234,7 +234,7 @@ El usuario ejecuta macro que dispara proceso de 14 pasos que culmina en la creac
 
 **Acción**:
 - Obtener autor actual (getAuthorName())
-- Normalizar estado a minúsculas: "Active" → "active"
+- Normalizar estado a minúsculas: "Active" "active"
 - Construir tags: [estado, "project"]
 - Crear objeto _project_metadata con estructura completa
 
@@ -265,7 +265,7 @@ El usuario ejecuta macro que dispara proceso de 14 pasos que culmina en la creac
 
 **Acción**:
 - Construir ruta de estructura: projects/{status}/{id}/
-- Normalizar estado a minúsculas: "Active" → "active"
+- Normalizar estado a minúsculas: "Active" "active"
 - Construir ruta completa: projects/active/{id}/
 - Asignar a variable _folder_structure
 
@@ -413,10 +413,10 @@ Sistema completo de autenticación con OAuth2 y 2FA
 **Resultado esperado**: Archivo creado en ruta correcta con contenido completo
 
 **Manejo de errores**:
-- Carpeta no puede ser creada → Excepción E-006
-- Archivo ya existe → Excepción E-007
-- Permisos insuficientes → Excepción E-008
-- Espacio en disco → Excepción E-009
+- Carpeta no puede ser creada Excepción E-006
+- Archivo ya existe Excepción E-007
+- Permisos insuficientes Excepción E-008
+- Espacio en disco Excepción E-009
 
 ---
 
@@ -559,7 +559,7 @@ Sistema completo de autenticación con OAuth2 y 2FA
 
 ---
 
-### Punto Crítico PC3: Generación de ID Único
+### Punto Crítico PC3: Generación de ID �[REF]nico
 **Ubicación**: Paso 7
 **Riesgo**: Si ID no es único, proyectos se sobrescriben
 **Mitigación**: Usar Web Crypto API, combinar timestamp + random hex
@@ -717,7 +717,7 @@ stateDiagram-v2
 
 ---
 
-## 11. NOTAS DE IMPLEMENTACIÓN
+## 11. NOTAS DE IMPLEMENTACI�[SPEC]N
 
 ### Librería y Dependencias
 
@@ -741,16 +741,16 @@ stateDiagram-v2
 ### Testing Strategy
 
 **UC-003 requiere tests para:**
-- ✓ Usuario ingresa nombre válido → éxito
-- ✓ Usuario selecciona estado Active → estructura projects/active/
-- ✓ Usuario selecciona estado Paused → estructura projects/paused/
-- ✓ Usuario selecciona estado Planning → estructura projects/planning/
-- ✓ Usuario ingresa descripción → metadata correcta
-- ✓ Archivo creado contiene YAML válido → parseable
-- ✓ Template variables reemplazadas → sin placeholders literales
-- ✓ Usuario cancela durante prompt → ningún cambio
-- ✓ Carpeta estructura creada correctamente → verificar filesystem
-- ✓ Caracteres inválidos → error E-004
+- [DONE][DONE][SPEC] Usuario ingresa nombre válido éxito
+- [DONE][DONE][SPEC] Usuario selecciona estado Active estructura projects/active/
+- [DONE][DONE][SPEC] Usuario selecciona estado Paused estructura projects/paused/
+- [DONE][DONE][SPEC] Usuario selecciona estado Planning estructura projects/planning/
+- [DONE][DONE][SPEC] Usuario ingresa descripción metadata correcta
+- [DONE][DONE][SPEC] Archivo creado contiene YAML válido parseable
+- [DONE][DONE][SPEC] Template variables reemplazadas sin placeholders literales
+- [DONE][DONE][SPEC] Usuario cancela durante prompt ningún cambio
+- [DONE][DONE][SPEC] Carpeta estructura creada correctamente verificar filesystem
+- [DONE][DONE][SPEC] Caracteres inválidos error E-004
 
 ---
 
@@ -774,7 +774,7 @@ stateDiagram-v2
 
 ---
 
-## 13. CRITERIOS DE ACEPTACIÓN
+## 13. CRITERIOS DE ACEPTACI�[SPEC]N
 
 **UC-003 es COMPLETADO cuando:**
 
@@ -817,4 +817,4 @@ stateDiagram-v2
 **Documento**: UC-003-CREAR-PROYECTO.md
 **Versión**: 1.0.0
 **Fecha**: 2026-04-11
-**Estado**: ESPECIFICACIÓN COMPLETADA - LISTO PARA IMPLEMENTACIÓN
+**Estado**: ESPECIFICACI�[SPEC]N COMPLETADA - LISTO PARA IMPLEMENTACI�[SPEC]N

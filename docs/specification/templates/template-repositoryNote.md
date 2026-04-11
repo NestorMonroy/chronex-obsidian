@@ -169,6 +169,6 @@ Espacio para notas adicionales y reflexiones.
 
 ---
 
-**Última actualización:** {{VALUE:createdDate}}  
+**�[REF]ltima actualización:** {{VALUE:createdDate}}  
 **Autor:** {{VALUE:authorName}}  
 **Vinculado a:** [[{{VALUE:repositoryContext.name}}]] ({{VALUE:repositoryContext.type}})

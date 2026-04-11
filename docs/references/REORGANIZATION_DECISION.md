@@ -11,8 +11,8 @@
 Original structure:
 ```
 docs/
-â”œâ”€â”€ CONVENTIONS.md
-â”œâ”€â”€ [no sub-organization]
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] CONVENTIONS.md
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] [no sub-organization]
 ```
 
 Issues:
@@ -86,27 +86,27 @@ New structure groups content by THEME, not by arc42 section number:
 
 ```
 docs/
-â”œâ”€â”€ specification/          (drawer: "What the system does")
-â”‚   â”œâ”€â”€ use-cases/
-â”‚   â””â”€â”€ templates/
-â”œâ”€â”€ analysis/               (drawer: "Problems and improvements")
-â”‚   â”œâ”€â”€ operations/
-â”‚   â”œâ”€â”€ current-system/
-â”‚   â””â”€â”€ refactoring/
-â”œâ”€â”€ architecture/           (drawer: "How it's organized and validated")
-â”‚   â”œâ”€â”€ actors/
-â”‚   â”œâ”€â”€ flows/
-â”‚   â””â”€â”€ validation/
-â”œâ”€â”€ conventions/            (drawer: "How to write code")
-â””â”€â”€ references/             (drawer: "External and reference material")
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] specification/          (drawer: "What the system does")
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] use-cases/
+[DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] templates/
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] analysis/               (drawer: "Problems and improvements")
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] operations/
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] current-system/
+[DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] refactoring/
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] architecture/           (drawer: "How it's organized and validated")
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] actors/
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] flows/
+[DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] validation/
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] conventions/            (drawer: "How to write code")
+[DONE]””[DONE]”[READY][DONE]”[READY] references/             (drawer: "External and reference material")
 ```
 
 Each drawer:
-- âœ… Clearly labeled
-- âœ… Independent
-- âœ… Self-contained
-- âœ… Can be read in any order
-- âœ… Has internal index for navigation
+- [DONE] Clearly labeled
+- [DONE] Independent
+- [DONE] Self-contained
+- [DONE] Can be read in any order
+- [DONE] Has internal index for navigation
 
 ---
 
@@ -146,11 +146,11 @@ This reorganization follows that metaphor exactly: each drawer is labeled with i
 ## Conclusion
 
 The reorganization:
-- âœ… Follows arc42's philosophical guidance
-- âœ… Uses evidence from 7 examples in the book
-- âœ… Maintains all content integrity
-- âœ… Improves navigability
-- âœ… Enables future growth
-- âœ… Aligns with "thematic drawers" principle
+- [DONE] Follows arc42's philosophical guidance
+- [DONE] Uses evidence from 7 examples in the book
+- [DONE] Maintains all content integrity
+- [DONE] Improves navigability
+- [DONE] Enables future growth
+- [DONE] Aligns with "thematic drawers" principle
 
 **Status**: DECISION IMPLEMENTED

@@ -1,6 +1,6 @@
 ```yaml
 type: Documento T√©cnico
-title: PASO 1 V4 - ROADMAP DE REFACTORIZACI√ìN
+title: PASO 1 V4 - ROADMAP DE REFACTORIZACI√[SPEC]N
 version: 4.0.0
 scope: ACTIVIDAD 1 - Plan de acci√≥n para mejorar c√≥digo
 date: 2026-04-11
@@ -9,12 +9,12 @@ framework: Agile - Phased Refactoring
 timeline: 10-12 semanas (50-60 horas)
 ```
 
-# PASO 1 V4: ROADMAP DE REFACTORIZACI√ìN
+# PASO 1 V4: ROADMAP DE REFACTORIZACI√[SPEC]N
 ## Plan Priorizado de Mejora de C√≥digo con Timeline y Effort
 
 ---
 
-## INTRODUCCI√ìN
+## INTRODUCCI√[SPEC]N
 
 Este documento define un plan ejecutable para refactorizar el c√≥digo AS-IS hacia el estado target. El plan est√° dividido en 5 fases, cada una con:
 
@@ -53,7 +53,7 @@ TOTAL: 10 semanas, 60 horas (1.5 horas/d√≠a)
 
 ---
 
-## FASE 1: CONVENCIONES DE C√ìDIGO
+## FASE 1: CONVENCIONES DE C√[SPEC]DIGO
 **Duraci√≥n: 1-2 semanas | Esfuerzo: 7 horas | Severidad: BAJA**
 
 ### Objetivo
@@ -111,7 +111,7 @@ Aplicar prefijos _contexto_ y est√°ndares de naming a todo el c√≥digo existente.
 
 ---
 
-## FASE 2: M√ìDULOS REUTILIZABLES
+## FASE 2: M√[SPEC]DULOS REUTILIZABLES
 **Duraci√≥n: 2 semanas | Esfuerzo: 12 horas | Severidad: MODERADA**
 
 ### Objetivo
@@ -272,24 +272,24 @@ module.exports = { handleError };
 
 ```
 scripts/
-‚îú‚îÄ‚îÄ createRepository.js
-‚îú‚îÄ‚îÄ createTask.js
-‚îú‚îÄ‚îÄ createProject.js
-‚îú‚îÄ‚îÄ createPillar.js
-‚îú‚îÄ‚îÄ createPilarNote.js
-‚îú‚îÄ‚îÄ utils/
-‚îÇ   ‚îú‚îÄ‚îÄ generateUniqueId.js
-‚îÇ   ‚îú‚îÄ‚îÄ generateCustomId.js
-‚îÇ   ‚îú‚îÄ‚îÄ getCurrentDateTime.js
-‚îÇ   ‚îú‚îÄ‚îÄ getFileName.js
-‚îÇ   ‚îú‚îÄ‚îÄ getMetadataByFrontmatter.js
-‚îÇ   ‚îú‚îÄ‚îÄ showNotification.js
-‚îÇ   ‚îú‚îÄ‚îÄ inputOperations.js        [NUEVO]
-‚îÇ   ‚îú‚îÄ‚îÄ validationOperations.js   [NUEVO]
-‚îÇ   ‚îú‚îÄ‚îÄ metadataOperations.js     [NUEVO]
-‚îÇ   ‚îú‚îÄ‚îÄ variableOperations.js     [NUEVO]
-‚îÇ   ‚îî‚îÄ‚îÄ errorHandling.js          [NUEVO]
-‚îî‚îÄ‚îÄ README.md
+[DONE]î[DONE][DONE]î[READY][DONE]î[READY] createRepository.js
+[DONE]î[DONE][DONE]î[READY][DONE]î[READY] createTask.js
+[DONE]î[DONE][DONE]î[READY][DONE]î[READY] createProject.js
+[DONE]î[DONE][DONE]î[READY][DONE]î[READY] createPillar.js
+[DONE]î[DONE][DONE]î[READY][DONE]î[READY] createPilarNote.js
+[DONE]î[DONE][DONE]î[READY][DONE]î[READY] utils/
+[DONE]îÇ   [DONE]î[DONE][DONE]î[READY][DONE]î[READY] generateUniqueId.js
+[DONE]îÇ   [DONE]î[DONE][DONE]î[READY][DONE]î[READY] generateCustomId.js
+[DONE]îÇ   [DONE]î[DONE][DONE]î[READY][DONE]î[READY] getCurrentDateTime.js
+[DONE]îÇ   [DONE]î[DONE][DONE]î[READY][DONE]î[READY] getFileName.js
+[DONE]îÇ   [DONE]î[DONE][DONE]î[READY][DONE]î[READY] getMetadataByFrontmatter.js
+[DONE]îÇ   [DONE]î[DONE][DONE]î[READY][DONE]î[READY] showNotification.js
+[DONE]îÇ   [DONE]î[DONE][DONE]î[READY][DONE]î[READY] inputOperations.js        [NUEVO]
+[DONE]îÇ   [DONE]î[DONE][DONE]î[READY][DONE]î[READY] validationOperations.js   [NUEVO]
+[DONE]îÇ   [DONE]î[DONE][DONE]î[READY][DONE]î[READY] metadataOperations.js     [NUEVO]
+[DONE]îÇ   [DONE]î[DONE][DONE]î[READY][DONE]î[READY] variableOperations.js     [NUEVO]
+[DONE]îÇ   [DONE]îî[DONE]î[READY][DONE]î[READY] errorHandling.js          [NUEVO]
+[DONE]îî[DONE]î[READY][DONE]î[READY] README.md
 ```
 
 **Effort: 1 hora (organizaci√≥n)**
@@ -305,7 +305,7 @@ scripts/
 - [ ] errorHandling.js creado y probado
 - [ ] Estructura utils/ reorganizada (Opci√≥n 2 - plana)
 - [ ] Imports en orquestadores actualizados
-- [ ] Duplicaci√≥n de c√≥digo reducida (500 l√≠neas ‚Üí 100)
+- [ ] Duplicaci√≥n de c√≥digo reducida (500 l√≠neas 100)
 - [ ] Todos los orquestadores a√∫n funcionan
 
 ### Risk Assessment FASE 2
@@ -325,7 +325,7 @@ scripts/
 
 ---
 
-## FASE 3: REFACTORIZACI√ìN SRP
+## FASE 3: REFACTORIZACI√[SPEC]N SRP
 **Duraci√≥n: 2 semanas | Esfuerzo: 18 horas | Severidad: SEVERA**
 
 ### Objetivo
@@ -412,7 +412,7 @@ module.exports = async (params) => {
 };
 ```
 
-**Cambio clave:** De 100 l√≠neas ‚Üí 6 funciones √ó 10-15 l√≠neas cada una
+**Cambio clave:** De 100 l√≠neas 6 funciones √[ARCH] 10-15 l√≠neas cada una
 
 ### Aplicaci√≥n por Orquestador
 
@@ -610,7 +610,7 @@ module.exports = async (params) => {
 
 ---
 
-## FASE 5: TESTING Y DOCUMENTACI√ìN
+## FASE 5: TESTING Y DOCUMENTACI√[SPEC]N
 **Duraci√≥n: 2 semanas | Esfuerzo: 8 horas | Severidad: BAJA**
 
 ### Objetivo
@@ -679,18 +679,18 @@ Validar que todo funciona y documentar cambios.
 ## TIMELINE VISUAL
 
 ```
-Semana 1-2:  FASE 1 ‚ñà‚ñà‚ñà‚ñà‚ñë‚ñë‚ñë‚ñë‚ñë‚ñë‚ñë‚ñë‚ñë‚ñë‚ñë‚ñë‚ñë‚ñë‚ñë‚ñë  7h
-Semana 3-4:  FASE 2 ‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñë‚ñë‚ñë‚ñë‚ñë‚ñë‚ñë‚ñë‚ñë‚ñë  12h
-Semana 5-6:  FASE 3 ‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñë‚ñë‚ñë‚ñë  18h
-Semana 7-8:  FASE 4 ‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñë‚ñë‚ñë‚ñë‚ñë‚ñë  15h
-Semana 9-10: FASE 5 ‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñë‚ñë‚ñë‚ñë‚ñë‚ñë‚ñë‚ñë‚ñë‚ñë‚ñë‚ñë  8h
+Semana 1-2:  FASE 1 [DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë  7h
+Semana 3-4:  FASE 2 [DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë  12h
+Semana 5-6:  FASE 3 [DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë  18h
+Semana 7-8:  FASE 4 [DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë  15h
+Semana 9-10: FASE 5 [DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë[DONE]ñë  8h
 
-TOTAL: ‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà  60h
+TOTAL: [DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà[DONE]ñà  60h
 ```
 
 ---
 
-## PRIORIZACI√ìN
+## PRIORIZACI√[SPEC]N
 
 **Must do (Fases 1-3):**
 - Aplicar convenciones
@@ -712,7 +712,7 @@ TOTAL: ‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚ñà‚
 Despu√©s de completar 5 fases:
 
 - SRP implementado en todos orquestadores
-- DRY eliminado (500 l√≠neas ‚Üí 100)
+- DRY eliminado (500 l√≠neas 100)
 - OCP mejorado (escalable a nuevas entidades)
 - Error handling completo
 - Documentaci√≥n clara
@@ -721,31 +721,31 @@ Despu√©s de completar 5 fases:
 
 ---
 
-## PR√ìXIMOS PASOS DESPU√âS DE ROADMAP
+## PR√[SPEC]XIMOS PASOS DESPU√âS DE ROADMAP
 
 ```
 PASO 1 V4 (COMPLETADO)
-‚îú‚îÄ‚îÄ ARTEFACTO 1: INDEX
-‚îú‚îÄ‚îÄ ARTEFACTO 2: STAKEHOLDERS
-‚îú‚îÄ‚îÄ ARTEFACTO 3: OPERACIONES
-‚îú‚îÄ‚îÄ ARTEFACTO 4: AS-IS
-‚îú‚îÄ‚îÄ ARTEFACTO 5: VIOLACIONES
-‚îî‚îÄ‚îÄ ARTEFACTO 6: ROADMAP ‚Üê Eres aqu√≠
+[DONE]î[DONE][DONE]î[READY][DONE]î[READY] ARTEFACTO 1: INDEX
+[DONE]î[DONE][DONE]î[READY][DONE]î[READY] ARTEFACTO 2: STAKEHOLDERS
+[DONE]î[DONE][DONE]î[READY][DONE]î[READY] ARTEFACTO 3: OPERACIONES
+[DONE]î[DONE][DONE]î[READY][DONE]î[READY] ARTEFACTO 4: AS-IS
+[DONE]î[DONE][DONE]î[READY][DONE]î[READY] ARTEFACTO 5: VIOLACIONES
+[DONE]îî[DONE]î[READY][DONE]î[READY] ARTEFACTO 6: ROADMAP  Eres aqu√≠
 
 Ejecuci√≥n del Roadmap (Fases 1-5)
-    ‚Üì
+    
 PASO 2: Formal Use Cases
-    ‚Üì
+    
 PASO 3: Detailed Flows
-    ‚Üì
+    
 PASO 4: Implementation (Refactorizaci√≥n)
-    ‚Üì
+    
 PASO 5: Testing + Release
 ```
 
 ---
 
-## CONCLUSI√ìN
+## CONCLUSI√[SPEC]N
 
 Este roadmap proporciona un plan claro y ejecutable para refactorizar el c√≥digo en 60 horas (10 semanas). Cada fase tiene objetivos espec√≠ficos, esfuerzo estimado y risk assessment.
 

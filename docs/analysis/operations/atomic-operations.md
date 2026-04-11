@@ -1,6 +1,6 @@
 ```yaml
 type: Documento Técnico
-title: PASO 1 V4 - OPERACIONES ATÓMICAS
+title: PASO 1 V4 - OPERACIONES AT�[SPEC]MICAS
 version: 4.0.0
 scope: ACTIVIDAD 1 - Obsidian Vault - 15 Operaciones Identificadas
 date: 2026-04-11
@@ -8,12 +8,12 @@ language: Español Mexicano - Técnico Profesional
 base_version: V3 (refrescado con convenciones v1.0.0)
 ```
 
-# PASO 1 V4: OPERACIONES ATÓMICAS
+# PASO 1 V4: OPERACIONES AT�[SPEC]MICAS
 ## 15 Operaciones Fundamentales del Sistema ACTIVIDAD 1
 
 ---
 
-## INTRODUCCIÓN
+## INTRODUCCI�[SPEC]N
 
 Las operaciones atómicas son unidades indivisibles de trabajo que componen los 5 orquestadores del sistema. Cada operación es responsable de una tarea específica y no puede subdividirse sin perder coherencia.
 
@@ -24,11 +24,11 @@ Este análisis preserva el mapeo de V3 pero refrescar la nomenclatura y validaci
 
 ---
 
-## OPERACIÓN 1: OBTENER ENTRADA DE USUARIO
+## OPERACI�[SPEC]N 1: OBTENER ENTRADA DE USUARIO
 
 **Código:** OP-001
 **Clasificación:** Input - User Interaction
-**Stakeholders Involucrados:** Usuario (SH-001) → QuickAdd (SH-002)
+**Stakeholders Involucrados:** Usuario (SH-001) QuickAdd (SH-002)
 **Frecuencia de Uso:** Universal (en todos los 5 orquestadores)
 
 ### Descripción
@@ -84,7 +84,7 @@ const _input_date = await askProjectDate();
 
 ---
 
-## OPERACIÓN 2: VALIDAR ENTRADA DE USUARIO
+## OPERACI�[SPEC]N 2: VALIDAR ENTRADA DE USUARIO
 
 **Código:** OP-002
 **Clasificación:** Validation - Input Verification
@@ -139,7 +139,7 @@ const _valid_status = VALID_STATUSES.includes(_input_status);
 
 ---
 
-## OPERACIÓN 3: GENERAR IDENTIFICADOR ÚNICO
+## OPERACI�[SPEC]N 3: GENERAR IDENTIFICADOR �[REF]NICO
 
 **Código:** OP-003
 **Clasificación:** Generation - ID Creation
@@ -195,7 +195,7 @@ const _project_id = await generateUniqueId();    // OP-003
 
 ---
 
-## OPERACIÓN 4: GENERAR IDENTIFICADOR CUSTOM
+## OPERACI�[SPEC]N 4: GENERAR IDENTIFICADOR CUSTOM
 
 **Código:** OP-004
 **Clasificación:** Generation - ID Creation (Custom Format)
@@ -245,7 +245,7 @@ const _repo_id_custom = generateCustomId(
 
 ---
 
-## OPERACIÓN 5: OBTENER FECHA Y HORA ACTUAL
+## OPERACI�[SPEC]N 5: OBTENER FECHA Y HORA ACTUAL
 
 **Código:** OP-005
 **Clasificación:** Data Retrieval - Time
@@ -293,7 +293,7 @@ const _date_due = getCurrentDateTime();          // OP-005
 
 ---
 
-## OPERACIÓN 6: OBTENER NOMBRE DE ARCHIVO
+## OPERACI�[SPEC]N 6: OBTENER NOMBRE DE ARCHIVO
 
 **Código:** OP-006
 **Clasificación:** Data Processing - Filename Generation
@@ -353,7 +353,7 @@ const _file_path = `${_folder_path}/${_file_name}`;
 
 ---
 
-## OPERACIÓN 7: OBTENER METADATA DE FRONTMATTER
+## OPERACI�[SPEC]N 7: OBTENER METADATA DE FRONTMATTER
 
 **Código:** OP-007
 **Clasificación:** Data Retrieval - File Metadata
@@ -408,7 +408,7 @@ const _meta_type = _meta_project.type || "default";
 
 ---
 
-## OPERACIÓN 8: OBTENER CARPETA PADRE
+## OPERACI�[SPEC]N 8: OBTENER CARPETA PADRE
 
 **Código:** OP-008
 **Clasificación:** Data Processing - Path Navigation
@@ -460,7 +460,7 @@ const _folder_new = `${_folder_parent}/${_repo_id}`;
 
 ---
 
-## OPERACIÓN 9: VALIDAR NOMBRE DE REPOSITORIO
+## OPERACI�[SPEC]N 9: VALIDAR NOMBRE DE REPOSITORIO
 
 **Código:** OP-009
 **Clasificación:** Validation - Business Rule
@@ -503,7 +503,7 @@ function validateRepositoryName(name) {
 
 ---
 
-## OPERACIÓN 10: OBTENER ESTRUCTURA DE CARPETAS
+## OPERACI�[SPEC]N 10: OBTENER ESTRUCTURA DE CARPETAS
 
 **Código:** OP-010
 **Clasificación:** Data Processing - Folder Structure
@@ -551,7 +551,7 @@ const _folder_structure = getFolderStructure(_repo_id, _input_type);  // OP-010
 
 ---
 
-## OPERACIÓN 11: PROCESAR INFORMACIÓN SEGÚN CONTEXTO
+## OPERACI�[SPEC]N 11: PROCESAR INFORMACI�[SPEC]N SEG�[REF]N CONTEXTO
 
 **Código:** OP-011
 **Clasificación:** Data Processing - Context-Specific
@@ -603,11 +603,11 @@ const _task_final = {
 
 ---
 
-## OPERACIÓN 12: ASIGNAR VARIABLES PARA TEMPLATE
+## OPERACI�[SPEC]N 12: ASIGNAR VARIABLES PARA TEMPLATE
 
 **Código:** OP-012
 **Clasificación:** State Management - Variable Assignment
-**Stakeholders Involucrados:** Script (SH-005) → QuickAdd (SH-002)
+**Stakeholders Involucrados:** Script (SH-005) QuickAdd (SH-002)
 **Frecuencia de Uso:** Universal (todos los 5 orquestadores)
 
 ### Descripción
@@ -648,11 +648,11 @@ await showNotification("Repositorio creado exitosamente", "success");
 
 ---
 
-## OPERACIÓN 13: EJECUTAR TEMPLATE
+## OPERACI�[SPEC]N 13: EJECUTAR TEMPLATE
 
 **Código:** OP-013
 **Clasificación:** Content Generation - Template Rendering
-**Stakeholders Involucrados:** QuickAdd (SH-002) → Template (SH-004)
+**Stakeholders Involucrados:** QuickAdd (SH-002) Template (SH-004)
 **Frecuencia de Uso:** Universal (todos los 5 orquestadores)
 
 ### Descripción
@@ -687,11 +687,11 @@ Configuración en QuickAdd:
 
 ---
 
-## OPERACIÓN 14: CREAR ARCHIVO EN VAULT
+## OPERACI�[SPEC]N 14: CREAR ARCHIVO EN VAULT
 
 **Código:** OP-014
 **Clasificación:** Persistence - File Creation
-**Stakeholders Involucrados:** Obsidian API (SH-003) → SO (SH-006)
+**Stakeholders Involucrados:** Obsidian API (SH-003) SO (SH-006)
 **Frecuencia de Uso:** Universal (todos los 5 orquestadores)
 
 ### Descripción
@@ -732,11 +732,11 @@ try {
 
 ---
 
-## OPERACIÓN 15: MOSTRAR NOTIFICACIÓN AL USUARIO
+## OPERACI�[SPEC]N 15: MOSTRAR NOTIFICACI�[SPEC]N AL USUARIO
 
 **Código:** OP-015
 **Clasificación:** User Feedback - Notification
-**Stakeholders Involucrados:** Script (SH-005) → User (SH-001)
+**Stakeholders Involucrados:** Script (SH-005) User (SH-001)
 **Frecuencia de Uso:** Universal (todos los 5 orquestadores)
 
 ### Descripción
@@ -811,7 +811,7 @@ await showNotification("Error validando datos", "error");              // OP-015
 
 ---
 
-## VALIDACIÓN CONTRA CONVENCIONES
+## VALIDACI�[SPEC]N CONTRA CONVENCIONES
 
 ### Convenciones-de-Código v1.0.0
 
@@ -858,12 +858,12 @@ Validación de aplicación en patrones:
 | Prefijos | No documentado | _contexto_ aplicado |
 | Convenciones | Implícitas | Validación explícita |
 | Código ejemplo | Básico | Actual con prefijos |
-| Matriz | Operación × Orq | Más detallada |
+| Matriz | Operación �[ARCH] Orq | Más detallada |
 | Validación | Manual | Contra 3 guías |
 
 ---
 
-## CONCLUSIÓN
+## CONCLUSI�[SPEC]N
 
 Las 15 operaciones atómicas forman bloques constructivos que pueden combinarse de diferentes maneras para cada orquestador. El análisis V4 aplica convenciones de código profesionales a cada operación, documenta puntos de fallo específicos y valida que la nomenclatura sea clara y consistente.
 

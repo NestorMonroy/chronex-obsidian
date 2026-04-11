@@ -1,6 +1,6 @@
 ```yaml
 type: Documento Técnico
-title: PASO 1 V4 - ANÁLISIS AS-IS DEL SISTEMA
+title: PASO 1 V4 - AN�[DIR]LISIS AS-IS DEL SISTEMA
 version: 4.0.0
 scope: ACTIVIDAD 1 - Estado actual del código evaluado
 date: 2026-04-11
@@ -8,12 +8,12 @@ language: Español Mexicano - Técnico Profesional
 analysis_type: Code Review - Convenciones vs Realidad
 ```
 
-# PASO 1 V4: ANÁLISIS AS-IS DEL SISTEMA
+# PASO 1 V4: AN�[DIR]LISIS AS-IS DEL SISTEMA
 ## Evaluación del Código Actual contra Convenciones Establecidas
 
 ---
 
-## INTRODUCCIÓN
+## INTRODUCCI�[SPEC]N
 
 Este documento analiza el estado actual de los 5 orquestadores y 12 módulos de script contra las convenciones de código, pragmáticas y JavaScript establecidas en los documentos de referencia.
 
@@ -37,9 +37,9 @@ El código AS-IS fue desarrollado antes de documentar convenciones formales. Por
 
 ---
 
-## ANÁLISIS POR MÓDULO
+## AN�[DIR]LISIS POR M�[SPEC]DULO
 
-### MÓDULO 1: generateUniqueId.js
+### M�[SPEC]DULO 1: generateUniqueId.js
 
 **Estado Actual:**
 ```javascript
@@ -62,9 +62,9 @@ module.exports = generateUniqueId;
 **Evaluación contra Convenciones:**
 
 Convenciones-de-Código:
-- Variables sin prefijo _contexto_: array, random, hex (VIOLACIÓN LEVE)
-- Nombres genéricos: hex en lugar de _format_hex (VIOLACIÓN LEVE)
-- No documentadas constantes mágicas (VIOLACIÓN LEVE)
+- Variables sin prefijo _contexto_: array, random, hex (VIOLACI�[SPEC]N LEVE)
+- Nombres genéricos: hex en lugar de _format_hex (VIOLACI�[SPEC]N LEVE)
+- No documentadas constantes mágicas (VIOLACI�[SPEC]N LEVE)
 
 Convenciones-JavaScript:
 - Función es pura (cumple)
@@ -101,7 +101,7 @@ module.exports = generateUniqueId;
 
 ---
 
-### MÓDULO 2: generateCustomId.js
+### M�[SPEC]DULO 2: generateCustomId.js
 
 **Estado Actual:**
 ```javascript
@@ -116,9 +116,9 @@ module.exports = generateCustomId;
 **Evaluación contra Convenciones:**
 
 Convenciones-de-Código:
-- Parámetros p1-p5 son genéricos (VIOLACIÓN MODERADA)
-- Variable id sin prefijo (VIOLACIÓN LEVE)
-- Sin documentación de qué significa cada segmento (VIOLACIÓN MODERADA)
+- Parámetros p1-p5 son genéricos (VIOLACI�[SPEC]N MODERADA)
+- Variable id sin prefijo (VIOLACI�[SPEC]N LEVE)
+- Sin documentación de qué significa cada segmento (VIOLACI�[SPEC]N MODERADA)
 
 Convenciones-JavaScript:
 - Función es pura (cumple)
@@ -149,7 +149,7 @@ module.exports = generateCustomId;
 
 ---
 
-### MÓDULO 3: getCurrentDateTime.js
+### M�[SPEC]DULO 3: getCurrentDateTime.js
 
 **Estado Actual:**
 ```javascript
@@ -176,7 +176,7 @@ Convenciones-JavaScript:
 
 ---
 
-### MÓDULO 4: getFileName.js
+### M�[SPEC]DULO 4: getFileName.js
 
 **Estado Actual:**
 ```javascript
@@ -198,9 +198,9 @@ module.exports = getFileName;
 **Evaluación contra Convenciones:**
 
 Convenciones-de-Código:
-- Variables sin prefijo _filename_ o _file_ (VIOLACIÓN LEVE)
-- Números acoplados: 200 (VIOLACIÓN LEVE)
-- Pasos intermedios son comprensibles pero genéricos (VIOLACIÓN LEVE)
+- Variables sin prefijo _filename_ o _file_ (VIOLACI�[SPEC]N LEVE)
+- Números acoplados: 200 (VIOLACI�[SPEC]N LEVE)
+- Pasos intermedios son comprensibles pero genéricos (VIOLACI�[SPEC]N LEVE)
 
 Convenciones-JavaScript:
 - Función pura (cumple)
@@ -237,7 +237,7 @@ module.exports = getFileName;
 
 ---
 
-### MÓDULO 5: showNotification.js
+### M�[SPEC]DULO 5: showNotification.js
 
 **Estado Actual:**
 ```javascript
@@ -251,13 +251,13 @@ module.exports = showNotification;
 **Evaluación contra Convenciones:**
 
 Convenciones-de-Código:
-- Sin validación de tipo (VIOLACIÓN MODERADA)
-- Constante 5000 acoplada (VIOLACIÓN LEVE)
-- Sin diferenciación de tipos de notificación (VIOLACIÓN MODERADA)
+- Sin validación de tipo (VIOLACI�[SPEC]N MODERADA)
+- Constante 5000 acoplada (VIOLACI�[SPEC]N LEVE)
+- Sin diferenciación de tipos de notificación (VIOLACI�[SPEC]N MODERADA)
 
 Convenciones-JavaScript:
 - Nombre verbo + noun (cumple)
-- Parámetro type no utilizado (VIOLACIÓN SEVERA - bug)
+- Parámetro type no utilizado (VIOLACI�[SPEC]N SEVERA - bug)
 
 **Propuesta AS-IS mejorado:**
 ```javascript
@@ -316,13 +316,13 @@ module.exports = async (params) => {
 **Evaluación contra Convenciones:**
 
 Convenciones-de-Código:
-- Variables sin prefijo _repo_, _meta_, _input_ (VIOLACIÓN SEVERA)
-- Mezcla de responsabilidades (VIOLACIÓN SEVERA - SRP)
-- Sin error handling (VIOLACIÓN SEVERA)
+- Variables sin prefijo _repo_, _meta_, _input_ (VIOLACI�[SPEC]N SEVERA)
+- Mezcla de responsabilidades (VIOLACI�[SPEC]N SEVERA - SRP)
+- Sin error handling (VIOLACI�[SPEC]N SEVERA)
 
 Convenciones-Pragmáticas:
-- Estructura confusa (VIOLACIÓN MODERADA)
-- Módulos no reutilizados claramente (VIOLACIÓN MODERADA)
+- Estructura confusa (VIOLACI�[SPEC]N MODERADA)
+- Módulos no reutilizados claramente (VIOLACI�[SPEC]N MODERADA)
 
 **Propuesta AS-IS mejorado:**
 ```javascript
@@ -334,11 +334,11 @@ module.exports = async (params) => {
     const _input_name = await quickAddApi.inputPrompt("Nombre del repositorio:");
     const _input_type = await askRepositoryType();
     
-    // VALIDACIÓN
+    // VALIDACI�[SPEC]N
     const _valid_name = _input_name && _input_name.length > 0;
     if (!_valid_name) throw new Error("Nombre inválido");
     
-    // GENERACIÓN
+    // GENERACI�[SPEC]N
     const _repo_id = await generateUniqueId();
     const _repo_type = _input_type.toLowerCase();
     
@@ -351,7 +351,7 @@ module.exports = async (params) => {
     const _file_name = getFileName(_input_name);
     const _folder_structure = `repositories/${_repo_type}/${_repo_id}`;
     
-    // ASIGNACIÓN
+    // ASIGNACI�[SPEC]N
     variables.repositoryId = _repo_id;
     variables.repositoryName = _input_name;
     variables.repositoryType = _repo_type;
@@ -579,10 +579,10 @@ function showNotification(message, type = "info") {
   
   // Usar type para generar título o estilo
   const titles = {
-    success: "✓ Éxito",
-    error: "✗ Error",
-    info: "ⓘ Información",
-    warning: "⚠ Advertencia"
+    success: "[DONE][DONE][SPEC] Éxito",
+    error: "[DONE][DONE][ARCH] Error",
+    info: "[DONE][SPEC]� Información",
+    warning: "[DONE][REF]� Advertencia"
   };
   
   new Notice(`${titles[_type]} ${message}`, 5000);
@@ -594,7 +594,7 @@ function showNotification(message, type = "info") {
 ## DEUDA TÉCNICA ACUMULADA
 
 **Cálculo aproximado:**
-- 1750 líneas total de código (5 orquestadores × 350 líneas promedio)
+- 1750 líneas total de código (5 orquestadores �[ARCH] 350 líneas promedio)
 - 80% del código tiene violaciones moderadas-severas (1400 líneas)
 - Refactorización estimada: 40-50 horas de desarrollo
 
@@ -605,7 +605,7 @@ function showNotification(message, type = "info") {
 
 ---
 
-## IMPACTO EN CALIDAD DE CÓDIGO
+## IMPACTO EN CALIDAD DE C�[SPEC]DIGO
 
 | Métrica | AS-IS | Después Refactor |
 |---|---|---|
@@ -630,7 +630,7 @@ A pesar de las violaciones, el código AS-IS tiene cualidades positivas:
 
 ---
 
-## CONCLUSIÓN
+## CONCLUSI�[SPEC]N
 
 El código AS-IS es **funcional pero deficiente en calidad técnica**. Las violaciones identificadas no impiden que el código funcione, pero sí afectan:
 
@@ -643,7 +643,7 @@ La refactorización propuesta mejorará significativamente mantenibilidad sin ca
 
 ---
 
-## RELACIÓN CON ARTEFACTOS ANTERIORES
+## RELACI�[SPEC]N CON ARTEFACTOS ANTERIORES
 
 Este análisis AS-IS usa como referencia:
 

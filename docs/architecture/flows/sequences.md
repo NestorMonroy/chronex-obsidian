@@ -13,12 +13,12 @@ status: AnÃ¡lisis de flujos y secuencias
 
 ---
 
-## INTRODUCCIÃ“N
+## INTRODUCCIÃ[SPEC]N
 
 Este artefacto documenta **5 flujos principales** que muestra cÃ³mo los UCs se conectan y cÃ³mo fluyen los datos entre ellos:
 
-1. **Flujo 1**: UC-001 â†’ UC-002 (Crear repositorio, luego crear tarea)
-2. **Flujo 2**: UC-001 â†’ UC-005 (Crear repositorio, luego crear nota dentro)
+1. **Flujo 1**: UC-001 UC-002 (Crear repositorio, luego crear tarea)
+2. **Flujo 2**: UC-001 UC-005 (Crear repositorio, luego crear nota dentro)
 3. **Flujo 3**: UC-004 (Independiente: crear pilar)
 4. **Flujo 4**: UC-003 (Independiente: crear proyecto)
 5. **Flujo 5**: Flujo completo (todos los UCs en secuencia)
@@ -27,7 +27,7 @@ Cada flujo incluye diagrama, anÃ¡lisis de dependencias y consideraciones de impl
 
 ---
 
-## FLUJO 1: UC-001 â†’ UC-002
+## FLUJO 1: UC-001 UC-002
 ### Crear Repositorio, Luego Crear Tarea
 
 ### PropÃ³sito
@@ -40,19 +40,19 @@ El usuario crea un repositorio y luego una tarea asociada. La tarea puede ser co
 
 ```
 1. Usuario invoca UC-001 (Crear Repositorio)
-   â””â”€ Ingresa nombre, tipo
-   â””â”€ Sistema crea: repositories/work/id-naq5a4.../repository.md
-   â””â”€ Usuario ve notificaciÃ³n de Ã©xito
+   [DONE]””[DONE]”[READY] Ingresa nombre, tipo
+   [DONE]””[DONE]”[READY] Sistema crea: repositories/work/id-naq5a4.../repository.md
+   [DONE]””[DONE]”[READY] Usuario ve notificaciÃ³n de Ã©xito
 
 2. Usuario invoca UC-002 (Crear Tarea)
-   â””â”€ Ingresa tÃ­tulo, prioridad, fecha
-   â””â”€ Sistema crea: tasks/high/id-naq5a5.../task.md
-   â””â”€ Usuario ve notificaciÃ³n de Ã©xito
+   [DONE]””[DONE]”[READY] Ingresa tÃ­tulo, prioridad, fecha
+   [DONE]””[DONE]”[READY] Sistema crea: tasks/high/id-naq5a5.../task.md
+   [DONE]””[DONE]”[READY] Usuario ve notificaciÃ³n de Ã©xito
 
 3. Resultado final
-   â””â”€ Vault contiene:
-      â”œâ”€ repositories/work/id-naq5a4.../repository.md
-      â””â”€ tasks/high/id-naq5a5.../task.md
+   [DONE]””[DONE]”[READY] Vault contiene:
+      [DONE]”[DONE][DONE]”[READY] repositories/work/id-naq5a4.../repository.md
+      [DONE]””[DONE]”[READY] tasks/high/id-naq5a5.../task.md
 ```
 
 ### Diagrama de Secuencia
@@ -94,7 +94,7 @@ sequenceDiagram
 
 ---
 
-## FLUJO 2: UC-001 â†’ UC-005
+## FLUJO 2: UC-001 UC-005
 ### Crear Repositorio, Luego Crear Nota en Repositorio
 
 ### PropÃ³sito
@@ -108,27 +108,27 @@ El usuario crea un repositorio y luego una nota dentro de ese repositorio. UC-00
 
 ```
 1. Usuario invoca UC-001 (Crear Repositorio)
-   â””â”€ Ingresa nombre: "Mi Proyecto", tipo: "Work"
-   â””â”€ Sistema crea:
-      â”œâ”€ repositories/work/id-naq5a4.../repository.md
-      â””â”€ Metadata en frontmatter: id=id-naq5a4
-   â””â”€ Usuario ve notificaciÃ³n de Ã©xito
+   [DONE]””[DONE]”[READY] Ingresa nombre: "Mi Proyecto", tipo: "Work"
+   [DONE]””[DONE]”[READY] Sistema crea:
+      [DONE]”[DONE][DONE]”[READY] repositories/work/id-naq5a4.../repository.md
+      [DONE]””[DONE]”[READY] Metadata en frontmatter: id=id-naq5a4
+   [DONE]””[DONE]”[READY] Usuario ve notificaciÃ³n de Ã©xito
 
 2. Usuario invoca UC-005 (Crear Nota en Repositorio)
-   â””â”€ Sistema lista repositorios existentes
-   â””â”€ Usuario selecciona "Mi Proyecto (Work)"
-   â””â”€ Sistema lee metadata: id=id-naq5a4
-   â””â”€ Usuario ingresa tÃ­tulo: "AnÃ¡lisis requisitos"
-   â””â”€ Sistema crea: repositories/work/id-naq5a4.../notes/id-naq5b8.../repositoryNote.md
-   â””â”€ Frontmatter incluye: repositoryId=id-naq5a4, repositoryName="Mi Proyecto"
-   â””â”€ Usuario ve notificaciÃ³n de Ã©xito
+   [DONE]””[DONE]”[READY] Sistema lista repositorios existentes
+   [DONE]””[DONE]”[READY] Usuario selecciona "Mi Proyecto (Work)"
+   [DONE]””[DONE]”[READY] Sistema lee metadata: id=id-naq5a4
+   [DONE]””[DONE]”[READY] Usuario ingresa tÃ­tulo: "AnÃ¡lisis requisitos"
+   [DONE]””[DONE]”[READY] Sistema crea: repositories/work/id-naq5a4.../notes/id-naq5b8.../repositoryNote.md
+   [DONE]””[DONE]”[READY] Frontmatter incluye: repositoryId=id-naq5a4, repositoryName="Mi Proyecto"
+   [DONE]””[DONE]”[READY] Usuario ve notificaciÃ³n de Ã©xito
 
 3. Resultado final
-   â””â”€ Vault contiene:
-      â”œâ”€ repositories/work/id-naq5a4.../
-      â”‚  â”œâ”€ repository.md (padre)
-      â”‚  â””â”€ notes/id-naq5b8.../repositoryNote.md (hijo)
-      â””â”€ Referencia cruzada: [[Mi Proyecto]]
+   [DONE]””[DONE]”[READY] Vault contiene:
+      [DONE]”[DONE][DONE]”[READY] repositories/work/id-naq5a4.../
+      [DONE]”‚  [DONE]”[DONE][DONE]”[READY] repository.md (padre)
+      [DONE]”‚  [DONE]””[DONE]”[READY] notes/id-naq5b8.../repositoryNote.md (hijo)
+      [DONE]””[DONE]”[READY] Referencia cruzada: [[Mi Proyecto]]
 ```
 
 ### Diagrama de Secuencia
@@ -178,7 +178,7 @@ sequenceDiagram
 
 - **PrecondiciÃ³n CRÃTICA**: UC-001 debe estar completado
 - **MetadataCache**: Esencial para listar repositorios
-- **ValidaciÃ³n**: Si repositorio no existe â†’ Error E-001
+- **ValidaciÃ³n**: Si repositorio no existe Error E-001
 - **Timing**: UC-005 debe ejecutarse DESPUÃ‰S de UC-001
 - **Riesgo**: MEDIO - depende de integridad de metadata
 
@@ -202,15 +202,15 @@ El usuario crea un pilar (Ã¡rea temÃ¡tica fundamental). UC-004 es completamente 
 
 ```
 1. Usuario invoca UC-004 (Crear Pilar)
-   â””â”€ Ingresa nombre: "Arquitectura Software", estado: "Active"
-   â””â”€ Sistema crea: pillars/active/id-naq5a7.../pillar.md
-   â””â”€ Usuario ve notificaciÃ³n de Ã©xito
+   [DONE]””[DONE]”[READY] Ingresa nombre: "Arquitectura Software", estado: "Active"
+   [DONE]””[DONE]”[READY] Sistema crea: pillars/active/id-naq5a7.../pillar.md
+   [DONE]””[DONE]”[READY] Usuario ve notificaciÃ³n de Ã©xito
 
 2. Resultado final
-   â””â”€ Vault contiene:
-      â””â”€ pillars/active/id-naq5a7.../pillar.md
-      â””â”€ Sin dependencias de otros UCs
-      â””â”€ Sin archivos relacionados automÃ¡ticamente
+   [DONE]””[DONE]”[READY] Vault contiene:
+      [DONE]””[DONE]”[READY] pillars/active/id-naq5a7.../pillar.md
+      [DONE]””[DONE]”[READY] Sin dependencias de otros UCs
+      [DONE]””[DONE]”[READY] Sin archivos relacionados automÃ¡ticamente
 ```
 
 ### Diagrama de Secuencia
@@ -266,15 +266,15 @@ El usuario crea un proyecto. UC-003 es completamente independiente.
 
 ```
 1. Usuario invoca UC-003 (Crear Proyecto)
-   â””â”€ Ingresa nombre: "Implementar autenticaciÃ³n", estado: "Active"
-   â””â”€ Ingresa descripciÃ³n: "Sistema OAuth2 + 2FA"
-   â””â”€ Sistema crea: projects/active/id-naq5a6.../project.md
-   â””â”€ Usuario ve notificaciÃ³n de Ã©xito
+   [DONE]””[DONE]”[READY] Ingresa nombre: "Implementar autenticaciÃ³n", estado: "Active"
+   [DONE]””[DONE]”[READY] Ingresa descripciÃ³n: "Sistema OAuth2 + 2FA"
+   [DONE]””[DONE]”[READY] Sistema crea: projects/active/id-naq5a6.../project.md
+   [DONE]””[DONE]”[READY] Usuario ve notificaciÃ³n de Ã©xito
 
 2. Resultado final
-   â””â”€ Vault contiene:
-      â””â”€ projects/active/id-naq5a6.../project.md
-      â””â”€ Sin dependencias
+   [DONE]””[DONE]”[READY] Vault contiene:
+      [DONE]””[DONE]”[READY] projects/active/id-naq5a6.../project.md
+      [DONE]””[DONE]”[READY] Sin dependencias
 ```
 
 ### Diagrama de Secuencia
@@ -321,17 +321,17 @@ El usuario ejecuta todos los UCs en el orden que tiene mÃ¡s sentido lÃ³gico, apr
 
 ```
 PARALELO (T=0:00 a 0:30)
-â”œâ”€ UC-001: Crear Repositorio (30 min)
-â”œâ”€ UC-002: Crear Tarea (25 min)
-â”œâ”€ UC-003: Crear Proyecto (30 min)
-â””â”€ UC-004: Crear Pilar (25 min)
+[DONE]”[DONE][DONE]”[READY] UC-001: Crear Repositorio (30 min)
+[DONE]”[DONE][DONE]”[READY] UC-002: Crear Tarea (25 min)
+[DONE]”[DONE][DONE]”[READY] UC-003: Crear Proyecto (30 min)
+[DONE]””[DONE]”[READY] UC-004: Crear Pilar (25 min)
 
 SECUENCIAL (T=0:30 a 1:00)
-â””â”€ UC-005: Crear Nota en Repositorio (30 min)
+[DONE]””[DONE]”[READY] UC-005: Crear Nota en Repositorio (30 min)
    (Requiere UC-001 completado)
 
 RESULTADO FINAL (T=1:00)
-â””â”€ Vault contiene todos los elementos creados
+[DONE]””[DONE]”[READY] Vault contiene todos los elementos creados
 ```
 
 ### Diagrama de Gantt
@@ -354,7 +354,7 @@ gantt
 ### Pasos del Flujo Completo
 
 ```
-FASE 1: PARALELIZACIÃ“N (T=0:00 a 0:30)
+FASE 1: PARALELIZACIÃ[SPEC]N (T=0:00 a 0:30)
 
 En paralelo:
   Usuario 1: Ejecuta UC-001 (Crear Repositorio "Mi Proyecto")
@@ -363,28 +363,28 @@ En paralelo:
   Usuario 4: Ejecuta UC-004 (Crear Pilar "Arquitectura")
 
 RESULTADO PARCIAL:
-  â”œâ”€ repositories/work/id-naq5a4.../repository.md
-  â”œâ”€ tasks/high/id-naq5a5.../task.md
-  â”œâ”€ projects/active/id-naq5a6.../project.md
-  â””â”€ pillars/active/id-naq5a7.../pillar.md
+  [DONE]”[DONE][DONE]”[READY] repositories/work/id-naq5a4.../repository.md
+  [DONE]”[DONE][DONE]”[READY] tasks/high/id-naq5a5.../task.md
+  [DONE]”[DONE][DONE]”[READY] projects/active/id-naq5a6.../project.md
+  [DONE]””[DONE]”[READY] pillars/active/id-naq5a7.../pillar.md
 
 FASE 2: SECUENCIAL (T=0:30 a 1:00)
 
 Prerequisito cumplido: UC-001 completado (repositorio "Mi Proyecto" existe)
 
 Usuario 5: Ejecuta UC-005 (Crear Nota en Repositorio)
-  â””â”€ Selecciona: "Mi Proyecto (Work)"
-  â””â”€ Ingresa: "AnÃ¡lisis requisitos"
-  â””â”€ Sistema crea: repositories/work/id-naq5a4.../notes/id-naq5b8.../repositoryNote.md
+  [DONE]””[DONE]”[READY] Selecciona: "Mi Proyecto (Work)"
+  [DONE]””[DONE]”[READY] Ingresa: "AnÃ¡lisis requisitos"
+  [DONE]””[DONE]”[READY] Sistema crea: repositories/work/id-naq5a4.../notes/id-naq5b8.../repositoryNote.md
 
 RESULTADO FINAL (T=1:00):
-  â”œâ”€ repositories/
-  â”‚  â””â”€ work/id-naq5a4.../
-  â”‚     â”œâ”€ repository.md (padre)
-  â”‚     â””â”€ notes/id-naq5b8.../repositoryNote.md (hijo)
-  â”œâ”€ tasks/high/id-naq5a5.../task.md
-  â”œâ”€ projects/active/id-naq5a6.../project.md
-  â””â”€ pillars/active/id-naq5a7.../pillar.md
+  [DONE]”[DONE][DONE]”[READY] repositories/
+  [DONE]”‚  [DONE]””[DONE]”[READY] work/id-naq5a4.../
+  [DONE]”‚     [DONE]”[DONE][DONE]”[READY] repository.md (padre)
+  [DONE]”‚     [DONE]””[DONE]”[READY] notes/id-naq5b8.../repositoryNote.md (hijo)
+  [DONE]”[DONE][DONE]”[READY] tasks/high/id-naq5a5.../task.md
+  [DONE]”[DONE][DONE]”[READY] projects/active/id-naq5a6.../project.md
+  [DONE]””[DONE]”[READY] pillars/active/id-naq5a7.../pillar.md
 
 TOTAL: 6 archivos, 4 carpetas principales, estructura jerÃ¡rquica completa
 ```
@@ -409,11 +409,11 @@ sequenceDiagram
         Q->>Q: Ejecuta 4 UCs simultÃ¡neamente
     end
     
-    Note over U1,Q: [SINCRONIZACIÃ“N EN T=0:30]
+    Note over U1,Q: [SINCRONIZACIÃ[SPEC]N EN T=0:30]
     
     seq FASE 2: Secuencial (0:30-1:00)
         U5->>Q: UC-005: Crear Nota (requiere UC-001)
-        Q->>Q: UC-001 estÃ¡ completado âœ“
+        Q->>Q: UC-001 estÃ¡ completado [DONE][DONE][SPEC]
         Q->>U5: Ã‰xito: Nota creada en Repositorio
     end
     
@@ -429,7 +429,7 @@ sequenceDiagram
 | Niveles de profundidad | N/A | 3 |
 | IDs Ãºnicos | 0 | 5 (repo, tarea, proyecto, pilar, nota) |
 | Metadatos | 0 | 6 (todos los archivos) |
-| Referencias cruzadas | 0 | 1 (nota â†’ repositorio) |
+| Referencias cruzadas | 0 | 1 (nota repositorio) |
 
 ### Consideraciones de ImplementaciÃ³n - Flujo Completo
 
@@ -456,11 +456,11 @@ sequenceDiagram
 
 ```
 Usuario crea 1 repositorio y 1 nota dentro
-â””â”€ UC-001: Crear Repositorio
-â””â”€ UC-005: Crear Nota en Repositorio
-â””â”€ Tiempo total: 1 hora
-â””â”€ Complejidad: MEDIA
-â””â”€ Satisface: "Crear nota dentro de repositorio"
+[DONE]””[DONE]”[READY] UC-001: Crear Repositorio
+[DONE]””[DONE]”[READY] UC-005: Crear Nota en Repositorio
+[DONE]””[DONE]”[READY] Tiempo total: 1 hora
+[DONE]””[DONE]”[READY] Complejidad: MEDIA
+[DONE]””[DONE]”[READY] Satisface: "Crear nota dentro de repositorio"
 ```
 
 ---
@@ -469,13 +469,13 @@ Usuario crea 1 repositorio y 1 nota dentro
 
 ```
 Usuario crea repositorio, tarea, proyecto, pilar (sin notas)
-â”œâ”€ UC-001: Crear Repositorio
-â”œâ”€ UC-002: Crear Tarea
-â”œâ”€ UC-003: Crear Proyecto
-â””â”€ UC-004: Crear Pilar
-â””â”€ Tiempo total: 30 minutos (paralelo)
-â””â”€ Complejidad: BAJA
-â””â”€ Satisface: "Crear mÃºltiples entidades"
+[DONE]”[DONE][DONE]”[READY] UC-001: Crear Repositorio
+[DONE]”[DONE][DONE]”[READY] UC-002: Crear Tarea
+[DONE]”[DONE][DONE]”[READY] UC-003: Crear Proyecto
+[DONE]””[DONE]”[READY] UC-004: Crear Pilar
+[DONE]””[DONE]”[READY] Tiempo total: 30 minutos (paralelo)
+[DONE]””[DONE]”[READY] Complejidad: BAJA
+[DONE]””[DONE]”[READY] Satisface: "Crear mÃºltiples entidades"
 ```
 
 ---
@@ -484,15 +484,15 @@ Usuario crea repositorio, tarea, proyecto, pilar (sin notas)
 
 | Flujo | UCs | Tiempo | Dependencias | Complejidad |
 |-------|-----|--------|---|---|
-| **Flujo 1** | UC-001 â†’ UC-002 | 55 min | Ninguna | BAJA |
-| **Flujo 2** | UC-001 â†’ UC-005 | 1 h | UC-001 req | MEDIA |
+| **Flujo 1** | UC-001 UC-002 | 55 min | Ninguna | BAJA |
+| **Flujo 2** | UC-001 UC-005 | 1 h | UC-001 req | MEDIA |
 | **Flujo 3** | UC-004 | 25 min | Ninguna | BAJA |
 | **Flujo 4** | UC-003 | 30 min | Ninguna | BAJA |
-| **Flujo 5** | UC-001â†’UC-005 + UC-002 + UC-003 + UC-004 | 1 h (paralelo) | UC-001 req | MEDIA |
+| **Flujo 5** | UC-001[DONE]†’UC-005 + UC-002 + UC-003 + UC-004 | 1 h (paralelo) | UC-001 req | MEDIA |
 
 ---
 
-## CONCLUSIÃ“N
+## CONCLUSIÃ[SPEC]N
 
 Los 5 flujos documentan cÃ³mo los UCs se conectan y pueden ejecutarse:
 
@@ -507,6 +507,6 @@ Los 5 flujos documentan cÃ³mo los UCs se conectan y pueden ejecutarse:
 ---
 
 **DOCUMENTO**: PASO3-FLUJOS-SECUENCIA.md
-**VERSIÃ“N**: 1.0.0
+**VERSIÃ[SPEC]N**: 1.0.0
 **FECHA**: 2026-04-11
 **ESTADO**: FLUJOS DOCUMENTADOS - PASO 3 COMPLETADO

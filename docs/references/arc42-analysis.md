@@ -9,7 +9,7 @@ author: Claude
 source: /tmp/references/arc42-by-example-3ed-traduccion/epub_build/OEBPS/
 ```
 
-# Analisis: arc42 by Example â€” Patrones organizacionales
+# Analisis: arc42 by Example [DONE][READY]” Patrones organizacionales
 
 ## Fuente
 
@@ -39,7 +39,7 @@ FotoMaX (Cap. VII) explicitamente se desvia de la estructura oficial:
 > "Este capitulo se desvia de la estructura oficial arc42 para proporcionar al lector el contexto necesario para comprender todas las demas secciones."
 
 Lo que hizo FotoMaX:
-- **Movio Quality Requirements (Section 10) a la posicion 3** â€” ANTES de constraints, ANTES de solution strategy
+- **Movio Quality Requirements (Section 10) a la posicion 3** [DONE][READY]” ANTES de constraints, ANTES de solution strategy
 - **Agrego Section 14: "Temas organizativos"** que NO es parte de arc42
 
 Justificacion del autor:
@@ -61,7 +61,7 @@ Todos los ejemplos muestran una conexion directa:
 | FotoMaX | **Movidos juntos** | **Fusionados en Section 3** | **Los UNIO porque son inseparables** |
 
 **Cita DokChess:**
-> "Los escenarios de calidad de esta seccion representan los objetivos de calidad fundamentales de DokChess (â†’ V.1.2) asi como otras propiedades de calidad requeridas."
+> "Los escenarios de calidad de esta seccion representan los objetivos de calidad fundamentales de DokChess ( V.1.2) asi como otras propiedades de calidad requeridas."
 
 **Implicacion:** quality-goals/ y quality-scenarios/ DEBEN ser vecinos en la estructura. En la estructura actual (01/ vs 10/) estan separados por 9 carpetas. En Opcion B son hermanos directos.
 
@@ -83,9 +83,9 @@ En TODOS los 7 ejemplos, Section 1 tiene exactamente 3 subsecciones:
 
 | Subseccion | Contenido | Independencia |
 |------------|-----------|---------------|
-| 1.1 Requirements Overview | Que hace el sistema | Autocontenido â€” no necesita 1.2 ni 1.3 |
-| 1.2 Quality Goals | Atributos de calidad priorizados | Autocontenido â€” referencia Section 10 (no 1.1) |
-| 1.3 Stakeholders | Personas/roles afectados | Autocontenido â€” no depende de 1.1 ni 1.2 |
+| 1.1 Requirements Overview | Que hace el sistema | Autocontenido [DONE][READY]” no necesita 1.2 ni 1.3 |
+| 1.2 Quality Goals | Atributos de calidad priorizados | Autocontenido [DONE][READY]” referencia Section 10 (no 1.1) |
+| 1.3 Stakeholders | Personas/roles afectados | Autocontenido [DONE][READY]” no depende de 1.1 ni 1.2 |
 
 En HtmlSC: 1.1 tiene tabla de checks (G-1 a G-5), 1.2 tiene tabla de quality goals, 1.3 tiene tabla de stakeholders. Tres temas distintos.
 
@@ -96,16 +96,16 @@ En HtmlSC: 1.1 tiene tabla de checks (G-1 a G-5), 1.2 tiene tabla de quality goa
 ## Hallazgo 5: La metafora de cajones viene de VOLERE
 
 **Origen (Cap. 0):**
-> "Me presento una plantilla para requisitos, un gabinete pre-estructurado (o documento) llamado VOLERE que contiene marcadores de posicion para todo lo que podria ser importante... Al trabajarlo, los ingenieros no tenian que pensar mucho antes de poder volcar sus resultados en el lugar correcto â€” y otros podrian recuperarlos mas adelante..."
+> "Me presento una plantilla para requisitos, un gabinete pre-estructurado (o documento) llamado VOLERE que contiene marcadores de posicion para todo lo que podria ser importante... Al trabajarlo, los ingenieros no tenian que pensar mucho antes de poder volcar sus resultados en el lugar correcto [DONE][READY]” y otros podrian recuperarlos mas adelante..."
 
 **Arc42 heredo esta metafora (Cap. 1):**
 > "Compare arc42 con un archivador con cajones: los cajones estan claramente etiquetados con temas o aspectos de la arquitectura."
 
 **Dos propiedades clave del cajon:**
-1. **Claramente etiquetado** â€” el nombre dice que hay dentro
-2. **Independiente** â€” abres UN cajon sin necesidad de abrir otro
+1. **Claramente etiquetado** [DONE][READY]” el nombre dice que hay dentro
+2. **Independiente** [DONE][READY]” abres UN cajon sin necesidad de abrir otro
 
-**Implicacion:** `docs/requirements/` es un cajon claramente etiquetado. `docs/01-introduction-goals/requirements/` es un cajon dentro de otro cajon â€” viola la metafora.
+**Implicacion:** `docs/requirements/` es un cajon claramente etiquetado. `docs/01-introduction-goals/requirements/` es un cajon dentro de otro cajon [DONE][READY]” viola la metafora.
 
 ---
 
@@ -126,11 +126,11 @@ Ningun ejemplo del libro usa estructura de directorios. Todos son documentos mon
 
 El patron de los ejemplos del libro:
 ```
-# Section 1: Introduction and Goals        â† H1
-## 1.1 Requirements Overview               â† H2
-## 1.2 Quality Goals                        â† H2
-## 1.3 Stakeholders                         â† H2
-# Section 2: Constraints                    â† H1
+# Section 1: Introduction and Goals         H1
+## 1.1 Requirements Overview                H2
+## 1.2 Quality Goals                         H2
+## 1.3 Stakeholders                          H2
+# Section 2: Constraints                     H1
 ...
 ```
 
@@ -138,18 +138,18 @@ Cuando esto se traduce a filesystem, hay DOS enfoques validos:
 
 **Enfoque A (lo que hicimos): 1 carpeta = 1 seccion arc42**
 ```
-01-introduction-goals/  â† = Section 1 (H1)
-  requirements/         â† = 1.1 (H2)
-  quality-goals/        â† = 1.2 (H2)
+01-introduction-goals/   = Section 1 (H1)
+  requirements/          = 1.1 (H2)
+  quality-goals/         = 1.2 (H2)
 ```
 
 **Enfoque B (propuesto): 1 carpeta = 1 tema**
 ```
-requirements/           â† = el tema "Requirements"
-quality-goals/          â† = el tema "Quality Goals"
+requirements/            = el tema "Requirements"
+quality-goals/           = el tema "Quality Goals"
 ```
 
-El Enfoque A preserva la jerarquia H1â†’H2 del documento.
+El Enfoque A preserva la jerarquia H1[DONE]†’H2 del documento.
 El Enfoque B preserva la independencia tematica de cada cajon.
 
 Arc42 NO prescribe cual usar. Pero la metafora de cajones favorece B.
@@ -161,7 +161,7 @@ Arc42 NO prescribe cual usar. Pero la metafora de cajones favorece B.
 FotoMaX agrega Section 14 "Temas organizativos":
 > "Este capitulo no forma parte de ARC42 pero se anadio a esta documentacion porque no hay un lugar mejor para los temas organizativos."
 
-**Implicacion:** TiendaMax tiene carpetas propias (business-goals/, success-criteria/) que NO son secciones arc42 oficiales. Esto es valido â€” FotoMaX lo hace. En Opcion B, estas carpetas propias conviven como cajones al mismo nivel.
+**Implicacion:** TiendaMax tiene carpetas propias (business-goals/, success-criteria/) que NO son secciones arc42 oficiales. Esto es valido [DONE][READY]” FotoMaX lo hace. En Opcion B, estas carpetas propias conviven como cajones al mismo nivel.
 
 ---
 
@@ -169,13 +169,13 @@ FotoMaX agrega Section 14 "Temas organizativos":
 
 | Hallazgo | Favorece Opcion 0 | Favorece Opcion B |
 |----------|-------------------|-------------------|
-| H1: FotoMaX reordena secciones | â€” | SI (el orden no es fijo) |
-| H2: Quality Goals y Scenarios conectados | â€” | SI (vecinos en B) |
-| H3: MiniMenu = adaptabilidad extrema | â€” | SI (reorganizar dirs es trivial) |
-| H4: 1.1/1.2/1.3 independientes | â€” | SI (carpetas independientes) |
-| H5: Cajones = claramente etiquetados | â€” | SI (nombres directos) |
+| H1: FotoMaX reordena secciones | [DONE][READY]” | SI (el orden no es fijo) |
+| H2: Quality Goals y Scenarios conectados | [DONE][READY]” | SI (vecinos en B) |
+| H3: MiniMenu = adaptabilidad extrema | [DONE][READY]” | SI (reorganizar dirs es trivial) |
+| H4: 1.1/1.2/1.3 independientes | [DONE][READY]” | SI (carpetas independientes) |
+| H5: Cajones = claramente etiquetados | [DONE][READY]” | SI (nombres directos) |
 | H6: docToolchain = modular por archivo | Neutral | SI (archivos por dominio) |
 | H7: Numeracion = contenido, no dirs | Neutral | SI (no necesita numeros) |
 | H8: Se pueden agregar secciones custom | Neutral | SI (business-goals/ = valido) |
 
-**Conclusion: El libro no solo permite la Opcion B â€” la JUSTIFICA.** FotoMaX movio secciones por comprensibilidad. La metafora de cajones dice etiquetas claras. Los temas 1.1/1.2/1.3 son independientes. La adaptabilidad es un principio core de arc42.
+**Conclusion: El libro no solo permite la Opcion B [DONE][READY]” la JUSTIFICA.** FotoMaX movio secciones por comprensibilidad. La metafora de cajones dice etiquetas claras. Los temas 1.1/1.2/1.3 son independientes. La adaptabilidad es un principio core de arc42.

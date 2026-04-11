@@ -13,7 +13,7 @@ Cada cajÃ³n es claramente etiquetado, autocontenido e independiente.
 
 ---
 
-## ğŸ“‹ Cajones Principales
+## [SPEC] Cajones Principales
 
 ### 1. Specification (PASO 2)
 **UbicaciÃ³n**: `docs/specification/`
@@ -90,78 +90,78 @@ Documentos de referencia, anÃ¡lisis externos, y stakeholders.
 
 ---
 
-## ğŸ—‚ï¸ Estructura Completa
+## [SPEC][SPEC][ARCH]‚[ARCH][ARCH][ARCH] Estructura Completa
 
 ```
 docs/
-â”œâ”€â”€ index.md                              (Este archivo)
-â”œâ”€â”€ README.md                             (Overview)
-â”‚
-â”œâ”€â”€ specification/                        (PASO 2 - UCs)
-â”‚   â”œâ”€â”€ README.md
-â”‚   â”œâ”€â”€ overview.md
-â”‚   â”œâ”€â”€ use-cases/
-â”‚   â”‚   â”œâ”€â”€ uc-001-repository.md
-â”‚   â”‚   â”œâ”€â”€ uc-002-task.md
-â”‚   â”‚   â”œâ”€â”€ uc-003-project.md
-â”‚   â”‚   â”œâ”€â”€ uc-004-pillar.md
-â”‚   â”‚   â”œâ”€â”€ uc-005-repository-note.md
-â”‚   â”‚   â””â”€â”€ index.md
-â”‚   â”œâ”€â”€ templates/
-â”‚   â”‚   â”œâ”€â”€ repository.md
-â”‚   â”‚   â”œâ”€â”€ task.md
-â”‚   â”‚   â”œâ”€â”€ project.md
-â”‚   â”‚   â”œâ”€â”€ pillar.md
-â”‚   â”‚   â”œâ”€â”€ repository-note.md
-â”‚   â”‚   â””â”€â”€ index.md
-â”‚   â””â”€â”€ index.md
-â”‚
-â”œâ”€â”€ analysis/                             (PASO 1 V4 - AnÃ¡lisis)
-â”‚   â”œâ”€â”€ README.md
-â”‚   â”œâ”€â”€ overview.md
-â”‚   â”œâ”€â”€ operations/
-â”‚   â”‚   â”œâ”€â”€ atomic-operations.md
-â”‚   â”‚   â””â”€â”€ index.md
-â”‚   â”œâ”€â”€ current-system/
-â”‚   â”‚   â”œâ”€â”€ system-analysis.md
-â”‚   â”‚   â”œâ”€â”€ violations.md
-â”‚   â”‚   â””â”€â”€ index.md
-â”‚   â”œâ”€â”€ refactoring/
-â”‚   â”‚   â”œâ”€â”€ roadmap.md
-â”‚   â”‚   â”œâ”€â”€ target-architecture.md
-â”‚   â”‚   â””â”€â”€ index.md
-â”‚   â””â”€â”€ index.md
-â”‚
-â”œâ”€â”€ architecture/                         (PASO 3 - ValidaciÃ³n)
-â”‚   â”œâ”€â”€ README.md
-â”‚   â”œâ”€â”€ overview.md
-â”‚   â”œâ”€â”€ actors/
-â”‚   â”‚   â”œâ”€â”€ matrix.md
-â”‚   â”‚   â”œâ”€â”€ diagrams.md
-â”‚   â”‚   â””â”€â”€ index.md
-â”‚   â”œâ”€â”€ flows/
-â”‚   â”‚   â”œâ”€â”€ sequences.md
-â”‚   â”‚   â””â”€â”€ index.md
-â”‚   â”œâ”€â”€ validation/
-â”‚   â”‚   â”œâ”€â”€ completeness-checklist.md
-â”‚   â”‚   â””â”€â”€ index.md
-â”‚   â””â”€â”€ index.md
-â”‚
-â”œâ”€â”€ conventions/
-â”‚   â”œâ”€â”€ README.md
-â”‚   â”œâ”€â”€ code-standards.md
-â”‚   â”œâ”€â”€ javascript.md
-â”‚   â””â”€â”€ index.md
-â”‚
-â””â”€â”€ references/
-    â”œâ”€â”€ arc42-analysis.md
-    â”œâ”€â”€ stakeholders.md
-    â””â”€â”€ index.md
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] index.md                              (Este archivo)
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] README.md                             (Overview)
+[DONE]”‚
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] specification/                        (PASO 2 - UCs)
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] README.md
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] overview.md
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] use-cases/
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] uc-001-repository.md
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] uc-002-task.md
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] uc-003-project.md
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] uc-004-pillar.md
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] uc-005-repository-note.md
+[DONE]”‚   [DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] index.md
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] templates/
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] repository.md
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] task.md
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] project.md
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] pillar.md
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] repository-note.md
+[DONE]”‚   [DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] index.md
+[DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] index.md
+[DONE]”‚
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] analysis/                             (PASO 1 V4 - AnÃ¡lisis)
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] README.md
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] overview.md
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] operations/
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] atomic-operations.md
+[DONE]”‚   [DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] index.md
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] current-system/
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] system-analysis.md
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] violations.md
+[DONE]”‚   [DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] index.md
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] refactoring/
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] roadmap.md
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] target-architecture.md
+[DONE]”‚   [DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] index.md
+[DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] index.md
+[DONE]”‚
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] architecture/                         (PASO 3 - ValidaciÃ³n)
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] README.md
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] overview.md
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] actors/
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] matrix.md
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] diagrams.md
+[DONE]”‚   [DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] index.md
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] flows/
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] sequences.md
+[DONE]”‚   [DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] index.md
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] validation/
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] completeness-checklist.md
+[DONE]”‚   [DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] index.md
+[DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] index.md
+[DONE]”‚
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] conventions/
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] README.md
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] code-standards.md
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] javascript.md
+[DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] index.md
+[DONE]”‚
+[DONE]””[DONE]”[READY][DONE]”[READY] references/
+    [DONE]”[DONE][DONE]”[READY][DONE]”[READY] arc42-analysis.md
+    [DONE]”[DONE][DONE]”[READY][DONE]”[READY] stakeholders.md
+    [DONE]””[DONE]”[READY][DONE]”[READY] index.md
 ```
 
 ---
 
-## ğŸ¯ Por dÃ³nde empezar
+## [TARGET] Por dÃ³nde empezar
 
 **Para entender el sistema**:
 1. Leer `specification/overview.md` (quÃ© hace el sistema)
@@ -180,20 +180,20 @@ docs/
 
 ---
 
-## ğŸ“Š EstadÃ­sticas
+## [ANALYSIS] EstadÃ­sticas
 
 | SecciÃ³n | Archivos | LÃ­neas | Status |
 |---------|----------|--------|--------|
-| **Specification** | 6 + 5 templates | 500+ | âœ… Completada |
-| **Analysis** | 7 | 400+ | âœ… Completada |
-| **Architecture** | 5 | 350+ | âœ… Completada |
-| **Conventions** | 3 | 600+ | âœ… Completada |
-| **References** | 2 | 200+ | âœ… Completa |
-| **TOTAL** | 28+ | 2000+ | âœ… LISTA |
+| **Specification** | 6 + 5 templates | 500+ | [DONE] Completada |
+| **Analysis** | 7 | 400+ | [DONE] Completada |
+| **Architecture** | 5 | 350+ | [DONE] Completada |
+| **Conventions** | 3 | 600+ | [DONE] Completada |
+| **References** | 2 | 200+ | [DONE] Completa |
+| **TOTAL** | 28+ | 2000+ | [DONE] LISTA |
 
 ---
 
-## ğŸ”„ NavegaciÃ³n RÃ¡pida
+## [SPEC][SPEC]”„ NavegaciÃ³n RÃ¡pida
 
 - [Specification Overview](specification/overview.md)
 - [Use Cases Index](specification/use-cases/index.md)
@@ -209,4 +209,4 @@ docs/
 
 **DocumentaciÃ³n generada**: 2026-04-11  
 **Modelo**: arc42 "thematic drawers" pattern  
-**Status**: âœ… COMPLETADA - LISTO PARA REFERENCIA
+**Status**: [DONE] COMPLETADA - LISTO PARA REFERENCIA

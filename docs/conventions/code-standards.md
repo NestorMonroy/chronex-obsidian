@@ -1,6 +1,6 @@
 ```yaml
 type: Guía de Convenciones
-title: CONVENCIONES DE CÓDIGO - obsidian-repo
+title: CONVENCIONES DE C�[SPEC]DIGO - obsidian-repo
 version: 1.0.0
 scope: FASE 1 - Convenciones y Base
 date: 2026-04-11
@@ -8,13 +8,13 @@ language: Español Mexicano - Técnico Profesional
 status: Convenciones definidas
 ```
 
-# CONVENCIONES DE CÓDIGO - obsidian-repo
+# CONVENCIONES DE C�[SPEC]DIGO - obsidian-repo
 
 ## FASE 1: Convenciones y Base (7 horas)
 
 ---
 
-## INTRODUCCIÓN
+## INTRODUCCI�[SPEC]N
 
 Este documento define las convenciones de código para el proyecto obsidian-repo. Aplican a:
 - Scripts orquestadores (5 archivos en `src/scripts/`)
@@ -141,7 +141,7 @@ class DateTimeHelper { }
 
 ---
 
-## 3. COMENTARIOS Y DOCUMENTACIÓN
+## 3. COMENTARIOS Y DOCUMENTACI�[SPEC]N
 
 ### JSDoc (obligatorio para funciones exportadas)
 
@@ -180,10 +180,10 @@ export function validateCommonInput(input, options = {}) {
 
 ```javascript
 // Explicar POR QUÉ, no QUÉ
-// ✗ MALO:
+// [DONE][DONE][ARCH] MALO:
 let id = generateRandomString(16); // Generar ID aleatorio
 
-// ✓ BUENO:
+// [DONE][DONE][SPEC] BUENO:
 // Usar Web Crypto API en lugar de Math.random() para evitar colisiones
 // (RFC 4122 UUID format con timestamp para garantizar unicidad)
 let id = generateUniqueId();
@@ -202,14 +202,14 @@ let id = generateUniqueId();
 ```javascript
 // Ideal: 20-30 líneas
 // Máximo: 50 líneas
-// Si excede → refactorizar en funciones menores
+// Si excede refactorizar en funciones menores
 
-// ✓ BUENO: Función pequeña y enfocada
+// [DONE][DONE][SPEC] BUENO: Función pequeña y enfocada
 export function getCurrentDateTime() {
   return new Date().toISOString();
 }
 
-// ✓ BUENO: Función clara con pasos explícitos
+// [DONE][DONE][SPEC] BUENO: Función clara con pasos explícitos
 export function validateCommonInput(input) {
   if (!input || typeof input !== 'string') {
     return { isValid: false, errors: ['Input debe ser string no-vacío'] };
@@ -230,7 +230,7 @@ export function validateCommonInput(input) {
   return { isValid: true, errors: [] };
 }
 
-// ✗ MALO: Función gigante (>100 líneas)
+// [DONE][DONE][ARCH] MALO: Función gigante (>100 líneas)
 export function doEverything() {
   // 100+ líneas de lógica mixta
 }
@@ -240,9 +240,9 @@ export function doEverything() {
 
 ```javascript
 // Máximo: 5 branches
-// Si excede → refactorizar
+// Si excede refactorizar
 
-// ✓ BUENO: Complejidad baja
+// [DONE][DONE][SPEC] BUENO: Complejidad baja
 export function getStatus(priority) {
   const statuses = {
     'high': 'Urgente',
@@ -252,7 +252,7 @@ export function getStatus(priority) {
   return statuses[priority] || 'Desconocido';
 }
 
-// ✗ MALO: Complejidad alta (6+ if statements)
+// [DONE][DONE][ARCH] MALO: Complejidad alta (6+ if statements)
 function getStatus(priority) {
   if (priority === 'high') return 'Urgente';
   if (priority === 'medium-high') return 'Importante';
@@ -467,7 +467,7 @@ export { getCurrentDateTime } from './getCurrentDateTime.js';
 ### Patrones
 
 ```javascript
-// ✓ BUENO: Async/await claro
+// [DONE][DONE][SPEC] BUENO: Async/await claro
 export async function createRepository(name) {
   const id = generateUniqueId();
   const path = `repositories/work/${id}/`;
@@ -480,7 +480,7 @@ export async function createRepository(name) {
   }
 }
 
-// ✓ BUENO: Promise.all para operaciones paralelas
+// [DONE][DONE][SPEC] BUENO: Promise.all para operaciones paralelas
 export async function initializeVault() {
   const results = await Promise.all([
     createFolder('repositories'),
@@ -491,13 +491,13 @@ export async function initializeVault() {
   return results;
 }
 
-// ✗ MALO: Olvidar await
+// [DONE][DONE][ARCH] MALO: Olvidar await
 async function fetchData() {
-  let data = app.vault.read(file); // ✗ Olvidó await
+  let data = app.vault.read(file); // [DONE][DONE][ARCH] Olvidó await
   return data;
 }
 
-// ✗ MALO: callback hell (No hacer)
+// [DONE][DONE][ARCH] MALO: callback hell (No hacer)
 app.vault.createFolder(path, (error) => {
   if (error) {
     // Evitar callbacks anidados
@@ -512,7 +512,7 @@ app.vault.createFolder(path, (error) => {
 ### Scope
 
 ```javascript
-// ✓ BUENO: Variables con menor scope posible
+// [DONE][DONE][SPEC] BUENO: Variables con menor scope posible
 export function processData(data) {
   // Solo visible en esta función
   const processed = data.map(item => item * 2);
@@ -526,7 +526,7 @@ export function processData(data) {
   return processed;
 }
 
-// ✗ MALO: Variables globales innecesarias
+// [DONE][DONE][ARCH] MALO: Variables globales innecesarias
 let globalData = null; // Evitar si es posible
 let globalId = null;
 
@@ -538,19 +538,19 @@ export function process() {
 ### Mutability
 
 ```javascript
-// ✓ BUENO: Preferir const
+// [DONE][DONE][SPEC] BUENO: Preferir const
 const usuario = { name: 'Nestor', role: 'admin' };
 usuario.name = 'Juan'; // OK: mutar propiedades
 // pero no reasignar: usuario = {...}
 
-// ✓ BUENO: Spread operator para inmutabilidad
+// [DONE][DONE][SPEC] BUENO: Spread operator para inmutabilidad
 const usuarioModificado = { ...usuario, name: 'Juan' };
 
-// ✗ MALO: let innecesario
-let count = 0; // Si no cambia → const
+// [DONE][DONE][ARCH] MALO: let innecesario
+let count = 0; // Si no cambia const
 count = 5;
 
-// ✓ BUENO: let solo cuando necesario reasignación
+// [DONE][DONE][SPEC] BUENO: let solo cuando necesario reasignación
 let currentId = null;
 if (isNew) {
   currentId = generateUniqueId();
@@ -561,26 +561,26 @@ if (isNew) {
 
 ---
 
-## 10. MÓDULOS UTILS: RESPONSABILIDAD ÚNICA
+## 10. M�[SPEC]DULOS UTILS: RESPONSABILIDAD �[REF]NICA
 
 Cada módulo hace **UNA COSA** bien:
 
 ```javascript
-// ✓ BUENO: Responsabilidad única
+// [DONE][DONE][SPEC] BUENO: Responsabilidad única
 // src/utils/validateCommonInput.js
 export function validateCommonInput(input) {
   // Solo valida entrada común
   // No crea archivos, no genera IDs, etc.
 }
 
-// ✓ BUENO: Responsabilidad única
+// [DONE][DONE][SPEC] BUENO: Responsabilidad única
 // src/utils/generateUniqueId.js
 export function generateUniqueId() {
   // Solo genera IDs únicos
   // No valida entrada, no crea archivos, etc.
 }
 
-// ✗ MALO: Múltiples responsabilidades
+// [DONE][DONE][ARCH] MALO: Múltiples responsabilidades
 export function createRepositoryAndValidate(name) {
   // Valida (responsabilidad 1)
   // Genera ID (responsabilidad 2)
@@ -679,6 +679,6 @@ npm run lint:fix
 ---
 
 **DOCUMENTO**: CONVENCIONES-FASE1.md  
-**VERSIÓN**: 1.0.0  
+**VERSI�[SPEC]N**: 1.0.0  
 **FECHA**: 2026-04-11  
-**STATUS**: CONVENCIONES DEFINIDAS - LISTO PARA IMPLEMENTACIÓN
+**STATUS**: CONVENCIONES DEFINIDAS - LISTO PARA IMPLEMENTACI�[SPEC]N

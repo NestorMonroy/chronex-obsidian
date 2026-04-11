@@ -10,7 +10,7 @@ status: Especificación Completada
 
 # UC-001: CREAR REPOSITORIO
 
-## 1. IDENTIFICACIÓN
+## 1. IDENTIFICACI�[SPEC]N
 
 | Atributo | Valor |
 |----------|-------|
@@ -20,14 +20,14 @@ status: Especificación Completada
 | **Estado** | Especificación Completada |
 | **Responsable** | Especificador de Casos de Uso |
 | **Fecha Creación** | 2026-04-11 |
-| **Fecha Última Actualización** | 2026-04-11 |
+| **Fecha �[REF]ltima Actualización** | 2026-04-11 |
 | **Prioridad** | ALTA (Sprint 1) |
 | **Complejidad** | MEDIA |
 | **Operaciones Atómicas** | OP-001, OP-002, OP-003, OP-005, OP-006, OP-008, OP-010, OP-011, OP-012, OP-013, OP-014, OP-015 |
 
 ---
 
-## 2. DESCRIPCIÓN BREVE
+## 2. DESCRIPCI�[SPEC]N BREVE
 
 El usuario invoca macro "Crear Repositorio" a través de command palette de Obsidian. El sistema QuickAdd carga el script createRepository.js que solicita nombre del repositorio y tipo (Personal, Work, Research). Valida entrada, genera ID único, obtiene fecha de creación y autor, construye estructura de carpetas, asigna variables de template, ejecuta template repository.md y crea archivo final en carpeta estructurada. El usuario recibe notificación de éxito con información del repositorio creado.
 
@@ -129,8 +129,8 @@ El usuario ejecuta macro que dispara proceso de 14 pasos que culmina en la creac
 **Resultado esperado**: _input_name contiene nombre ingresado por usuario
 
 **Manejo de errores**:
-- Usuario cancela prompt → Macro se interrumpe, sin notificación
-- Usuario deja campo vacío → Validación fallida (Paso 5)
+- Usuario cancela prompt Macro se interrumpe, sin notificación
+- Usuario deja campo vacío Validación fallida (Paso 5)
 
 ---
 
@@ -159,21 +159,21 @@ El usuario ejecuta macro que dispara proceso de 14 pasos que culmina en la creac
 - Validar _input_name >= 3 caracteres
 - Validar _input_name <= 255 caracteres
 - Validar _input_name contiene solo: letras, números, guiones, espacios
-- Si cualquier validación falla → Lanzar excepción
+- Si cualquier validación falla Lanzar excepción
 
 **Componentes invocados**: validationOperations.validateCommonInput()
 
 **Resultado esperado**: _valid_name es true, o excepción E-001
 
 **Manejo de errores**:
-- Nombre vacío → Excepción E-001
-- Nombre muy corto (< 3 chars) → Excepción E-002
-- Nombre muy largo (> 255 chars) → Excepción E-003
-- Caracteres inválidos → Excepción E-004
+- Nombre vacío Excepción E-001
+- Nombre muy corto (< 3 chars) Excepción E-002
+- Nombre muy largo (> 255 chars) Excepción E-003
+- Caracteres inválidos Excepción E-004
 
 ---
 
-#### **Paso 6: Generar ID Único (OP-003)**
+#### **Paso 6: Generar ID �[REF]nico (OP-003)**
 
 **Actor**: createRepository.js
 
@@ -247,7 +247,7 @@ _repo_id = "id-naq5a4-a7f3c2b1d0e9f4a5"
 
 **Acción**:
 - Construir ruta de estructura: repositories/{tipo}/{id}/
-- Normalizar tipo a minúsculas: "Work" → "work"
+- Normalizar tipo a minúsculas: "Work" "work"
 - Construir ruta completa: repositories/work/{id}/
 - Asignar a variable _folder_structure
 
@@ -369,10 +369,10 @@ Tipo: work
 **Resultado esperado**: Archivo creado en ruta correcta con contenido completo
 
 **Manejo de errores**:
-- Carpeta no puede ser creada → Excepción E-005
-- Archivo ya existe → Excepción E-006
-- Permisos insuficientes → Excepción E-007
-- Espacio en disco → Excepción E-008
+- Carpeta no puede ser creada Excepción E-005
+- Archivo ya existe Excepción E-006
+- Permisos insuficientes Excepción E-007
+- Espacio en disco Excepción E-008
 
 ---
 
@@ -507,7 +507,7 @@ Tipo: work
 
 ---
 
-### Punto Crítico PC2: Generación de ID Único
+### Punto Crítico PC2: Generación de ID �[REF]nico
 **Ubicación**: Paso 6
 **Riesgo**: Si ID no es verdaderamente único, repositorios se sobrescriben
 **Mitigación**: Usar Web Crypto API, combinar timestamp + random hex
@@ -524,7 +524,7 @@ Tipo: work
 ### Punto Crítico PC4: Creación de Carpetas
 **Ubicación**: Paso 14
 **Riesgo**: Si carpeta padre no existe, vault.createFolder() falla
-**Mitigación**: Crear carpetas recursivamente (repositories → work → id)
+**Mitigación**: Crear carpetas recursivamente (repositories work id)
 
 ---
 
@@ -724,7 +724,7 @@ graph TB
 
 ---
 
-## 11. NOTAS DE IMPLEMENTACIÓN
+## 11. NOTAS DE IMPLEMENTACI�[SPEC]N
 
 ### Librería y Dependencias
 
@@ -766,20 +766,20 @@ async function validateRepositoryInput(input) {
 ### Testing Strategy
 
 **UC-001 requiere tests para:**
-- ✓ Usuario ingresa nombre válido → éxito
-- ✓ Usuario ingresa nombre corto (< 3) → error E-002
-- ✓ Usuario ingresa nombre largo (> 255) → error E-003
-- ✓ Usuario ingresa caracteres especiales → error E-004
-- ✓ Usuario selecciona tipo Personal → estructura correcta
-- ✓ Usuario selecciona tipo Work → estructura correcta
-- ✓ Usuario selecciona tipo Research → estructura correcta
-- ✓ ID generado es único → no colisión
-- ✓ Carpeta creada existe → verificar filesystem
-- ✓ Archivo contiene frontmatter YAML válido → parseable
-- ✓ Template variables reemplazadas → sin placeholders literales
-- ✓ Usuario cancela durante prompt → ningún cambio
-- ✓ Permisos insuficientes → error E-007
-- ✓ Espacio disco insuficiente → error E-008
+- [DONE][DONE][SPEC] Usuario ingresa nombre válido éxito
+- [DONE][DONE][SPEC] Usuario ingresa nombre corto (< 3) error E-002
+- [DONE][DONE][SPEC] Usuario ingresa nombre largo (> 255) error E-003
+- [DONE][DONE][SPEC] Usuario ingresa caracteres especiales error E-004
+- [DONE][DONE][SPEC] Usuario selecciona tipo Personal estructura correcta
+- [DONE][DONE][SPEC] Usuario selecciona tipo Work estructura correcta
+- [DONE][DONE][SPEC] Usuario selecciona tipo Research estructura correcta
+- [DONE][DONE][SPEC] ID generado es único no colisión
+- [DONE][DONE][SPEC] Carpeta creada existe verificar filesystem
+- [DONE][DONE][SPEC] Archivo contiene frontmatter YAML válido parseable
+- [DONE][DONE][SPEC] Template variables reemplazadas sin placeholders literales
+- [DONE][DONE][SPEC] Usuario cancela durante prompt ningún cambio
+- [DONE][DONE][SPEC] Permisos insuficientes error E-007
+- [DONE][DONE][SPEC] Espacio disco insuficiente error E-008
 
 ### Error Handling Completo
 
@@ -847,7 +847,7 @@ logger.error("File not found: template");          // ERROR
 
 ---
 
-## 13. CRITERIOS DE ACEPTACIÓN
+## 13. CRITERIOS DE ACEPTACI�[SPEC]N
 
 **UC-001 es COMPLETADO cuando:**
 
@@ -887,4 +887,4 @@ logger.error("File not found: template");          // ERROR
 **Documento**: UC-001-CREAR-REPOSITORIO.md
 **Versión**: 1.0.0
 **Fecha**: 2026-04-11
-**Estado**: ESPECIFICACIÓN COMPLETADA - LISTO PARA IMPLEMENTACIÓN
+**Estado**: ESPECIFICACI�[SPEC]N COMPLETADA - LISTO PARA IMPLEMENTACI�[SPEC]N

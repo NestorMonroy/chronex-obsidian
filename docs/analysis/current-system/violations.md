@@ -13,7 +13,7 @@ analysis_framework: SOLID + DRY + Code Smell Detection
 
 ---
 
-## INTRODUCCIÓN
+## INTRODUCCI�[SPEC]N
 
 Este documento profundiza en violaciones específicas de principios SOLID (Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion) y DRY (Don't Repeat Yourself) identificadas en el código AS-IS.
 
@@ -37,12 +37,12 @@ A diferencia del ARTEFACTO 4 (violaciones de convenciones superficiales), este d
 
 ---
 
-## VIOLACIÓN 1: SRP - Single Responsibility Principle
+## VIOLACI�[SPEC]N 1: SRP - Single Responsibility Principle
 
 **Código:** SOLID-V1
 **Severidad:** SEVERA
 **Ubicación:** Todos los 5 orquestadores (createRepository.js, createTask.js, etc)
-**Líneas afectadas:** 5 archivos × 350 líneas = 1750 líneas
+**Líneas afectadas:** 5 archivos �[ARCH] 350 líneas = 1750 líneas
 
 ### Descripción del Problema
 
@@ -182,11 +182,11 @@ async function createRepository(params) {
 }
 ```
 
-**Cambio clave:** De 1 función con 8 responsabilidades → 6 funciones con 1 responsabilidad cada una
+**Cambio clave:** De 1 función con 8 responsabilidades 6 funciones con 1 responsabilidad cada una
 
 ---
 
-## VIOLACIÓN 2: DRY - Don't Repeat Yourself
+## VIOLACI�[SPEC]N 2: DRY - Don't Repeat Yourself
 
 **Código:** DRY-V1
 **Severidad:** MODERADA
@@ -219,7 +219,7 @@ const projectType = await askProjectType();
 const projectDescription = await quickAddApi.wideInputPrompt("Descripción...");
 ```
 
-**Patrón idéntico, solo cambió: repository → task → project**
+**Patrón idéntico, solo cambió: repository task project**
 
 ### Manifestación Completa
 
@@ -295,24 +295,24 @@ const tags = [projectType, "active"];
 
 ```
 createRepository.js
-├── Obtener entrada ← DUPLICADA
-├── Validar entrada ← DUPLICADA
-├── Generar ID ← DUPLICADA
-├── Obtener metadata ← DUPLICADA
-├── Procesar repo-específico
-├── Asignar variables ← DUPLICADA
-├── Mostrar notificación ← DUPLICADA
-└── Error handling
+[DONE]�[DONE][DONE]�[READY][DONE]�[READY] Obtener entrada  DUPLICADA
+[DONE]�[DONE][DONE]�[READY][DONE]�[READY] Validar entrada  DUPLICADA
+[DONE]�[DONE][DONE]�[READY][DONE]�[READY] Generar ID  DUPLICADA
+[DONE]�[DONE][DONE]�[READY][DONE]�[READY] Obtener metadata  DUPLICADA
+[DONE]�[DONE][DONE]�[READY][DONE]�[READY] Procesar repo-específico
+[DONE]�[DONE][DONE]�[READY][DONE]�[READY] Asignar variables  DUPLICADA
+[DONE]�[DONE][DONE]�[READY][DONE]�[READY] Mostrar notificación  DUPLICADA
+[DONE]��[DONE]�[READY][DONE]�[READY] Error handling
 
 createTask.js
-├── Obtener entrada ← DUPLICADA
-├── Validar entrada ← DUPLICADA
-├── Generar ID ← DUPLICADA
-├── Obtener metadata ← DUPLICADA
-├── Procesar task-específico
-├── Asignar variables ← DUPLICADA
-├── Mostrar notificación ← DUPLICADA
-└── Error handling
+[DONE]�[DONE][DONE]�[READY][DONE]�[READY] Obtener entrada  DUPLICADA
+[DONE]�[DONE][DONE]�[READY][DONE]�[READY] Validar entrada  DUPLICADA
+[DONE]�[DONE][DONE]�[READY][DONE]�[READY] Generar ID  DUPLICADA
+[DONE]�[DONE][DONE]�[READY][DONE]�[READY] Obtener metadata  DUPLICADA
+[DONE]�[DONE][DONE]�[READY][DONE]�[READY] Procesar task-específico
+[DONE]�[DONE][DONE]�[READY][DONE]�[READY] Asignar variables  DUPLICADA
+[DONE]�[DONE][DONE]�[READY][DONE]�[READY] Mostrar notificación  DUPLICADA
+[DONE]��[DONE]�[READY][DONE]�[READY] Error handling
 
 [Patrón se repite 4 veces más]
 ```
@@ -367,11 +367,11 @@ module.exports = async (params) => {
 };
 ```
 
-**Cambio clave:** De 5 copias de getInput → 1 módulo reutilizado 5 veces
+**Cambio clave:** De 5 copias de getInput 1 módulo reutilizado 5 veces
 
 ---
 
-## VIOLACIÓN 3: OCP - Open/Closed Principle
+## VIOLACI�[SPEC]N 3: OCP - Open/Closed Principle
 
 **Código:** SOLID-V2
 **Severidad:** MODERADA
@@ -383,7 +383,7 @@ El sistema NO está abierto a extensión (agregar nuevo tipo de entidad).
 
 Para agregar nuevo orquestador (createArticle.js), se requiere:
 1. Copiar createRepository.js
-2. Cambiar nombres: repo → article
+2. Cambiar nombres: repo article
 3. Modificar lógica específica
 4. Crear/modificar template
 5. Modificar configuración QuickAdd
@@ -460,7 +460,7 @@ module.exports = async (params) => {
 };
 ```
 
-**Cambio clave:** De copiar 100 líneas → definir configuración 20 líneas
+**Cambio clave:** De copiar 100 líneas definir configuración 20 líneas
 
 ### Impacto de Violación OCP
 
@@ -470,7 +470,7 @@ module.exports = async (params) => {
 
 ---
 
-## VIOLACIÓN 4: DIP - Dependency Inversion Principle
+## VIOLACI�[SPEC]N 4: DIP - Dependency Inversion Principle
 
 **Código:** SOLID-V3
 **Severidad:** BAJA
@@ -533,7 +533,7 @@ module.exports = async (params, idGenerator: IdGenerator) => {
 
 ---
 
-## VIOLACIÓN 5: Falta de Error Handling Completo
+## VIOLACI�[SPEC]N 5: Falta de Error Handling Completo
 
 **Código:** SOLID-V4 / Code Smell
 **Severidad:** SEVERA
@@ -550,7 +550,7 @@ module.exports = async (params) => {
   const input = await quickAddApi.inputPrompt("...");
   const id = await generateUniqueId();
   const date = getCurrentDateTime();
-  // Si cualquiera falla → macro incompleta, usuario sin saber qué pasó
+  // Si cualquiera falla macro incompleta, usuario sin saber qué pasó
 };
 ```
 
@@ -610,34 +610,34 @@ module.exports = async (params) => {
 
 ---
 
-## CÓMO ESTAS VIOLACIONES SE RELACIONAN
+## C�[SPEC]MO ESTAS VIOLACIONES SE RELACIONAN
 
 ```
 Violación SRP
-├─ Causa: Orquestador intenta hacer 8 cosas
-├─ Resultado: Difícil de testear, mantener, extender
-├─ Facilita: Duplicación de código (DRY violado)
-├─ Hace difícil: Seguir OCP (agregar entidades nuevas)
-└─ Agrava: Error handling incompleto
+[DONE]�[DONE][DONE]�[READY] Causa: Orquestador intenta hacer 8 cosas
+[DONE]�[DONE][DONE]�[READY] Resultado: Difícil de testear, mantener, extender
+[DONE]�[DONE][DONE]�[READY] Facilita: Duplicación de código (DRY violado)
+[DONE]�[DONE][DONE]�[READY] Hace difícil: Seguir OCP (agregar entidades nuevas)
+[DONE]��[DONE]�[READY] Agrava: Error handling incompleto
 
 Violación DRY
-├─ Causa: Código duplicado entre 5 orquestadores
-├─ Resultado: 500 líneas innecesarias
-├─ Facilita: Bugs introducidos en solo un archivo
-├─ Viola: OCP (no es escalable)
-└─ Síntoma: SRP quebrantado en cada archivo
+[DONE]�[DONE][DONE]�[READY] Causa: Código duplicado entre 5 orquestadores
+[DONE]�[DONE][DONE]�[READY] Resultado: 500 líneas innecesarias
+[DONE]�[DONE][DONE]�[READY] Facilita: Bugs introducidos en solo un archivo
+[DONE]�[DONE][DONE]�[READY] Viola: OCP (no es escalable)
+[DONE]��[DONE]�[READY] Síntoma: SRP quebrantado en cada archivo
 
 Violación OCP
-├─ Causa: Arquitectura no permite extensión sin modificación
-├─ Resultado: Agregar entidad nueva requiere copiar 100 líneas
-├─ Síntoma: DRY violado sistémicamente
-├─ Causa raíz: SRP violado en cada orquestador
-└─ Requiere: Refactorización arquitectónica
+[DONE]�[DONE][DONE]�[READY] Causa: Arquitectura no permite extensión sin modificación
+[DONE]�[DONE][DONE]�[READY] Resultado: Agregar entidad nueva requiere copiar 100 líneas
+[DONE]�[DONE][DONE]�[READY] Síntoma: DRY violado sistémicamente
+[DONE]�[DONE][DONE]�[READY] Causa raíz: SRP violado en cada orquestador
+[DONE]��[DONE]�[READY] Requiere: Refactorización arquitectónica
 ```
 
 ---
 
-## CONCLUSIÓN
+## CONCLUSI�[SPEC]N
 
 Las 5 violaciones SOLID/DRY están **interconectadas**. La raíz es **SRP quebrantado** en orquestadores, que causa **DRY violado**, que hace **OCP imposible**.
 
@@ -645,7 +645,7 @@ La refactorización debe comenzar por SRP (PASO 4), lo que automáticamente mejo
 
 ---
 
-## PRÓXIMA ACCIÓN
+## PR�[SPEC]XIMA ACCI�[SPEC]N
 
 El ARTEFACTO 6 (REFACTOR-ROADMAP) propone plan de refactorización fase-por-fase, comenzando con SRP.
 

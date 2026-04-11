@@ -13,7 +13,7 @@ status: AnÃ¡lisis de responsabilidades por actor
 
 ---
 
-## INTRODUCCIÃ“N
+## INTRODUCCIÃ[SPEC]N
 
 Este artefacto organiza los 5 UCs por **ACTOR** (no por secciÃ³n). Cada actor tiene responsabilidades especÃ­ficas en cada UC. Esta vista permite identificar puntos crÃ­ticos de integraciÃ³n y dependencias.
 
@@ -32,11 +32,11 @@ Este artefacto organiza los 5 UCs por **ACTOR** (no por secciÃ³n). Cada actor ti
 **Actor Primario - Iniciador de todas las acciones**
 
 ### ParticipaciÃ³n en UCs
-- UC-001: âœ“ (Crear Repositorio)
-- UC-002: âœ“ (Crear Tarea)
-- UC-003: âœ“ (Crear Proyecto)
-- UC-004: âœ“ (Crear Pilar)
-- UC-005: âœ“ (Crear Nota en Repositorio)
+- UC-001: [DONE][DONE][SPEC] (Crear Repositorio)
+- UC-002: [DONE][DONE][SPEC] (Crear Tarea)
+- UC-003: [DONE][DONE][SPEC] (Crear Proyecto)
+- UC-004: [DONE][DONE][SPEC] (Crear Pilar)
+- UC-005: [DONE][DONE][SPEC] (Crear Nota en Repositorio)
 
 **ParticipaciÃ³n: 5/5 (100%)**
 
@@ -109,26 +109,26 @@ Este artefacto organiza los 5 UCs por **ACTOR** (no por secciÃ³n). Cada actor ti
 
 ```
 USUARIO (Nestor) - Actor Primario
-â”œâ”€ UC-001: Crear Repositorio
-â”‚   â””â”€ Input: nombre, tipo
-â”‚   â””â”€ Acciones: 3 prompts
-â”‚
-â”œâ”€ UC-002: Crear Tarea
-â”‚   â””â”€ Input: tÃ­tulo, prioridad, descripciÃ³n, fecha
-â”‚   â””â”€ Acciones: 4 prompts
-â”‚
-â”œâ”€ UC-003: Crear Proyecto
-â”‚   â””â”€ Input: nombre, estado, descripciÃ³n
-â”‚   â””â”€ Acciones: 3 prompts
-â”‚
-â”œâ”€ UC-004: Crear Pilar
-â”‚   â””â”€ Input: nombre, estado
-â”‚   â””â”€ Acciones: 2 prompts
-â”‚
-â””â”€ UC-005: Crear Nota en Repositorio
-    â””â”€ Input: repositorio, tÃ­tulo, descripciÃ³n
-    â””â”€ Acciones: 3 prompts (+ selecciÃ³n repo)
-    â””â”€ PrecondiciÃ³n: UC-001 completado
+[DONE]”[DONE][DONE]”[READY] UC-001: Crear Repositorio
+[DONE]”‚   [DONE]””[DONE]”[READY] Input: nombre, tipo
+[DONE]”‚   [DONE]””[DONE]”[READY] Acciones: 3 prompts
+[DONE]”‚
+[DONE]”[DONE][DONE]”[READY] UC-002: Crear Tarea
+[DONE]”‚   [DONE]””[DONE]”[READY] Input: tÃ­tulo, prioridad, descripciÃ³n, fecha
+[DONE]”‚   [DONE]””[DONE]”[READY] Acciones: 4 prompts
+[DONE]”‚
+[DONE]”[DONE][DONE]”[READY] UC-003: Crear Proyecto
+[DONE]”‚   [DONE]””[DONE]”[READY] Input: nombre, estado, descripciÃ³n
+[DONE]”‚   [DONE]””[DONE]”[READY] Acciones: 3 prompts
+[DONE]”‚
+[DONE]”[DONE][DONE]”[READY] UC-004: Crear Pilar
+[DONE]”‚   [DONE]””[DONE]”[READY] Input: nombre, estado
+[DONE]”‚   [DONE]””[DONE]”[READY] Acciones: 2 prompts
+[DONE]”‚
+[DONE]””[DONE]”[READY] UC-005: Crear Nota en Repositorio
+    [DONE]””[DONE]”[READY] Input: repositorio, tÃ­tulo, descripciÃ³n
+    [DONE]””[DONE]”[READY] Acciones: 3 prompts (+ selecciÃ³n repo)
+    [DONE]””[DONE]”[READY] PrecondiciÃ³n: UC-001 completado
 ```
 
 ---
@@ -153,11 +153,11 @@ USUARIO (Nestor) - Actor Primario
 **Actor Secundario - Orquestador de macros**
 
 ### ParticipaciÃ³n en UCs
-- UC-001: âœ“
-- UC-002: âœ“
-- UC-003: âœ“
-- UC-004: âœ“
-- UC-005: âœ“
+- UC-001: [DONE][DONE][SPEC]
+- UC-002: [DONE][DONE][SPEC]
+- UC-003: [DONE][DONE][SPEC]
+- UC-004: [DONE][DONE][SPEC]
+- UC-005: [DONE][DONE][SPEC]
 
 **ParticipaciÃ³n: 5/5 (100%)**
 
@@ -220,14 +220,14 @@ USUARIO (Nestor) - Actor Primario
 
 ```
 QUICKADD - Actor Orquestador
-â”œâ”€ Carga de Scripts: 5 scripts (createRepository.js, createTask.js, etc.)
-â”œâ”€ GestiÃ³n de Prompts: 
-â”‚   â”œâ”€ inputPrompt(): UC-001, UC-002, UC-003, UC-004, UC-005 (mÃºltiples)
-â”‚   â”œâ”€ suggester(): UC-001, UC-002, UC-003, UC-004, UC-005
-â”‚   â””â”€ wideInputPrompt(): UC-002, UC-003, UC-005
-â”œâ”€ Reemplazo de Variables: {{VALUE:...}} en templates
-â”œâ”€ CreaciÃ³n de Archivos: Llamadas a app.vault.create()
-â””â”€ Notificaciones: Feedback al usuario (Ã©xito o error)
+[DONE]”[DONE][DONE]”[READY] Carga de Scripts: 5 scripts (createRepository.js, createTask.js, etc.)
+[DONE]”[DONE][DONE]”[READY] GestiÃ³n de Prompts: 
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] inputPrompt(): UC-001, UC-002, UC-003, UC-004, UC-005 (mÃºltiples)
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] suggester(): UC-001, UC-002, UC-003, UC-004, UC-005
+[DONE]”‚   [DONE]””[DONE]”[READY] wideInputPrompt(): UC-002, UC-003, UC-005
+[DONE]”[DONE][DONE]”[READY] Reemplazo de Variables: {{VALUE:...}} en templates
+[DONE]”[DONE][DONE]”[READY] CreaciÃ³n de Archivos: Llamadas a app.vault.create()
+[DONE]””[DONE]”[READY] Notificaciones: Feedback al usuario (Ã©xito o error)
 
 TOTAL: 50+ operaciones en 5 UCs
 ```
@@ -259,11 +259,11 @@ TOTAL: 50+ operaciones en 5 UCs
 **Actor Secundario - Infraestructura de almacenamiento**
 
 ### ParticipaciÃ³n en UCs
-- UC-001: âœ“
-- UC-002: âœ“
-- UC-003: âœ“
-- UC-004: âœ“
-- UC-005: âœ“
+- UC-001: [DONE][DONE][SPEC]
+- UC-002: [DONE][DONE][SPEC]
+- UC-003: [DONE][DONE][SPEC]
+- UC-004: [DONE][DONE][SPEC]
+- UC-005: [DONE][DONE][SPEC]
 
 **ParticipaciÃ³n: 5/5 (100%)**
 
@@ -328,22 +328,22 @@ TOTAL: 50+ operaciones en 5 UCs
 
 ```
 OBSIDIAN - Actor Infraestructura
-â”œâ”€ CreaciÃ³n de Carpetas (recursiva):
-â”‚   â”œâ”€ UC-001: repositories/{type}/{id}/ â†’ 3 niveles
-â”‚   â”œâ”€ UC-002: tasks/{priority}/{id}/ â†’ 3 niveles
-â”‚   â”œâ”€ UC-003: projects/{status}/{id}/ â†’ 3 niveles
-â”‚   â”œâ”€ UC-004: pillars/{status}/{id}/ â†’ 3 niveles
-â”‚   â””â”€ UC-005: repositories/{type}/{repo-id}/notes/{note-id}/ â†’ dentro existente
-â”œâ”€ CreaciÃ³n de Archivos:
-â”‚   â”œâ”€ UC-001: repository.md en carpeta especÃ­fica
-â”‚   â”œâ”€ UC-002: task.md en carpeta especÃ­fica
-â”‚   â”œâ”€ UC-003: project.md en carpeta especÃ­fica
-â”‚   â”œâ”€ UC-004: pillar.md en carpeta especÃ­fica
-â”‚   â””â”€ UC-005: repositoryNote.md dentro del repositorio
-â”œâ”€ Acceso a Metadata:
-â”‚   â””â”€ UC-005: Leer metadata de repositorio existente
-â””â”€ Persistencia:
-    â””â”€ AutomÃ¡tica en todos los casos
+[DONE]”[DONE][DONE]”[READY] CreaciÃ³n de Carpetas (recursiva):
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-001: repositories/{type}/{id}/ 3 niveles
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-002: tasks/{priority}/{id}/ 3 niveles
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-003: projects/{status}/{id}/ 3 niveles
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-004: pillars/{status}/{id}/ 3 niveles
+[DONE]”‚   [DONE]””[DONE]”[READY] UC-005: repositories/{type}/{repo-id}/notes/{note-id}/ dentro existente
+[DONE]”[DONE][DONE]”[READY] CreaciÃ³n de Archivos:
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-001: repository.md en carpeta especÃ­fica
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-002: task.md en carpeta especÃ­fica
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-003: project.md en carpeta especÃ­fica
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-004: pillar.md en carpeta especÃ­fica
+[DONE]”‚   [DONE]””[DONE]”[READY] UC-005: repositoryNote.md dentro del repositorio
+[DONE]”[DONE][DONE]”[READY] Acceso a Metadata:
+[DONE]”‚   [DONE]””[DONE]”[READY] UC-005: Leer metadata de repositorio existente
+[DONE]””[DONE]”[READY] Persistencia:
+    [DONE]””[DONE]”[READY] AutomÃ¡tica en todos los casos
 ```
 
 ---
@@ -353,16 +353,16 @@ OBSIDIAN - Actor Infraestructura
 **PC-O1: CreaciÃ³n de Carpetas Recursiva**
 - UbicaciÃ³n: Paso 14 de cada UC
 - Riesgo: Si carpeta padre no existe, createFolder() falla
-- MitigaciÃ³n: Crear carpetas recursivamente (carpeta â†’ subcarpeta â†’ id)
+- MitigaciÃ³n: Crear carpetas recursivamente (carpeta subcarpeta id)
 
 **PC-O2: Permisos de Lectura/Escritura**
 - UbicaciÃ³n: Paso 14 de cada UC
-- Riesgo: Permisos insuficientes â†’ ExcepciÃ³n E-007 o E-008
+- Riesgo: Permisos insuficientes ExcepciÃ³n E-007 o E-008
 - MitigaciÃ³n: Validar permisos antes de intentar crear
 
 **PC-O3: Espacio en Disco**
 - UbicaciÃ³n: Paso 14 de cada UC
-- Riesgo: Espacio insuficiente â†’ ExcepciÃ³n E-009 o E-012
+- Riesgo: Espacio insuficiente ExcepciÃ³n E-009 o E-012
 - MitigaciÃ³n: Manejo de error graceful
 
 **PC-O4: Acceso a MetadataCache (UC-005)**
@@ -372,17 +372,17 @@ OBSIDIAN - Actor Infraestructura
 
 ---
 
-## ACTOR 4: MÃ“DULOS UTILS/
+## ACTOR 4: MÃ[SPEC]DULOS UTILS/
 
 ### Rol
 **Actor Secundario - Utilidades reutilizables**
 
 ### ParticipaciÃ³n en UCs
-- UC-001: âœ“ (6 mÃ³dulos)
-- UC-002: âœ“ (5 mÃ³dulos)
-- UC-003: âœ“ (6 mÃ³dulos)
-- UC-004: âœ“ (5 mÃ³dulos)
-- UC-005: âœ“ (5 mÃ³dulos)
+- UC-001: [DONE][DONE][SPEC] (6 mÃ³dulos)
+- UC-002: [DONE][DONE][SPEC] (5 mÃ³dulos)
+- UC-003: [DONE][DONE][SPEC] (6 mÃ³dulos)
+- UC-004: [DONE][DONE][SPEC] (5 mÃ³dulos)
+- UC-005: [DONE][DONE][SPEC] (5 mÃ³dulos)
 
 **ParticipaciÃ³n: 5/5 (100%)**
 
@@ -465,69 +465,69 @@ OBSIDIAN - Actor Infraestructura
 ### Matriz: Utils ReutilizaciÃ³n
 
 ```
-MÃ“DULOS UTILS/ - Actor Utilidades
-â”œâ”€ validateCommonInput()
-â”‚   â”œâ”€ UC-001: Paso 5 âœ“
-â”‚   â”œâ”€ UC-002: Paso 7 âœ“
-â”‚   â”œâ”€ UC-003: Paso 6 âœ“
-â”‚   â”œâ”€ UC-004: Paso 5 âœ“
-â”‚   â””â”€ UC-005: Paso 6 âœ“
-â”‚   REUTILIZADO: 5/5 (100%)
-â”‚
-â”œâ”€ generateUniqueId()
-â”‚   â”œâ”€ UC-001: Paso 6 âœ“
-â”‚   â”œâ”€ UC-002: Paso 8 âœ“
-â”‚   â”œâ”€ UC-003: Paso 7 âœ“
-â”‚   â”œâ”€ UC-004: Paso 6 âœ“
-â”‚   â””â”€ UC-005: Paso 7 âœ“
-â”‚   REUTILIZADO: 5/5 (100%)
-â”‚
-â”œâ”€ getCurrentDateTime()
-â”‚   â”œâ”€ UC-001: Paso 7 âœ“
-â”‚   â”œâ”€ UC-002: Paso 9 âœ“
-â”‚   â”œâ”€ UC-003: Paso 8 âœ“
-â”‚   â”œâ”€ UC-004: Paso 7 âœ“
-â”‚   â””â”€ UC-005: Paso 8 âœ“
-â”‚   REUTILIZADO: 5/5 (100%)
-â”‚
-â”œâ”€ getFileName()
-â”‚   â”œâ”€ UC-001: Paso 8 âœ“
-â”‚   â”œâ”€ UC-002: Paso 10 âœ“
-â”‚   â”œâ”€ UC-003: Paso 9 âœ“
-â”‚   â”œâ”€ UC-004: Paso 8 âœ“
-â”‚   â””â”€ UC-005: Paso 10 âœ“
-â”‚   REUTILIZADO: 5/5 (100%)
-â”‚
-â”œâ”€ getMetadataByFrontmatter()
-â”‚   â”œâ”€ UC-001: No
-â”‚   â”œâ”€ UC-002: ImplÃ­cito
-â”‚   â”œâ”€ UC-003: ImplÃ­cito
-â”‚   â”œâ”€ UC-004: No
-â”‚   â””â”€ UC-005: Paso 3, 9 (2 veces) âœ“
-â”‚   REUTILIZADO: 1/5 (UC-005 especÃ­ficamente)
-â”‚
-â”œâ”€ getGrandParentFolder()
-â”‚   â”œâ”€ UC-001: Paso 9 âœ“
-â”‚   â”œâ”€ UC-002: No
-â”‚   â”œâ”€ UC-003: Paso 11 âœ“
-â”‚   â”œâ”€ UC-004: Paso 9 âœ“
-â”‚   â””â”€ UC-005: No
-â”‚   REUTILIZADO: 3/5
-â”‚
-â”œâ”€ getAuthorName()
-â”‚   â”œâ”€ UC-001: ImplÃ­cito
-â”‚   â”œâ”€ UC-002: Paso 11 âœ“
-â”‚   â”œâ”€ UC-003: Paso 10 âœ“
-â”‚   â”œâ”€ UC-004: Paso 10 âœ“
-â”‚   â””â”€ UC-005: Paso 12 âœ“
-â”‚   REUTILIZADO: 4/5
-â”‚
-â””â”€ showNotification()
-    â”œâ”€ UC-001: Paso 15 âœ“
-    â”œâ”€ UC-002: Paso 16 âœ“
-    â”œâ”€ UC-003: Paso 17 âœ“
-    â”œâ”€ UC-004: Paso 15 âœ“
-    â””â”€ UC-005: Paso 16 âœ“
+MÃ[SPEC]DULOS UTILS/ - Actor Utilidades
+[DONE]”[DONE][DONE]”[READY] validateCommonInput()
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-001: Paso 5 [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-002: Paso 7 [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-003: Paso 6 [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-004: Paso 5 [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]””[DONE]”[READY] UC-005: Paso 6 [DONE][DONE][SPEC]
+[DONE]”‚   REUTILIZADO: 5/5 (100%)
+[DONE]”‚
+[DONE]”[DONE][DONE]”[READY] generateUniqueId()
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-001: Paso 6 [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-002: Paso 8 [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-003: Paso 7 [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-004: Paso 6 [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]””[DONE]”[READY] UC-005: Paso 7 [DONE][DONE][SPEC]
+[DONE]”‚   REUTILIZADO: 5/5 (100%)
+[DONE]”‚
+[DONE]”[DONE][DONE]”[READY] getCurrentDateTime()
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-001: Paso 7 [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-002: Paso 9 [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-003: Paso 8 [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-004: Paso 7 [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]””[DONE]”[READY] UC-005: Paso 8 [DONE][DONE][SPEC]
+[DONE]”‚   REUTILIZADO: 5/5 (100%)
+[DONE]”‚
+[DONE]”[DONE][DONE]”[READY] getFileName()
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-001: Paso 8 [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-002: Paso 10 [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-003: Paso 9 [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-004: Paso 8 [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]””[DONE]”[READY] UC-005: Paso 10 [DONE][DONE][SPEC]
+[DONE]”‚   REUTILIZADO: 5/5 (100%)
+[DONE]”‚
+[DONE]”[DONE][DONE]”[READY] getMetadataByFrontmatter()
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-001: No
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-002: ImplÃ­cito
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-003: ImplÃ­cito
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-004: No
+[DONE]”‚   [DONE]””[DONE]”[READY] UC-005: Paso 3, 9 (2 veces) [DONE][DONE][SPEC]
+[DONE]”‚   REUTILIZADO: 1/5 (UC-005 especÃ­ficamente)
+[DONE]”‚
+[DONE]”[DONE][DONE]”[READY] getGrandParentFolder()
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-001: Paso 9 [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-002: No
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-003: Paso 11 [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-004: Paso 9 [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]””[DONE]”[READY] UC-005: No
+[DONE]”‚   REUTILIZADO: 3/5
+[DONE]”‚
+[DONE]”[DONE][DONE]”[READY] getAuthorName()
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-001: ImplÃ­cito
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-002: Paso 11 [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-003: Paso 10 [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] UC-004: Paso 10 [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]””[DONE]”[READY] UC-005: Paso 12 [DONE][DONE][SPEC]
+[DONE]”‚   REUTILIZADO: 4/5
+[DONE]”‚
+[DONE]””[DONE]”[READY] showNotification()
+    [DONE]”[DONE][DONE]”[READY] UC-001: Paso 15 [DONE][DONE][SPEC]
+    [DONE]”[DONE][DONE]”[READY] UC-002: Paso 16 [DONE][DONE][SPEC]
+    [DONE]”[DONE][DONE]”[READY] UC-003: Paso 17 [DONE][DONE][SPEC]
+    [DONE]”[DONE][DONE]”[READY] UC-004: Paso 15 [DONE][DONE][SPEC]
+    [DONE]””[DONE]”[READY] UC-005: Paso 16 [DONE][DONE][SPEC]
     REUTILIZADO: 5/5 (100%)
 ```
 
@@ -537,17 +537,17 @@ MÃ“DULOS UTILS/ - Actor Utilidades
 
 **PC-U1: Unicidad de IDs**
 - MÃ³dulo: generateUniqueId()
-- Riesgo: ColisiÃ³n de IDs â†’ archivos se sobrescriben
+- Riesgo: ColisiÃ³n de IDs archivos se sobrescriben
 - MitigaciÃ³n: Web Crypto API + timestamp combinados
 
 **PC-U2: ValidaciÃ³n de Entrada**
 - MÃ³dulo: validateCommonInput()
-- Riesgo: ValidaciÃ³n insuficiente â†’ datos corrupta en archivo
+- Riesgo: ValidaciÃ³n insuficiente datos corrupta en archivo
 - MitigaciÃ³n: Regex explÃ­cito `/^[a-zA-Z0-9\-_\s]+$/`
 
 **PC-U3: Integridad de Metadata**
 - MÃ³dulo: getMetadataByFrontmatter()
-- Riesgo: Frontmatter invÃ¡lido â†’ error (UC-005)
+- Riesgo: Frontmatter invÃ¡lido error (UC-005)
 - MitigaciÃ³n: Validar que YAML parse correctamente
 
 ---
@@ -558,11 +558,11 @@ MÃ“DULOS UTILS/ - Actor Utilidades
 **Actor Consumidor - Generador de contenido**
 
 ### ParticipaciÃ³n en UCs
-- UC-001: âœ“ (repository.md)
-- UC-002: âœ“ (task.md)
-- UC-003: âœ“ (project.md)
-- UC-004: âœ“ (pillar.md)
-- UC-005: âœ“ (repositoryNote.md)
+- UC-001: [DONE][DONE][SPEC] (repository.md)
+- UC-002: [DONE][DONE][SPEC] (task.md)
+- UC-003: [DONE][DONE][SPEC] (project.md)
+- UC-004: [DONE][DONE][SPEC] (pillar.md)
+- UC-005: [DONE][DONE][SPEC] (repositoryNote.md)
 
 **ParticipaciÃ³n: 5/5 (100%)**
 
@@ -615,35 +615,35 @@ MÃ“DULOS UTILS/ - Actor Utilidades
 
 ```
 TEMPLATE ENGINE - Actor Consumidor
-â”œâ”€ repository.md
-â”‚   â”œâ”€ Frontmatter: 8 campos âœ“
-â”‚   â”œâ”€ Secciones: 5 principales âœ“
-â”‚   â”œâ”€ Placeholders: 8 variables âœ“
-â”‚   â””â”€ Wikilinks: SÃ­
-â”‚
-â”œâ”€ task.md
-â”‚   â”œâ”€ Frontmatter: 8 campos + status:pending âœ“
-â”‚   â”œâ”€ Secciones: 6 principales âœ“
-â”‚   â”œâ”€ Placeholders: 9 variables âœ“
-â”‚   â””â”€ Wikilinks: SÃ­
-â”‚
-â”œâ”€ project.md
-â”‚   â”œâ”€ Frontmatter: 8 campos âœ“
-â”‚   â”œâ”€ Secciones: 7 principales (4 fases) âœ“
-â”‚   â”œâ”€ Placeholders: 8 variables âœ“
-â”‚   â””â”€ Wikilinks: SÃ­
-â”‚
-â”œâ”€ pillar.md
-â”‚   â”œâ”€ Frontmatter: 8 campos âœ“
-â”‚   â”œâ”€ Secciones: 7 principales âœ“
-â”‚   â”œâ”€ Placeholders: 7 variables âœ“
-â”‚   â””â”€ Wikilinks: SÃ­
-â”‚
-â””â”€ repositoryNote.md
-    â”œâ”€ Frontmatter: 9 campos âœ“
-    â”œâ”€ Secciones: 8 principales âœ“
-    â”œâ”€ Placeholders: 8 variables + contexto repo âœ“
-    â””â”€ Wikilinks: SÃ­ (referencia a repositorio padre)
+[DONE]”[DONE][DONE]”[READY] repository.md
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] Frontmatter: 8 campos [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] Secciones: 5 principales [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] Placeholders: 8 variables [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]””[DONE]”[READY] Wikilinks: SÃ­
+[DONE]”‚
+[DONE]”[DONE][DONE]”[READY] task.md
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] Frontmatter: 8 campos + status:pending [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] Secciones: 6 principales [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] Placeholders: 9 variables [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]””[DONE]”[READY] Wikilinks: SÃ­
+[DONE]”‚
+[DONE]”[DONE][DONE]”[READY] project.md
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] Frontmatter: 8 campos [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] Secciones: 7 principales (4 fases) [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] Placeholders: 8 variables [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]””[DONE]”[READY] Wikilinks: SÃ­
+[DONE]”‚
+[DONE]”[DONE][DONE]”[READY] pillar.md
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] Frontmatter: 8 campos [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] Secciones: 7 principales [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY] Placeholders: 7 variables [DONE][DONE][SPEC]
+[DONE]”‚   [DONE]””[DONE]”[READY] Wikilinks: SÃ­
+[DONE]”‚
+[DONE]””[DONE]”[READY] repositoryNote.md
+    [DONE]”[DONE][DONE]”[READY] Frontmatter: 9 campos [DONE][DONE][SPEC]
+    [DONE]”[DONE][DONE]”[READY] Secciones: 8 principales [DONE][DONE][SPEC]
+    [DONE]”[DONE][DONE]”[READY] Placeholders: 8 variables + contexto repo [DONE][DONE][SPEC]
+    [DONE]””[DONE]”[READY] Wikilinks: SÃ­ (referencia a repositorio padre)
 ```
 
 ---
@@ -652,12 +652,12 @@ TEMPLATE ENGINE - Actor Consumidor
 
 **PC-T1: Reemplazo Completo de Placeholders**
 - UbicaciÃ³n: Todos los templates
-- Riesgo: Placeholder no reemplazado â†’ {{VALUE:variableName}} literal en archivo
+- Riesgo: Placeholder no reemplazado {{VALUE:variableName}} literal en archivo
 - MitigaciÃ³n: Validar que cada placeholder tiene variable correspondiente
 
 **PC-T2: Formato de Frontmatter YAML**
 - UbicaciÃ³n: Todos los templates
-- Riesgo: YAML invÃ¡lido â†’ frontmatter parse error
+- Riesgo: YAML invÃ¡lido frontmatter parse error
 - MitigaciÃ³n: Validar sintaxis YAML en template
 
 **PC-T3: Wikilinks en UC-005**
@@ -667,24 +667,24 @@ TEMPLATE ENGINE - Actor Consumidor
 
 ---
 
-## MATRIZ COMPLETA: ACTORES Ã— UCS
+## MATRIZ COMPLETA: ACTORES Ã[ARCH] UCS
 
 ```
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚ ACTOR          â”‚ UC-001  â”‚ UC-002  â”‚ UC-003  â”‚ UC-004  â”‚ UC-005  â”‚
-â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
-â”‚ Usuario        â”‚ âœ“ (3)   â”‚ âœ“ (4)   â”‚ âœ“ (3)   â”‚ âœ“ (2)   â”‚ âœ“ (3)   â”‚
-â”‚ QuickAdd       â”‚ âœ“ (5)   â”‚ âœ“ (4)   â”‚ âœ“ (4)   â”‚ âœ“ (3)   â”‚ âœ“ (4)   â”‚
-â”‚ Obsidian       â”‚ âœ“ (3)   â”‚ âœ“ (2)   â”‚ âœ“ (2)   â”‚ âœ“ (2)   â”‚ âœ“ (2)   â”‚
-â”‚ Utils/         â”‚ âœ“ (6)   â”‚ âœ“ (6)   â”‚ âœ“ (7)   â”‚ âœ“ (6)   â”‚ âœ“ (7)   â”‚
-â”‚ Template       â”‚ âœ“ (1)   â”‚ âœ“ (1)   â”‚ âœ“ (1)   â”‚ âœ“ (1)   â”‚ âœ“ (1)   â”‚
-â”‚ MetadataCache  â”‚ -       â”‚ -       â”‚ -       â”‚ -       â”‚ âœ“ (1)   â”‚
-â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
-â”‚ TOTAL          â”‚ 5       â”‚ 5       â”‚ 5       â”‚ 5       â”‚ 6       â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+[DONE]”Œ[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”¬[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”¬[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”¬[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”¬[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”¬[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”
+[DONE]”‚ ACTOR          [DONE]”‚ UC-001  [DONE]”‚ UC-002  [DONE]”‚ UC-003  [DONE]”‚ UC-004  [DONE]”‚ UC-005  [DONE]”‚
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”¼[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”¼[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”¼[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”¼[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”¼[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”¤
+[DONE]”‚ Usuario        [DONE]”‚ [DONE][DONE][SPEC] (3)   [DONE]”‚ [DONE][DONE][SPEC] (4)   [DONE]”‚ [DONE][DONE][SPEC] (3)   [DONE]”‚ [DONE][DONE][SPEC] (2)   [DONE]”‚ [DONE][DONE][SPEC] (3)   [DONE]”‚
+[DONE]”‚ QuickAdd       [DONE]”‚ [DONE][DONE][SPEC] (5)   [DONE]”‚ [DONE][DONE][SPEC] (4)   [DONE]”‚ [DONE][DONE][SPEC] (4)   [DONE]”‚ [DONE][DONE][SPEC] (3)   [DONE]”‚ [DONE][DONE][SPEC] (4)   [DONE]”‚
+[DONE]”‚ Obsidian       [DONE]”‚ [DONE][DONE][SPEC] (3)   [DONE]”‚ [DONE][DONE][SPEC] (2)   [DONE]”‚ [DONE][DONE][SPEC] (2)   [DONE]”‚ [DONE][DONE][SPEC] (2)   [DONE]”‚ [DONE][DONE][SPEC] (2)   [DONE]”‚
+[DONE]”‚ Utils/         [DONE]”‚ [DONE][DONE][SPEC] (6)   [DONE]”‚ [DONE][DONE][SPEC] (6)   [DONE]”‚ [DONE][DONE][SPEC] (7)   [DONE]”‚ [DONE][DONE][SPEC] (6)   [DONE]”‚ [DONE][DONE][SPEC] (7)   [DONE]”‚
+[DONE]”‚ Template       [DONE]”‚ [DONE][DONE][SPEC] (1)   [DONE]”‚ [DONE][DONE][SPEC] (1)   [DONE]”‚ [DONE][DONE][SPEC] (1)   [DONE]”‚ [DONE][DONE][SPEC] (1)   [DONE]”‚ [DONE][DONE][SPEC] (1)   [DONE]”‚
+[DONE]”‚ MetadataCache  [DONE]”‚ -       [DONE]”‚ -       [DONE]”‚ -       [DONE]”‚ -       [DONE]”‚ [DONE][DONE][SPEC] (1)   [DONE]”‚
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”¼[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”¼[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”¼[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”¼[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”¼[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”¤
+[DONE]”‚ TOTAL          [DONE]”‚ 5       [DONE]”‚ 5       [DONE]”‚ 5       [DONE]”‚ 5       [DONE]”‚ 6       [DONE]”‚
+[DONE]””[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”´[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”´[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”´[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”´[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”´[DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”[READY][DONE]”˜
 
 NÃºmeros: cantidad de pasos/operaciones por actor en cada UC
-Checkmarks: participaciÃ³n (âœ“ = participa)
+Checkmarks: participaciÃ³n ([DONE][DONE][SPEC] = participa)
 ```
 
 ---
@@ -693,60 +693,60 @@ Checkmarks: participaciÃ³n (âœ“ = participa)
 
 ```
 Usuario
-  â”‚
-  â”œâ”€ Invoca macro (Paso 1)
-  â”‚   â†“
+  [DONE]”‚
+  [DONE]”[DONE][DONE]”[READY] Invoca macro (Paso 1)
+  [DONE]”‚   
   QuickAdd
-  â”‚
-  â”œâ”€ Carga createRepository.js (Paso 2)
-  â”‚   â†“
-  â”‚ [Usuario ingresa nombre] (Paso 3)
-  â”‚   â†“
-  â”‚ [Usuario selecciona tipo] (Paso 4)
-  â”‚   â†“
+  [DONE]”‚
+  [DONE]”[DONE][DONE]”[READY] Carga createRepository.js (Paso 2)
+  [DONE]”‚   
+  [DONE]”‚ [Usuario ingresa nombre] (Paso 3)
+  [DONE]”‚   
+  [DONE]”‚ [Usuario selecciona tipo] (Paso 4)
+  [DONE]”‚   
   Utils/
-  â”‚
-  â”œâ”€ validateCommonInput() (Paso 5: OP-002)
-  â”‚   â†“ [VÃ¡lido]
-  â”‚ generateUniqueId() (Paso 6: OP-003)
-  â”‚   â†“
-  â”‚ getCurrentDateTime() (Paso 7: OP-005)
-  â”‚   â†“
-  â”‚ getFileName() (Paso 8: OP-006)
-  â”‚   â†“
-  â”‚ getGrandParentFolder() (Paso 9: OP-008)
-  â”‚   â†“
+  [DONE]”‚
+  [DONE]”[DONE][DONE]”[READY] validateCommonInput() (Paso 5: OP-002)
+  [DONE]”‚    [VÃ¡lido]
+  [DONE]”‚ generateUniqueId() (Paso 6: OP-003)
+  [DONE]”‚   
+  [DONE]”‚ getCurrentDateTime() (Paso 7: OP-005)
+  [DONE]”‚   
+  [DONE]”‚ getFileName() (Paso 8: OP-006)
+  [DONE]”‚   
+  [DONE]”‚ getGrandParentFolder() (Paso 9: OP-008)
+  [DONE]”‚   
   QuickAdd (retorna control)
-  â”‚
-  â”œâ”€ Asigna variables (Paso 12: OP-012)
-  â”‚   â†“
+  [DONE]”‚
+  [DONE]”[DONE][DONE]”[READY] Asigna variables (Paso 12: OP-012)
+  [DONE]”‚   
   Template
-  â”‚
-  â”œâ”€ Reemplaza {{VALUE:...}} (Paso 13: OP-013)
-  â”‚   â†“
+  [DONE]”‚
+  [DONE]”[DONE][DONE]”[READY] Reemplaza {{VALUE:...}} (Paso 13: OP-013)
+  [DONE]”‚   
   QuickAdd (retorna control)
-  â”‚
-  â”œâ”€ Llama app.vault.create() (Paso 14: OP-014)
-  â”‚   â†“
+  [DONE]”‚
+  [DONE]”[DONE][DONE]”[READY] Llama app.vault.create() (Paso 14: OP-014)
+  [DONE]”‚   
   Obsidian
-  â”‚
-  â”œâ”€ createFolder() (Paso 14: recursivo)
-  â”‚   â†“ [Carpetas creadas]
-  â”‚ create() (Paso 14: crea archivo)
-  â”‚   â†“
+  [DONE]”‚
+  [DONE]”[DONE][DONE]”[READY] createFolder() (Paso 14: recursivo)
+  [DONE]”‚    [Carpetas creadas]
+  [DONE]”‚ create() (Paso 14: crea archivo)
+  [DONE]”‚   
   File System (persistencia)
-  â”‚   â†“
+  [DONE]”‚   
   QuickAdd (retorna control)
-  â”‚
-  â”œâ”€ showNotification() (Paso 15: OP-015)
-  â”‚   â†“
+  [DONE]”‚
+  [DONE]”[DONE][DONE]”[READY] showNotification() (Paso 15: OP-015)
+  [DONE]”‚   
   Utils/
-  â”‚
-  â”œâ”€ Muestra notificaciÃ³n verde
-  â”‚   â†“
+  [DONE]”‚
+  [DONE]”[DONE][DONE]”[READY] Muestra notificaciÃ³n verde
+  [DONE]”‚   
   Usuario
-  â”‚
-  â””â”€ Ve "Repositorio creado exitosamente"
+  [DONE]”‚
+  [DONE]””[DONE]”[READY] Ve "Repositorio creado exitosamente"
 ```
 
 ---
@@ -765,6 +765,6 @@ Usuario
 ---
 
 **DOCUMENTO**: PASO3-ACTORES-MATRIZ.md
-**VERSIÃ“N**: 1.0.0
+**VERSIÃ[SPEC]N**: 1.0.0
 **FECHA**: 2026-04-11
 **ESTADO**: MATRIZ COMPLETADA - ACTORES DOCUMENTADOS

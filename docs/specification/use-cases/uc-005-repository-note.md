@@ -10,7 +10,7 @@ status: Especificación Completada
 
 # UC-005: CREAR NOTA EN REPOSITORIO
 
-## 1. IDENTIFICACIÓN
+## 1. IDENTIFICACI�[SPEC]N
 
 | Atributo | Valor |
 |----------|-------|
@@ -20,7 +20,7 @@ status: Especificación Completada
 | **Estado** | Especificación Completada |
 | **Responsable** | Especificador de Casos de Uso |
 | **Fecha Creación** | 2026-04-11 |
-| **Fecha Última Actualización** | 2026-04-11 |
+| **Fecha �[REF]ltima Actualización** | 2026-04-11 |
 | **Prioridad** | MEDIA (Sprint 2) |
 | **Complejidad** | ALTA |
 | **Precondición Especial** | UC-001 debe estar completado (repositorio debe existir) |
@@ -28,7 +28,7 @@ status: Especificación Completada
 
 ---
 
-## 2. DESCRIPCIÓN BREVE
+## 2. DESCRIPCI�[SPEC]N BREVE
 
 El usuario invoca macro "Crear Nota en Repositorio" a través de command palette de Obsidian. El sistema QuickAdd carga el script createRepositoryNote.js que solicita seleccionar repositorio existente, título de la nota y descripción. Obtiene metadata del repositorio padre (OP-007), valida entrada, genera ID único vinculado al repositorio, obtiene fecha de creación, construye estructura de carpetas dentro del repositorio, asigna variables incluyendo referencia cruzada, ejecuta template repositoryNote.md y crea archivo final. El usuario recibe notificación de éxito. Esta es una operación más compleja que depende de UC-001.
 
@@ -136,9 +136,9 @@ El usuario ejecuta macro que dispara proceso de 14 pasos que culmina en la creac
 **Resultado esperado**: _selected_repository contiene ID del repositorio seleccionado (ej: "id-naq5a4-a7f3c2b1d0e9f4a5")
 
 **Manejo de errores**:
-- No hay repositorios disponibles → Excepción E-001
-- Usuario cancela selector → Macro se interrumpe sin notificación
-- Repositorio sin ID en frontmatter → Excepción E-002
+- No hay repositorios disponibles Excepción E-001
+- Usuario cancela selector Macro se interrumpe sin notificación
+- Repositorio sin ID en frontmatter Excepción E-002
 
 ---
 
@@ -184,7 +184,7 @@ El usuario ejecuta macro que dispara proceso de 14 pasos que culmina en la creac
 - Validar _input_title <= 255 caracteres
 - Validar _input_title contiene solo: letras, números, guiones, espacios
 - Validar repositorio seleccionado es válido (ID no vacío)
-- Si cualquier validación falla → Lanzar excepción
+- Si cualquier validación falla Lanzar excepción
 
 **Componentes invocados**: validationOperations.validateCommonInput()
 
@@ -192,7 +192,7 @@ El usuario ejecuta macro que dispara proceso de 14 pasos que culmina en la creac
 
 ---
 
-#### **Paso 7: Generar ID Único para Nota (OP-003)**
+#### **Paso 7: Generar ID �[REF]nico para Nota (OP-003)**
 
 **Actor**: createRepositoryNote.js
 
@@ -246,9 +246,9 @@ El usuario ejecuta macro que dispara proceso de 14 pasos que culmina en la creac
 ```
 
 **Manejo de errores**:
-- Archivo de repositorio no encontrado → Excepción E-006
-- Frontmatter inválido → Excepción E-007
-- Repositorio sin ID en metadata → Excepción E-008
+- Archivo de repositorio no encontrado Excepción E-006
+- Frontmatter inválido Excepción E-007
+- Repositorio sin ID en metadata Excepción E-008
 
 ---
 
@@ -417,10 +417,10 @@ Análisis de requisitos del proyecto
 **Resultado esperado**: Archivo creado en ruta correcta dentro de repositorio con contenido completo
 
 **Manejo de errores**:
-- Carpeta no puede ser creada → Excepción E-009
-- Archivo ya existe → Excepción E-010
-- Permisos insuficientes → Excepción E-011
-- Espacio en disco → Excepción E-012
+- Carpeta no puede ser creada Excepción E-009
+- Archivo ya existe Excepción E-010
+- Permisos insuficientes Excepción E-011
+- Espacio en disco Excepción E-012
 
 ---
 
@@ -545,7 +545,7 @@ Análisis de requisitos del proyecto
 1. Nota está lista para ser documentada dentro del repositorio
 2. Usuario puede abrir archivo y editar contenido
 3. Relación con repositorio padre es explícita y documentada
-4. Estructura jerárquica (repositorio → nota) es clara
+4. Estructura jerárquica (repositorio nota) es clara
 
 ---
 
@@ -742,7 +742,7 @@ stateDiagram-v2
 
 ---
 
-## 11. NOTAS DE IMPLEMENTACIÓN
+## 11. NOTAS DE IMPLEMENTACI�[SPEC]N
 
 ### Librería y Dependencias
 
@@ -767,15 +767,15 @@ stateDiagram-v2
 ### Testing Strategy
 
 **UC-005 requiere tests para:**
-- ✓ Usuario selecciona repositorio válido → éxito
-- ✓ No hay repositorios disponibles → error E-001
-- ✓ Usuario cancela selector → ningún cambio
-- ✓ Título inválido → error
-- ✓ Metadata repositorio se obtiene correctamente
-- ✓ Nota creada dentro del repositorio → estructura jerárquica
-- ✓ Referencia cruzada al repositorio → wikilink funciona
-- ✓ Template variables reemplazadas → sin placeholders
-- ✓ Archivo creado en folder notes/ del repositorio
+- [DONE][DONE][SPEC] Usuario selecciona repositorio válido éxito
+- [DONE][DONE][SPEC] No hay repositorios disponibles error E-001
+- [DONE][DONE][SPEC] Usuario cancela selector ningún cambio
+- [DONE][DONE][SPEC] Título inválido error
+- [DONE][DONE][SPEC] Metadata repositorio se obtiene correctamente
+- [DONE][DONE][SPEC] Nota creada dentro del repositorio estructura jerárquica
+- [DONE][DONE][SPEC] Referencia cruzada al repositorio wikilink funciona
+- [DONE][DONE][SPEC] Template variables reemplazadas sin placeholders
+- [DONE][DONE][SPEC] Archivo creado en folder notes/ del repositorio
 
 ---
 
@@ -798,7 +798,7 @@ stateDiagram-v2
 
 ---
 
-## 13. CRITERIOS DE ACEPTACIÓN
+## 13. CRITERIOS DE ACEPTACI�[SPEC]N
 
 **UC-005 es COMPLETADO cuando:**
 
@@ -844,4 +844,4 @@ stateDiagram-v2
 **Documento**: UC-005-CREAR-NOTA-REPOSITORIO.md
 **Versión**: 1.0.0
 **Fecha**: 2026-04-11
-**Estado**: ESPECIFICACIÓN COMPLETADA - LISTO PARA IMPLEMENTACIÓN
+**Estado**: ESPECIFICACI�[SPEC]N COMPLETADA - LISTO PARA IMPLEMENTACI�[SPEC]N

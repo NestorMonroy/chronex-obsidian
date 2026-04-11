@@ -47,4 +47,4 @@ Documentos de referencia y análisis externos.
 ---
 
 **Modelo**: arc42 "thematic drawers" pattern  
-**Última actualización**: 2026-04-11
+**�[REF]ltima actualización**: 2026-04-11

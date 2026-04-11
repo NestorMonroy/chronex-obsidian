@@ -13,7 +13,7 @@ status: √çndice de validaci√≥n y organizaci√≥n
 
 ---
 
-## INTRODUCCI√ìN
+## INTRODUCCI√[SPEC]N
 
 PASO 3 organiza los 5 casos de uso formales de PASO 2 por **ACTOR** (no por secci√≥n, como en ecosistemas grandes), valida completitud, documenta dependencias y verifica que la especificaci√≥n est√° lista para implementaci√≥n.
 
@@ -36,7 +36,7 @@ Este PASO es el puente entre especificaci√≥n (PASO 2) e implementaci√≥n (ROADMAP
 ### ARTEFACTO 2: PASO3-ACTORES-MATRIZ
 **Prop√≥sito**: Agrupar UCs por ACTOR
 
-- Matriz: Actor √ó UC (responsabilidades)
+- Matriz: Actor √[ARCH] UC (responsabilidades)
 - 5 Actores identificados en PASO 2:
   - Usuario (Nestor)
   - QuickAdd Plugin
@@ -51,9 +51,9 @@ Este PASO es el puente entre especificaci√≥n (PASO 2) e implementaci√≥n (ROADMAP
 ---
 
 ### ARTEFACTO 3: PASO3-DIAGRAMA-ACTORES
-**Prop√≥sito**: Visualizaciones de relaciones Actor‚ÜîUC
+**Prop√≥sito**: Visualizaciones de relaciones Actor[DONE]ÜîUC
 
-- Diagrama 1: Relaci√≥n Actor ‚Üí UC (qui√©n participa en qu√©)
+- Diagrama 1: Relaci√≥n Actor UC (qui√©n participa en qu√©)
 - Diagrama 2: Flujo de datos entre actores
 - Diagrama 3: Dependencias entre UCs
 - Diagrama 4: Timeline de ejecuci√≥n
@@ -65,7 +65,7 @@ Formato: Mermaid diagrams
 ### ARTEFACTO 4: PASO3-COMPLETITUD-CHECKLIST
 **Prop√≥sito**: Verificar que PASO 2 est√° completo
 
-- Checklist 1: Validaci√≥n por UC (14 secciones √ó 5 UCs)
+- Checklist 1: Validaci√≥n por UC (14 secciones √[ARCH] 5 UCs)
 - Checklist 2: Validaci√≥n por Actor (5 actores)
 - Checklist 3: Validaci√≥n de templates (5 templates)
 - Checklist 4: Validaci√≥n de operaciones at√≥micas
@@ -77,8 +77,8 @@ Total: 70+ checkboxes de completitud
 ### ARTEFACTO 5: PASO3-FLUJOS-SECUENCIA
 **Prop√≥sito**: Documentar flujos de datos entre UCs
 
-- Flujo 1: UC-001 ‚Üí UC-002 (Crear repositorio ‚Üí Crear tarea en contexto)
-- Flujo 2: UC-001 ‚Üí UC-005 (Crear repositorio ‚Üí Crear nota en repositorio)
+- Flujo 1: UC-001 UC-002 (Crear repositorio Crear tarea en contexto)
+- Flujo 2: UC-001 UC-005 (Crear repositorio Crear nota en repositorio)
 - Flujo 3: UC-004 (Independiente: crear pilar)
 - Flujo 4: UC-003 (Independiente: crear proyecto)
 - Flujo 5: Flujo completo de usuario (todos los UCs en secuencia)
@@ -165,7 +165,7 @@ Diagramas de secuencia por flujo
 
 ---
 
-### Actor 4: M√ìDULOS UTILS/
+### Actor 4: M√[SPEC]DULOS UTILS/
 - **Rol**: Actor secundario - Utilidades
 - **Participaci√≥n en UCs**: 5/5 (todos)
 - **Responsabilidad**: Generar IDs, validar, obtener metadata, mostrar notificaci√≥n
@@ -181,18 +181,18 @@ Diagramas de secuencia por flujo
 
 ---
 
-## MATRIZ ACTORES √ó UCS
+## MATRIZ ACTORES √[ARCH] UCS
 
 ```
                 UC-001  UC-002  UC-003  UC-004  UC-005
-                ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
-Usuario         ‚úì       ‚úì       ‚úì       ‚úì       ‚úì
-QuickAdd        ‚úì       ‚úì       ‚úì       ‚úì       ‚úì
-Obsidian        ‚úì       ‚úì       ‚úì       ‚úì       ‚úì
-Utils/          ‚úì       ‚úì       ‚úì       ‚úì       ‚úì
-Template        ‚úì       ‚úì       ‚úì       ‚úì       ‚úì
-MetadataCache   -       -       -       -       ‚úì
-‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+                [DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY]
+Usuario         [DONE][DONE][SPEC]       [DONE][DONE][SPEC]       [DONE][DONE][SPEC]       [DONE][DONE][SPEC]       [DONE][DONE][SPEC]
+QuickAdd        [DONE][DONE][SPEC]       [DONE][DONE][SPEC]       [DONE][DONE][SPEC]       [DONE][DONE][SPEC]       [DONE][DONE][SPEC]
+Obsidian        [DONE][DONE][SPEC]       [DONE][DONE][SPEC]       [DONE][DONE][SPEC]       [DONE][DONE][SPEC]       [DONE][DONE][SPEC]
+Utils/          [DONE][DONE][SPEC]       [DONE][DONE][SPEC]       [DONE][DONE][SPEC]       [DONE][DONE][SPEC]       [DONE][DONE][SPEC]
+Template        [DONE][DONE][SPEC]       [DONE][DONE][SPEC]       [DONE][DONE][SPEC]       [DONE][DONE][SPEC]       [DONE][DONE][SPEC]
+MetadataCache   -       -       -       -       [DONE][DONE][SPEC]
+[DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY][DONE]î[READY]
 TOTAL INTERACCIONES: 25 + 1 = 26
 ```
 
@@ -202,19 +202,19 @@ TOTAL INTERACCIONES: 25 + 1 = 26
 
 ```
 UC-001 (Crear Repositorio)
-    ‚îî‚îÄ Precondici√≥n para: UC-005
+    [DONE]îî[DONE]î[READY] Precondici√≥n para: UC-005
 
 UC-002 (Crear Tarea)
-    ‚îî‚îÄ Independiente
+    [DONE]îî[DONE]î[READY] Independiente
 
 UC-003 (Crear Proyecto)
-    ‚îî‚îÄ Independiente
+    [DONE]îî[DONE]î[READY] Independiente
 
 UC-004 (Crear Pilar)
-    ‚îî‚îÄ Independiente
+    [DONE]îî[DONE]î[READY] Independiente
 
 UC-005 (Crear Nota en Repositorio)
-    ‚îî‚îÄ Requiere: UC-001 debe estar completado
+    [DONE]îî[DONE]î[READY] Requiere: UC-001 debe estar completado
 ```
 
 **Testing Order:**
@@ -223,23 +223,23 @@ UC-005 (Crear Nota en Repositorio)
 
 ---
 
-## OPERACIONES AT√ìMICAS REUTILIZADAS
+## OPERACIONES AT√[SPEC]MICAS REUTILIZADAS
 
 | Operaci√≥n | UC-001 | UC-002 | UC-003 | UC-004 | UC-005 | Total |
 |-----------|--------|--------|--------|--------|--------|-------|
-| OP-001 | ‚úì | ‚úì | ‚úì | ‚úì | ‚úì | 5 |
-| OP-002 | ‚úì | ‚úì | ‚úì | ‚úì | ‚úì | 5 |
-| OP-003 | ‚úì | ‚úì | ‚úì | ‚úì | ‚úì | 5 |
-| OP-005 | ‚úì | ‚úì | ‚úì | ‚úì | ‚úì | 5 |
-| OP-006 | ‚úì | ‚úì | ‚úì | ‚úì | - | 4 |
-| OP-007 | - | ‚úì | ‚úì | - | ‚úì | 3 |
-| OP-008 | ‚úì | - | ‚úì | ‚úì | - | 3 |
-| OP-010 | ‚úì | - | ‚úì | ‚úì | - | 3 |
-| OP-011 | ‚úì | ‚úì | ‚úì | ‚úì | ‚úì | 5 |
-| OP-012 | ‚úì | ‚úì | ‚úì | ‚úì | ‚úì | 5 |
-| OP-013 | ‚úì | ‚úì | ‚úì | ‚úì | ‚úì | 5 |
-| OP-014 | ‚úì | ‚úì | ‚úì | ‚úì | ‚úì | 5 |
-| OP-015 | ‚úì | ‚úì | ‚úì | ‚úì | ‚úì | 5 |
+| OP-001 | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | 5 |
+| OP-002 | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | 5 |
+| OP-003 | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | 5 |
+| OP-005 | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | 5 |
+| OP-006 | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | - | 4 |
+| OP-007 | - | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | - | [DONE][DONE][SPEC] | 3 |
+| OP-008 | [DONE][DONE][SPEC] | - | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | - | 3 |
+| OP-010 | [DONE][DONE][SPEC] | - | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | - | 3 |
+| OP-011 | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | 5 |
+| OP-012 | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | 5 |
+| OP-013 | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | 5 |
+| OP-014 | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | 5 |
+| OP-015 | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | [DONE][DONE][SPEC] | 5 |
 
 **An√°lisis**: OP-001, OP-002, OP-003, OP-005, OP-011, OP-012, OP-013, OP-014, OP-015 son reutilizadas en **todos los 5 UCs** (core operations).
 
@@ -278,39 +278,39 @@ UC-005 (Crear Nota en Repositorio)
 
 ---
 
-## RELACI√ìN CON DOCUMENTOS ANTERIORES
+## RELACI√[SPEC]N CON DOCUMENTOS ANTERIORES
 
 ```
 PASO 1 V4 (An√°lisis)
-    ‚îî‚îÄ 15 operaciones at√≥micas
-    ‚îî‚îÄ 6 violaciones SOLID/DRY
-    ‚îî‚îÄ 5 fases ROADMAP
+    [DONE]îî[DONE]î[READY] 15 operaciones at√≥micas
+    [DONE]îî[DONE]î[READY] 6 violaciones SOLID/DRY
+    [DONE]îî[DONE]î[READY] 5 fases ROADMAP
 
-        ‚Üì
+        
 
 PASO 2 (Especificaci√≥n)
-    ‚îî‚îÄ 5 UCs formales
-    ‚îî‚îÄ 5 Templates
-    ‚îî‚îÄ 70+ excepciones mapeadas
+    [DONE]îî[DONE]î[READY] 5 UCs formales
+    [DONE]îî[DONE]î[READY] 5 Templates
+    [DONE]îî[DONE]î[READY] 70+ excepciones mapeadas
 
-        ‚Üì
+        
 
-PASO 3 (Validaci√≥n) ‚Üê T√ö ERES AQU√ç
-    ‚îî‚îÄ Organizaci√≥n por Actor
-    ‚îî‚îÄ Matriz de completitud
-    ‚îî‚îÄ Diagramas de dependencias
-    ‚îî‚îÄ Checklist final
+PASO 3 (Validaci√≥n)  T√[REF] ERES AQU√ç
+    [DONE]îî[DONE]î[READY] Organizaci√≥n por Actor
+    [DONE]îî[DONE]î[READY] Matriz de completitud
+    [DONE]îî[DONE]î[READY] Diagramas de dependencias
+    [DONE]îî[DONE]î[READY] Checklist final
 ```
 
 ---
 
-## VALIDACI√ìN ANTES DE PASO 3
+## VALIDACI√[SPEC]N ANTES DE PASO 3
 
 **Criterios que PASO 2 debe cumplir:**
 
 - [ ] 5 UCs con 14 secciones cada uno (70 secciones totales)
 - [ ] 5 Templates creados y validados
-- [ ] Trazabilidad: 15 operaciones at√≥micas ‚Üí UCs
+- [ ] Trazabilidad: 15 operaciones at√≥micas UCs
 - [ ] Excepciones mapeadas: 51 excepciones en total
 - [ ] Diagramas: 3 diagramas Mermaid por UC (15 total)
 
@@ -318,7 +318,7 @@ PASO 3 (Validaci√≥n) ‚Üê T√ö ERES AQU√ç
 
 ---
 
-## VALIDACI√ìN DENTRO DE PASO 3
+## VALIDACI√[SPEC]N DENTRO DE PASO 3
 
 **PASO 3 valida:**
 
@@ -344,30 +344,30 @@ PASO 3 (Validaci√≥n) ‚Üê T√ö ERES AQU√ç
 
 ---
 
-## PR√ìXIMOS PASOS POST-PASO 3
+## PR√[SPEC]XIMOS PASOS POST-PASO 3
 
 Si PASO 3 valida como **COMPLETADO**:
 
 ```
 PASO 3 (Validaci√≥n)
-    ‚Üì
+    
 Ejecutar ROADMAP (PASO 1 V4)
-    ‚îú‚îÄ FASE 1: Convenciones (7h)
-    ‚îú‚îÄ FASE 2: M√≥dulos reutilizables (12h)
-    ‚îú‚îÄ FASE 3: SRP refactorizaci√≥n (18h)
-    ‚îú‚îÄ FASE 4: Escalabilidad (15h)
-    ‚îî‚îÄ FASE 5: Testing (8h)
+    [DONE]î[DONE][DONE]î[READY] FASE 1: Convenciones (7h)
+    [DONE]î[DONE][DONE]î[READY] FASE 2: M√≥dulos reutilizables (12h)
+    [DONE]î[DONE][DONE]î[READY] FASE 3: SRP refactorizaci√≥n (18h)
+    [DONE]î[DONE][DONE]î[READY] FASE 4: Escalabilidad (15h)
+    [DONE]îî[DONE]î[READY] FASE 5: Testing (8h)
         TOTAL: 60 horas, 10 semanas
 
-        ‚Üì
+        
 
 Implementaci√≥n de 5 UCs
-    ‚îú‚îÄ Crear 5 scripts orquestadores
-    ‚îú‚îÄ Integrar 5 templates
-    ‚îú‚îÄ Validar 12 m√≥dulos utils
-    ‚îî‚îÄ Testing contra UC specs
+    [DONE]î[DONE][DONE]î[READY] Crear 5 scripts orquestadores
+    [DONE]î[DONE][DONE]î[READY] Integrar 5 templates
+    [DONE]î[DONE][DONE]î[READY] Validar 12 m√≥dulos utils
+    [DONE]îî[DONE]î[READY] Testing contra UC specs
 
-        ‚Üì
+        
 
 Release ACTIVIDAD 1
 ```
@@ -389,7 +389,7 @@ Release ACTIVIDAD 1
 
 ---
 
-## CONCLUSI√ìN
+## CONCLUSI√[SPEC]N
 
 PASO 3 organiza y valida que PASO 2 est√° completo y listo para implementaci√≥n. La estructura por ACTORES (no por secciones) refleja la naturaleza simple pero integrada de ACTIVIDAD 1.
 
@@ -402,6 +402,6 @@ Los 5 artefactos de PASO 3 garantizan que:
 ---
 
 **DOCUMENTO**: PASO3-INDEX.md
-**VERSI√ìN**: 1.0.0
+**VERSI√[SPEC]N**: 1.0.0
 **FECHA**: 2026-04-11
 **ESTADO**: √çNDICE COMPLETADO - LISTO PARA ARTEFACTOS SIGUIENTES

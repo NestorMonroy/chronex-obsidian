@@ -10,7 +10,7 @@ status: Especificación Completada
 
 # UC-002: CREAR TAREA
 
-## 1. IDENTIFICACIÓN
+## 1. IDENTIFICACI�[SPEC]N
 
 | Atributo | Valor |
 |----------|-------|
@@ -20,14 +20,14 @@ status: Especificación Completada
 | **Estado** | Especificación Completada |
 | **Responsable** | Especificador de Casos de Uso |
 | **Fecha Creación** | 2026-04-11 |
-| **Fecha Última Actualización** | 2026-04-11 |
+| **Fecha �[REF]ltima Actualización** | 2026-04-11 |
 | **Prioridad** | ALTA (Sprint 1) |
 | **Complejidad** | MEDIA |
 | **Operaciones Atómicas** | OP-001, OP-002, OP-003, OP-005, OP-006, OP-007, OP-011, OP-012, OP-013, OP-014, OP-015 |
 
 ---
 
-## 2. DESCRIPCIÓN BREVE
+## 2. DESCRIPCI�[SPEC]N BREVE
 
 El usuario invoca macro "Crear Tarea" a través de command palette de Obsidian. El sistema QuickAdd carga el script createTask.js que solicita título de la tarea, prioridad (High, Normal, Low), descripción opcional y fecha de vencimiento. Valida entrada, genera ID único, obtiene fecha de creación y metadatos, construye estructura de carpetas por prioridad, asigna variables de template, ejecuta template task.md y crea archivo final en carpeta estructurada con estado inicial "pending". El usuario recibe notificación de éxito con información de la tarea creada.
 
@@ -129,8 +129,8 @@ El usuario ejecuta macro que dispara proceso de 13 pasos que culmina en la creac
 **Resultado esperado**: _input_title contiene título ingresado por usuario
 
 **Manejo de errores**:
-- Usuario cancela prompt → Macro se interrumpe, sin notificación
-- Usuario deja campo vacío → Validación fallida (Paso 5)
+- Usuario cancela prompt Macro se interrumpe, sin notificación
+- Usuario deja campo vacío Validación fallida (Paso 5)
 
 ---
 
@@ -192,22 +192,22 @@ El usuario ejecuta macro que dispara proceso de 13 pasos que culmina en la creac
 - Validar _input_title <= 255 caracteres
 - Validar _input_title contiene solo: letras, números, guiones, espacios
 - Si _input_due_date no vacío: validar formato YYYY-MM-DD
-- Si cualquier validación falla → Lanzar excepción
+- Si cualquier validación falla Lanzar excepción
 
 **Componentes invocados**: validationOperations.validateCommonInput(), custom date validation
 
 **Resultado esperado**: _valid_input es true, o excepción E-001 a E-005
 
 **Manejo de errores**:
-- Título vacío → Excepción E-001
-- Título muy corto → Excepción E-002
-- Título muy largo → Excepción E-003
-- Caracteres inválidos → Excepción E-004
-- Fecha formato inválido → Excepción E-005
+- Título vacío Excepción E-001
+- Título muy corto Excepción E-002
+- Título muy largo Excepción E-003
+- Caracteres inválidos Excepción E-004
+- Fecha formato inválido Excepción E-005
 
 ---
 
-#### **Paso 8: Generar ID Único (OP-003)**
+#### **Paso 8: Generar ID �[REF]nico (OP-003)**
 
 **Actor**: createTask.js
 
@@ -261,7 +261,7 @@ El usuario ejecuta macro que dispara proceso de 13 pasos que culmina en la creac
 
 **Acción**:
 - Obtener autor actual (getAuthorName())
-- Normalizar prioridad a minúsculas: "High" → "high"
+- Normalizar prioridad a minúsculas: "High" "high"
 - Construir tags: [prioridad, "task", "pending"]
 - Crear objeto _task_metadata con estructura completa
 
@@ -289,7 +289,7 @@ El usuario ejecuta macro que dispara proceso de 13 pasos que culmina en la creac
 
 **Acción**:
 - Construir ruta de estructura: tasks/{prioridad}/{id}/
-- Normalizar prioridad a minúsculas: "High" → "high"
+- Normalizar prioridad a minúsculas: "High" "high"
 - Construir ruta completa: tasks/high/{id}/
 - Asignar a variable _folder_structure
 
@@ -387,10 +387,10 @@ Revisar documento XYZ y proporcionar feedback
 **Resultado esperado**: Archivo creado en ruta correcta con contenido completo
 
 **Manejo de errores**:
-- Carpeta no puede ser creada → Excepción E-006
-- Archivo ya existe → Excepción E-007
-- Permisos insuficientes → Excepción E-008
-- Espacio en disco → Excepción E-009
+- Carpeta no puede ser creada Excepción E-006
+- Archivo ya existe Excepción E-007
+- Permisos insuficientes Excepción E-008
+- Espacio en disco Excepción E-009
 
 ---
 
@@ -679,7 +679,7 @@ stateDiagram-v2
 
 ---
 
-## 11. NOTAS DE IMPLEMENTACIÓN
+## 11. NOTAS DE IMPLEMENTACI�[SPEC]N
 
 ### Librería y Dependencias
 
@@ -705,17 +705,17 @@ stateDiagram-v2
 ### Testing Strategy
 
 **UC-002 requiere tests para:**
-- ✓ Usuario ingresa título válido → éxito
-- ✓ Usuario selecciona prioridad High → estructura tasks/high/
-- ✓ Usuario selecciona prioridad Normal → estructura tasks/normal/
-- ✓ Usuario selecciona prioridad Low → estructura tasks/low/
-- ✓ Usuario ingresa fecha válida → metadata correcta
-- ✓ Usuario deja fecha vacía → metadata sin dueDate
-- ✓ Usuario ingresa fecha inválida → error E-005
-- ✓ Archivo creado tiene status "pending" → verificar frontmatter
-- ✓ Template variables reemplazadas → sin placeholders literales
-- ✓ Usuario cancela durante prompt → ningún cambio
-- ✓ Carpeta estructura creada correctamente → verificar filesystem
+- [DONE][DONE][SPEC] Usuario ingresa título válido éxito
+- [DONE][DONE][SPEC] Usuario selecciona prioridad High estructura tasks/high/
+- [DONE][DONE][SPEC] Usuario selecciona prioridad Normal estructura tasks/normal/
+- [DONE][DONE][SPEC] Usuario selecciona prioridad Low estructura tasks/low/
+- [DONE][DONE][SPEC] Usuario ingresa fecha válida metadata correcta
+- [DONE][DONE][SPEC] Usuario deja fecha vacía metadata sin dueDate
+- [DONE][DONE][SPEC] Usuario ingresa fecha inválida error E-005
+- [DONE][DONE][SPEC] Archivo creado tiene status "pending" verificar frontmatter
+- [DONE][DONE][SPEC] Template variables reemplazadas sin placeholders literales
+- [DONE][DONE][SPEC] Usuario cancela durante prompt ningún cambio
+- [DONE][DONE][SPEC] Carpeta estructura creada correctamente verificar filesystem
 
 ---
 
@@ -738,7 +738,7 @@ stateDiagram-v2
 
 ---
 
-## 13. CRITERIOS DE ACEPTACIÓN
+## 13. CRITERIOS DE ACEPTACI�[SPEC]N
 
 **UC-002 es COMPLETADO cuando:**
 
@@ -780,4 +780,4 @@ stateDiagram-v2
 **Documento**: UC-002-CREAR-TAREA.md
 **Versión**: 1.0.0
 **Fecha**: 2026-04-11
-**Estado**: ESPECIFICACIÓN COMPLETADA - LISTO PARA IMPLEMENTACIÓN
+**Estado**: ESPECIFICACI�[SPEC]N COMPLETADA - LISTO PARA IMPLEMENTACI�[SPEC]N

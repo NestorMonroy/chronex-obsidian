@@ -161,5 +161,5 @@ tags:
 
 ---
 
-**Última actualización:** {{VALUE:createdDate}}  
+**�[REF]ltima actualización:** {{VALUE:createdDate}}  
 **Autor:** {{VALUE:authorName}}

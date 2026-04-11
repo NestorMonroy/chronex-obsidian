@@ -14,7 +14,7 @@ architecture: SRP + DRY + OCP + Escalable
 
 ---
 
-## INTRODUCCIÃ“N
+## INTRODUCCIÃ[SPEC]N
 
 Este documento describe el estado final esperado del sistema despuÃ©s de completar las 5 fases del ROADMAP. El objetivo es mostrar:
 
@@ -34,52 +34,52 @@ Este documento describe el estado final esperado del sistema despuÃ©s de complet
 
 ```
 vault-root/
-â”œâ”€â”€ scripts/
-â”‚   â”œâ”€â”€ orchestrators/
-â”‚   â”‚   â”œâ”€â”€ createEntity.js          [NUEVO - genÃ©rico]
-â”‚   â”‚   â””â”€â”€ README.md                [Documenta patrÃ³n]
-â”‚   â”‚
-â”‚   â”œâ”€â”€ createRepository.js          [Refactorizado - 5 lÃ­neas]
-â”‚   â”œâ”€â”€ createTask.js                [Refactorizado - 5 lÃ­neas]
-â”‚   â”œâ”€â”€ createProject.js             [Refactorizado - 5 lÃ­neas]
-â”‚   â”œâ”€â”€ createPillar.js              [Refactorizado - 5 lÃ­neas]
-â”‚   â”œâ”€â”€ createPilarNote.js           [Refactorizado - 5 lÃ­neas]
-â”‚   â”‚
-â”‚   â”œâ”€â”€ configs/
-â”‚   â”‚   â”œâ”€â”€ entityConfigs.js         [NUEVO - 5 configuraciones]
-â”‚   â”‚   â””â”€â”€ README.md                [CÃ³mo agregar nueva entidad]
-â”‚   â”‚
-â”‚   â”œâ”€â”€ utils/                       [OPCIÃ“N 2 - Plana]
-â”‚   â”‚   â”œâ”€â”€ generateUniqueId.js      [Refactorizado con prefijos]
-â”‚   â”‚   â”œâ”€â”€ generateCustomId.js      [Refactorizado con prefijos]
-â”‚   â”‚   â”œâ”€â”€ getCurrentDateTime.js    [Sin cambios - ya cumple]
-â”‚   â”‚   â”œâ”€â”€ getFileName.js           [Refactorizado con prefijos]
-â”‚   â”‚   â”œâ”€â”€ getMetadataByFrontmatter.js
-â”‚   â”‚   â”œâ”€â”€ getGrandParentFolder.js
-â”‚   â”‚   â”œâ”€â”€ showNotification.js      [Refactorizado - valida type]
-â”‚   â”‚   â”œâ”€â”€ inputOperations.js       [NUEVO - OP-001 reutilizable]
-â”‚   â”‚   â”œâ”€â”€ validationOperations.js  [NUEVO - OP-002 reutilizable]
-â”‚   â”‚   â”œâ”€â”€ metadataOperations.js    [NUEVO - OP-005/007 reutilizable]
-â”‚   â”‚   â”œâ”€â”€ variableOperations.js    [NUEVO - OP-012 reutilizable]
-â”‚   â”‚   â”œâ”€â”€ errorHandling.js         [NUEVO - manejo de errores]
-â”‚   â”‚   â””â”€â”€ README.md                [QuÃ© hace cada mÃ³dulo]
-â”‚   â”‚
-â”‚   â””â”€â”€ README.md                    [GuÃ­a general del proyecto]
-â”‚
-â”œâ”€â”€ templates/
-â”‚   â”œâ”€â”€ repository.md
-â”‚   â”œâ”€â”€ task.md
-â”‚   â”œâ”€â”€ project.md
-â”‚   â”œâ”€â”€ pillar.md
-â”‚   â”œâ”€â”€ pilarNote.md
-â”‚   â””â”€â”€ README.md
-â”‚
-â”œâ”€â”€ 400-DIARIO/
-â”œâ”€â”€ tasks/
-â”œâ”€â”€ repositories/
-â”œâ”€â”€ projects/
-â”œâ”€â”€ pillars/
-â””â”€â”€ main.md
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] scripts/
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] orchestrators/
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] createEntity.js          [NUEVO - genÃ©rico]
+[DONE]”‚   [DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] README.md                [Documenta patrÃ³n]
+[DONE]”‚   [DONE]”‚
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] createRepository.js          [Refactorizado - 5 lÃ­neas]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] createTask.js                [Refactorizado - 5 lÃ­neas]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] createProject.js             [Refactorizado - 5 lÃ­neas]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] createPillar.js              [Refactorizado - 5 lÃ­neas]
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] createPilarNote.js           [Refactorizado - 5 lÃ­neas]
+[DONE]”‚   [DONE]”‚
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] configs/
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] entityConfigs.js         [NUEVO - 5 configuraciones]
+[DONE]”‚   [DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] README.md                [CÃ³mo agregar nueva entidad]
+[DONE]”‚   [DONE]”‚
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] utils/                       [OPCIÃ[SPEC]N 2 - Plana]
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] generateUniqueId.js      [Refactorizado con prefijos]
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] generateCustomId.js      [Refactorizado con prefijos]
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] getCurrentDateTime.js    [Sin cambios - ya cumple]
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] getFileName.js           [Refactorizado con prefijos]
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] getMetadataByFrontmatter.js
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] getGrandParentFolder.js
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] showNotification.js      [Refactorizado - valida type]
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] inputOperations.js       [NUEVO - OP-001 reutilizable]
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] validationOperations.js  [NUEVO - OP-002 reutilizable]
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] metadataOperations.js    [NUEVO - OP-005/007 reutilizable]
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] variableOperations.js    [NUEVO - OP-012 reutilizable]
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] errorHandling.js         [NUEVO - manejo de errores]
+[DONE]”‚   [DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] README.md                [QuÃ© hace cada mÃ³dulo]
+[DONE]”‚   [DONE]”‚
+[DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] README.md                    [GuÃ­a general del proyecto]
+[DONE]”‚
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] templates/
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] repository.md
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] task.md
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] project.md
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] pillar.md
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] pilarNote.md
+[DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] README.md
+[DONE]”‚
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] 400-DIARIO/
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] tasks/
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] repositories/
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] projects/
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] pillars/
+[DONE]””[DONE]”[READY][DONE]”[READY] main.md
 ```
 
 **Total archivos script:**
@@ -91,77 +91,77 @@ vault-root/
 
 ---
 
-## OPCIÃ“N 1: Utils/ Con Subcarpetas (Si escalas a 12+ funciones)
+## OPCIÃ[SPEC]N 1: Utils/ Con Subcarpetas (Si escalas a 12+ funciones)
 
 **Para vault futuro con muchas funciones**
 
 ```
 scripts/
-â”œâ”€â”€ orchestrators/
-â”‚   â”œâ”€â”€ createEntity.js
-â”‚   â””â”€â”€ README.md
-â”‚
-â”œâ”€â”€ createRepository.js
-â”œâ”€â”€ createTask.js
-â”œâ”€â”€ createProject.js
-â”œâ”€â”€ createPillar.js
-â”œâ”€â”€ createPilarNote.js
-â”‚
-â”œâ”€â”€ configs/
-â”‚   â”œâ”€â”€ entityConfigs.js
-â”‚   â””â”€â”€ README.md
-â”‚
-â”œâ”€â”€ utils/
-â”‚   â”œâ”€â”€ generators/                 [QUÃ‰: genera valores]
-â”‚   â”‚   â”œâ”€â”€ uniqueId.js
-â”‚   â”‚   â”œâ”€â”€ customId.js
-â”‚   â”‚   â””â”€â”€ fileName.js
-â”‚   â”‚
-â”‚   â”œâ”€â”€ formatters/                 [QUÃ‰: formatea datos]
-â”‚   â”‚   â””â”€â”€ dateTime.js
-â”‚   â”‚
-â”‚   â”œâ”€â”€ validators/                 [QUÃ‰: valida datos]
-â”‚   â”‚   â”œâ”€â”€ frontmatter.js
-â”‚   â”‚   â”œâ”€â”€ repositoryName.js
-â”‚   â”‚   â””â”€â”€ common.js
-â”‚   â”‚
-â”‚   â”œâ”€â”€ metadata/                   [QUÃ‰: obtiene metadatos]
-â”‚   â”‚   â”œâ”€â”€ frontmatter.js
-â”‚   â”‚   â””â”€â”€ author.js
-â”‚   â”‚
-â”‚   â”œâ”€â”€ input/                      [QUÃ‰: obtiene entrada usuario]
-â”‚   â”‚   â”œâ”€â”€ common.js
-â”‚   â”‚   â””â”€â”€ typeSelectors.js
-â”‚   â”‚
-â”‚   â”œâ”€â”€ errors/                     [QUÃ‰: maneja errores]
-â”‚   â”‚   â””â”€â”€ errorHandling.js
-â”‚   â”‚
-â”‚   â”œâ”€â”€ variables/                  [QUÃ‰: asigna variables]
-â”‚   â”‚   â””â”€â”€ variableOperations.js
-â”‚   â”‚
-â”‚   â”œâ”€â”€ notifications.js            [Standalone]
-â”‚   â””â”€â”€ README.md
-â”‚
-â””â”€â”€ README.md
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] orchestrators/
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] createEntity.js
+[DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] README.md
+[DONE]”‚
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] createRepository.js
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] createTask.js
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] createProject.js
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] createPillar.js
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] createPilarNote.js
+[DONE]”‚
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] configs/
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] entityConfigs.js
+[DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] README.md
+[DONE]”‚
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] utils/
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] generators/                 [QUÃ‰: genera valores]
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] uniqueId.js
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] customId.js
+[DONE]”‚   [DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] fileName.js
+[DONE]”‚   [DONE]”‚
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] formatters/                 [QUÃ‰: formatea datos]
+[DONE]”‚   [DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] dateTime.js
+[DONE]”‚   [DONE]”‚
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] validators/                 [QUÃ‰: valida datos]
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] frontmatter.js
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] repositoryName.js
+[DONE]”‚   [DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] common.js
+[DONE]”‚   [DONE]”‚
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] metadata/                   [QUÃ‰: obtiene metadatos]
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] frontmatter.js
+[DONE]”‚   [DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] author.js
+[DONE]”‚   [DONE]”‚
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] input/                      [QUÃ‰: obtiene entrada usuario]
+[DONE]”‚   [DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] common.js
+[DONE]”‚   [DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] typeSelectors.js
+[DONE]”‚   [DONE]”‚
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] errors/                     [QUÃ‰: maneja errores]
+[DONE]”‚   [DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] errorHandling.js
+[DONE]”‚   [DONE]”‚
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] variables/                  [QUÃ‰: asigna variables]
+[DONE]”‚   [DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] variableOperations.js
+[DONE]”‚   [DONE]”‚
+[DONE]”‚   [DONE]”[DONE][DONE]”[READY][DONE]”[READY] notifications.js            [Standalone]
+[DONE]”‚   [DONE]””[DONE]”[READY][DONE]”[READY] README.md
+[DONE]”‚
+[DONE]””[DONE]”[READY][DONE]”[READY] README.md
 ```
 
-**MigraciÃ³n de OpciÃ³n 2 â†’ OpciÃ³n 1:**
-- Mover generateUniqueId.js â†’ utils/generators/uniqueId.js
-- Mover validateCommonInput â†’ utils/validators/common.js
-- Imports cambian: `../utils/generateUniqueId` â†’ `../utils/generators/uniqueId`
+**MigraciÃ³n de OpciÃ³n 2 OpciÃ³n 1:**
+- Mover generateUniqueId.js utils/generators/uniqueId.js
+- Mover validateCommonInput utils/validators/common.js
+- Imports cambian: `../utils/generateUniqueId` `../utils/generators/uniqueId`
 - Muy poco trabajo, cÃ³digo sigue funcionando
 
 ---
 
-## OPCIÃ“N 3: Inline (Si reduces a <3 funciones)
+## OPCIÃ[SPEC]N 3: Inline (Si reduces a <3 funciones)
 
 **Para MVP o prototipo muy simple**
 
 ```
 scripts/
-â”œâ”€â”€ createRepository.js             [CÃ³digo inline, sin utils/]
-â”œâ”€â”€ createTask.js                   [CÃ³digo inline, sin utils/]
-â””â”€â”€ README.md
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] createRepository.js             [CÃ³digo inline, sin utils/]
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] createTask.js                   [CÃ³digo inline, sin utils/]
+[DONE]””[DONE]”[READY][DONE]”[READY] README.md
 ```
 
 **Cuando cambiar a OpciÃ³n 2:**
@@ -171,7 +171,7 @@ scripts/
 
 ---
 
-## EJEMPLOS DE CÃ“DIGO TARGET
+## EJEMPLOS DE CÃ[SPEC]DIGO TARGET
 
 ### MÃ³dulo 1: generateUniqueId.js (Refactorizado)
 
@@ -528,7 +528,7 @@ module.exports = { createEntity };
 
 ---
 
-## VALIDACIÃ“N CONTRA CONVENCIONES
+## VALIDACIÃ[SPEC]N CONTRA CONVENCIONES
 
 ### Convenciones-de-CÃ³digo v1.0.0
 
@@ -565,7 +565,7 @@ module.exports = { createEntity };
 
 ---
 
-## CHECKLIST DE VALIDACIÃ“N FINAL
+## CHECKLIST DE VALIDACIÃ[SPEC]N FINAL
 
 ### Estructura
 
@@ -603,7 +603,7 @@ module.exports = { createEntity };
 - [ ] Agregar nueva entidad requiere solo 5 lÃ­neas + config
 - [ ] Cambiar validaciÃ³n es 1 lugar (validationOperations.js)
 - [ ] Cambiar metadata es 1 lugar (metadataOperations.js)
-- [ ] DuplicaciÃ³n eliminada (500 lÃ­neas â†’ 100)
+- [ ] DuplicaciÃ³n eliminada (500 lÃ­neas 100)
 - [ ] CÃ³digo legible (nuevo dev entiende en 1 hora)
 
 ### DocumentaciÃ³n
@@ -622,15 +622,15 @@ module.exports = { createEntity };
 |---|---|---|---|
 | LÃ­neas cÃ³digo | 1750 | 300 (orquestadores) + 600 (utils + configs) = 900 | -50% |
 | DuplicaciÃ³n | 500 lÃ­neas | 0 lÃ­neas | -100% |
-| Funciones SRP | 0% | 100% | âœ“ |
-| Error handling | 0% | 100% | âœ“ |
+| Funciones SRP | 0% | 100% | [DONE][DONE][SPEC] |
+| Error handling | 0% | 100% | [DONE][DONE][SPEC] |
 | Escalabilidad | BAJA | MEDIA | +150% |
 | DocumentaciÃ³n | BAJA | ALTA | +300% |
 | Tiempo agregar entidad | 100h (copy/paste) | 0.5h (config) | -99% |
 
 ---
 
-## PRÃ“XIMOS PASOS DESPUÃ‰S DE TARGET
+## PRÃ[SPEC]XIMOS PASOS DESPUÃ‰S DE TARGET
 
 ### Inmediato (1-2 semanas)
 - Implementar las 5 fases del ROADMAP
@@ -652,7 +652,7 @@ module.exports = { createEntity };
 
 ---
 
-## CONCLUSIÃ“N
+## CONCLUSIÃ[SPEC]N
 
 La estructura TARGET es:
 
@@ -663,21 +663,21 @@ La estructura TARGET es:
 5. **Testeable:** Funciones pequeÃ±as, responsabilidad Ãºnica
 6. **Profesional:** Alineado con estÃ¡ndares de GitHub
 
-El camino desde AS-IS â†’ TARGET es el ROADMAP de 5 fases (60 horas), que es ejecutable y bajo riesgo.
+El camino desde AS-IS TARGET es el ROADMAP de 5 fases (60 horas), que es ejecutable y bajo riesgo.
 
 ---
 
-## RELACIÃ“N CON PASO 1 V4
+## RELACIÃ[SPEC]N CON PASO 1 V4
 
 ```
-PASO 1 V4 - ANÃLISIS COMPLETO
-â”œâ”€â”€ ARTEFACTO 1 (INDEX)           â†’ Navegar la serie
-â”œâ”€â”€ ARTEFACTO 2 (STAKEHOLDERS)    â†’ QuiÃ©nes participan
-â”œâ”€â”€ ARTEFACTO 3 (OPERACIONES)     â†’ QuÃ© se hace (15 ops)
-â”œâ”€â”€ ARTEFACTO 4 (AS-IS)           â†’ CÃ³digo actual (problemas)
-â”œâ”€â”€ ARTEFACTO 5 (VIOLACIONES)     â†’ QuÃ© viola SOLID/DRY
-â”œâ”€â”€ ARTEFACTO 6 (ROADMAP)         â†’ CÃ³mo arreglarlo (5 fases)
-â””â”€â”€ ARTEFACTO 7 (TARGET) â† TÃš ERES AQUÃ
+PASO 1 V4 - ANÃ[DIR]LISIS COMPLETO
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] ARTEFACTO 1 (INDEX)           Navegar la serie
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] ARTEFACTO 2 (STAKEHOLDERS)    QuiÃ©nes participan
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] ARTEFACTO 3 (OPERACIONES)     QuÃ© se hace (15 ops)
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] ARTEFACTO 4 (AS-IS)           CÃ³digo actual (problemas)
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] ARTEFACTO 5 (VIOLACIONES)     QuÃ© viola SOLID/DRY
+[DONE]”[DONE][DONE]”[READY][DONE]”[READY] ARTEFACTO 6 (ROADMAP)         CÃ³mo arreglarlo (5 fases)
+[DONE]””[DONE]”[READY][DONE]”[READY] ARTEFACTO 7 (TARGET)  TÃ[REF] ERES AQUÃ
     
 TARGET es el destino.
 ROADMAP es el mapa.
