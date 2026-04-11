@@ -4,8 +4,15 @@
  * Permite crear un objetivo dentro de la estructura del proyecto.
  * Similar a Create Project pero sin crear carpeta.
  * 
+ * INTEGRACIÓN TEMPLATER:
+ * - Template: docs/templates/objective-template.md
+ * - Variables: uid, type, title, description, priority, dateCreated, status
+ * - Templater procesa el contenido en tiempo de creación
+ * 
  * @see /docs/specification/use-cases/UC-010-create-objective.md
  */
+
+import { TemplaterIntegration } from './templaterIntegration';
 
 export interface CreateObjectiveInput {
   objectiveName: string;

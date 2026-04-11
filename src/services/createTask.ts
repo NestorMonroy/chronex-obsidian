@@ -1,6 +1,15 @@
 /**
  * UC-012: Create Task (TIER 1 MVP)
+ * 
+ * INTEGRACIÓN TEMPLATER:
+ * - Template: docs/templates/task-template.md
+ * - Variables: uid, type, title, description, priority, dueDate, dateCreated, status
+ * - Soporta fecha de vencimiento en formato YYYY-MM-DD
+ * 
+ * @see /docs/specification/use-cases/UC-012-create-task.md
  */
+
+import { TemplaterIntegration } from './templaterIntegration';
 
 export interface CreateTaskInput {
   taskName: string;

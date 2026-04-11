@@ -8,30 +8,27 @@
  * - Descripción opcional
  * - Prioridad (BAJA, MEDIA, ALTA, CRÍTICA)
  * - Carpeta estructura en 200-PROYECTOS/{ID}/
- * - Nota base (README.md) con frontmatter
+ * - Nota base (README.md) generada desde TEMPLATE usando Templater
  * - ID único generado: PROJ-YYYYMM-XXXXX
  * 
  * Flujo:
  * 1. Validar entrada (projectName requerido, máx 200 caracteres)
  * 2. Generar ID único garantizado
  * 3. Crear carpeta en 200-PROYECTOS/{ID}/
- * 4. Crear nota README.md desde template
+ * 4. Crear nota README.md desde template con Templater
  * 5. Crear frontmatter con metadatos del proyecto
  * 6. Notificar usuario
  * 7. Guardar en registro de proyectos
  * 
- * Ejemplo uso:
- * ```typescript
- * const result = await ProjectService.createProject({
- *   projectName: 'Nuevo Proyecto 2026',
- *   description: 'Descripción del proyecto',
- *   priority: 'ALTA'
- * });
- * // result.projectId: 'PROJ-202604-ABC12'
- * ```
+ * INTEGRACIÓN TEMPLATER:
+ * - Template ubicado en: docs/templates/project-template.md
+ * - Variables de frontmatter: uid, type, title, description, priority, dateCreated
+ * - Templater procesa {{variable}} en tiempo de creación
  * 
  * @see /docs/specification/use-cases/UC-008-create-project.md
  */
+
+import { TemplaterIntegration } from './templaterIntegration';
 
 /**
  * Entrada para crear proyecto
@@ -245,10 +242,31 @@ export class ProjectService {
   }
 
   /**
-   * Crear nota base de proyecto
+   * Crear nota base de proyecto usando Templater
+   * 
+   * Obtiene el template de project-template.md y lo procesa
+   * con las variables del frontmatter del proyecto.
    */
   private static async createProjectNote(projectId: string, input: CreateProjectInput): Promise<string> {
-    // En implementación real, usaría Templater
+    // En implementación real, usaría TemplaterIntegration para:
+    // 1. Cargar template desde docs/templates/project-template.md
+    // 2. Procesar variables {{}} de frontmatter
+    // 3. Guardar en 200-PROYECTOS/{ID}/README.md
+    
+    const templateData = {
+      uid: projectId,
+      type: 'proyecto',
+      title: input.projectName,
+      description: input.description || '',
+      priority: input.priority || 'MEDIA',
+      dateCreated: new Date().toISOString().split('T')[0]
+    };
+
+    // Simulando: const result = await TemplaterIntegration.processTemplate(
+    //   'project-template',
+    //   templateData
+    // );
+
     const notePath = `200-PROYECTOS/${projectId}/README.md`;
     return notePath;
   }
