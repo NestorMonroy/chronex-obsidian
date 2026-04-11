@@ -9,11 +9,13 @@
  * 2. Generar ID único
  * 3. Crear estructura de carpetas
  * 4. Crear README.md con frontmatter y contenido
- * 5. Registrar en índice de proyectos
- * 6. Notificar usuario
+ * 5. Crear _about_.md con FolderAboutService
+ * 6. Registrar en índice de proyectos
+ * 7. Notificar usuario
  */
 
 import { ObsidianVaultAdapter } from '../adapters/ObsidianVaultAdapter';
+import { FolderAboutService } from './folderAboutService';
 import { ProjectService } from './createProject';
 import { IdGenerator } from '../utils/generateUniqueId';
 import { Validator } from '../utils/validators';
@@ -84,7 +86,32 @@ export class ProjectServiceWithVault {
 
       await vault.createFile(notePath, content);
 
-      // 5. REGISTRAR EN ÍNDICE
+      // 5. CREAR _about_.md CON FOLDERABOUTSERVICE
+      await FolderAboutService.createAboutNote(folderPath, {
+        type: 'proyecto',
+        title: input.projectName,
+        description: input.description,
+        dateCreated,
+        status: 'activo',
+        icon: '📁'
+      });
+
+      // 6. CREAR _about_ PARA SUBCARPETAS
+      const subfolders = ['objetivos', 'documentos', 'recursos'];
+      for (const subfolder of subfolders) {
+        const subfolderPath = `${folderPath}/${subfolder}`;
+        await FolderAboutService.createAboutNote(subfolderPath, {
+          type: 'carpeta',
+          title: subfolder.charAt(0).toUpperCase() + subfolder.slice(1),
+          description: `Carpeta para almacenar ${subfolder}`,
+          parentId: projectId,
+          dateCreated,
+          status: 'activo',
+          icon: '📂'
+        });
+      }
+
+      // 7. REGISTRAR EN ÍNDICE
       await this.addToIndex(projectId, {
         projectName: input.projectName,
         description: input.description,

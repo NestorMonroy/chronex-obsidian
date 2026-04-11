@@ -1,9 +1,11 @@
+import { FolderAboutService } from './folderAboutService';
 /**
  * DocumentServiceWithVault - Integración Real con Obsidian Vault
  * Crea documentos en la estructura de repositorios
  */
 
 import { ObsidianVaultAdapter } from '../adapters/ObsidianVaultAdapter';
+import { FolderAboutService } from './folderAboutService';
 import { IdGenerator } from '../utils/generateUniqueId';
 import { Validator } from '../utils/validators';
 
@@ -71,6 +73,17 @@ export class DocumentServiceWithVault {
       const notePath = `${folderPath}/README.md`;
 
       await vault.createFile(notePath, content);
+
+      // CREAR _about_.md
+      await FolderAboutService.createAboutNote(folderPath, {
+        type: 'documento',
+        title: input.documentName,
+        description: input.description,
+        parentId: input.category,
+        dateCreated,
+        status: 'activo',
+        icon: '📄'
+      });
 
       vault.showSuccessNotice(`Documento "${input.documentName}" creado!`);
 

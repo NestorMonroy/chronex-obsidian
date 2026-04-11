@@ -43,8 +43,10 @@ import { IdGenerator } from './utils/generateUniqueId';
 import { ProjectsView, PROJECTS_VIEW_TYPE } from './views/ProjectsView';
 import { TasksCalendarView, TASKS_CALENDAR_VIEW_TYPE } from './views/TasksCalendarView';
 import { KanbanView, KANBAN_VIEW_TYPE } from './views/KanbanView';
+import { FolderAboutService } from './services/folderAboutService';
 
 import './views/views.css';
+import './views/folderAbout.css';
 
 // Interfaz de configuración del plugin
 interface ObsidianRepoSettings {
@@ -609,6 +611,63 @@ class ObsidianRepoSettingTab extends PluginSettingTab {
           .onChange(async (value) => {
             this.plugin.settings.language = value as 'es' | 'en';
             await this.plugin.saveSettings();
+          })
+      );
+
+    // ========== FOLDER ABOUT SETTINGS ==========
+    containerEl.createEl('h3', { text: 'Folder About Notes (_about_)' });
+
+    new Setting(containerEl)
+      .setName('Auto-generate _about_ notes')
+      .setDesc('Automatically create _about_.md files for each folder')
+      .addToggle((toggle) =>
+        toggle
+          .setValue(true)
+          .onChange(async (value) => {
+            if (this.plugin.settings.enableLogging) {
+              console.log('[obsidian-repo] Folder About auto-generate:', value);
+            }
+          })
+      );
+
+    new Setting(containerEl)
+      .setName('Hide _about_ files in sidebar')
+      .setDesc('Hide _about_.md files from the file explorer tree')
+      .addToggle((toggle) =>
+        toggle
+          .setValue(false)
+          .onChange(async (value) => {
+            if (this.plugin.settings.enableLogging) {
+              console.log('[obsidian-repo] Hide _about_ files:', value);
+            }
+          })
+      );
+
+    new Setting(containerEl)
+      .setName('Card view type for _about_ notes')
+      .setDesc('Display style for folder descriptions')
+      .addDropdown((dropdown) =>
+        dropdown
+          .addOption('cute', 'Cute Cards (3 columns)')
+          .addOption('strip', 'Strip Cards (horizontal)')
+          .setValue('cute')
+          .onChange(async (value) => {
+            if (this.plugin.settings.enableLogging) {
+              console.log('[obsidian-repo] Card view type:', value);
+            }
+          })
+      );
+
+    new Setting(containerEl)
+      .setName('Auto-update _about_ content')
+      .setDesc('Update _about_ notes when editing entity metadata')
+      .addToggle((toggle) =>
+        toggle
+          .setValue(true)
+          .onChange(async (value) => {
+            if (this.plugin.settings.enableLogging) {
+              console.log('[obsidian-repo] Auto-update _about_:', value);
+            }
           })
       );
   }

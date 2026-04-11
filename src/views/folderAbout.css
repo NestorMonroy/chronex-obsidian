@@ -1,0 +1,320 @@
+/* Estilos para _about_ notes - Inspirado en Folder Note pero PROPIO */
+
+/* Esconder el archivo _about_ en el árbol de archivos (opcional) */
+div.is-folder-about {
+    display: none;
+}
+
+/* Indicar que carpeta tiene _about_ note */
+div.has-folder-about {
+    color: var(--text-nav-selected);
+    font-weight: 600;
+}
+
+/* ==========================================
+   CUTE CARD BAND - 3 Columnas Responsive
+   ========================================== */
+
+.folder-about.cute-card-band {
+    width: 100%;
+    max-width: 900px;
+    margin: 20px auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
+}
+
+@media (min-width: 30em) {
+    .folder-about.cute-card-band {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (min-width: 60em) {
+    .folder-about.cute-card-band {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.folder-about.cute-card-view {
+    background: var(--background-accent);
+    text-decoration: none !important;
+    color: var(--text-normal);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    position: relative;
+    top: 0;
+    transition: all 0.1s ease-in;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.folder-about.cute-card-view:hover {
+    top: -2px;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+.folder-about.cute-card-view article {
+    padding: 15px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.folder-about.cute-card-view h1 {
+    font-size: 1.2rem;
+    margin: 0;
+    color: var(--text-accent);
+}
+
+.folder-about.cute-card-view p {
+    flex: 1;
+    line-height: 1.5;
+    margin: 8px 0;
+    font-size: 0.95rem;
+}
+
+.folder-about.cute-card-view span {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+}
+
+.folder-about .thumb {
+    width: 100%;
+    height: 60px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px 10px 0 0;
+}
+
+.folder-about .thumb-color {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 10px 10px 0 0;
+    text-transform: uppercase;
+    color: white;
+}
+
+/* Colores por tipo */
+.folder-about .thumb-color-proyecto {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.folder-about .thumb-color-objetivo {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.folder-about .thumb-color-tarea {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.folder-about .thumb-color-documento {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.folder-about .thumb-color-carpeta {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+/* ==========================================
+   STRIP CARD VIEW - Tarjeta Horizontal
+   ========================================== */
+
+.folder-about.strip-card-view {
+    width: 100%;
+    margin: 15px 0;
+    display: flex;
+    flex-direction: row;
+    min-height: 120px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--background-accent);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.folder-about.strip-card-view:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.folder-about.strip-card-view .thumb {
+    width: 120px;
+    min-width: 120px;
+    background-size: cover;
+}
+
+.folder-about.strip-card-view .thumb-color {
+    width: 120px;
+    min-width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
+
+.folder-about.strip-card-view article {
+    flex: 1;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.folder-about.strip-card-view h1 {
+    font-size: 1.3rem;
+    margin: 0;
+    color: var(--text-accent);
+}
+
+.folder-about.strip-card-view p {
+    margin: 5px 0;
+    line-height: 1.4;
+    font-size: 0.9rem;
+}
+
+.folder-about.strip-card-view span {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* ==========================================
+   FOLDER ABOUT CONTENEDOR PRINCIPAL
+   ========================================== */
+
+div.folder-about-container {
+    padding: 20px 0;
+}
+
+div.folder-about-header {
+    margin-bottom: 30px;
+    border-bottom: 2px solid var(--background-secondary-alt);
+    padding-bottom: 20px;
+}
+
+div.folder-about-header h1 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+div.folder-about-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-normal);
+    margin: 15px 0;
+}
+
+div.folder-about-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+div.folder-about-info-item {
+    padding: 10px;
+    background: var(--background-secondary);
+    border-radius: 6px;
+    border-left: 3px solid var(--text-accent);
+}
+
+div.folder-about-info-item strong {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+div.folder-about-info-item span {
+    display: block;
+    color: var(--text-normal);
+    font-weight: 500;
+}
+
+/* ==========================================
+   LISTA DE ELEMENTOS CON ICONOS
+   ========================================== */
+
+ul.folder-about-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+ul.folder-about-list li {
+    padding: 12px;
+    margin: 8px 0;
+    background: var(--background-secondary);
+    border-radius: 6px;
+    border-left: 3px solid var(--text-accent);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+ul.folder-about-list li::before {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+ul.folder-about-list li strong {
+    flex: 1;
+}
+
+ul.folder-about-list li span {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* ==========================================
+   COLORES POR PRIORIDAD
+   ========================================== */
+
+.priority-baja {
+    border-left-color: #64b5f6 !important;
+}
+
+.priority-media {
+    border-left-color: #81c784 !important;
+}
+
+.priority-alta {
+    border-left-color: #ffb74d !important;
+}
+
+.priority-crítica {
+    border-left-color: #ef5350 !important;
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 600px) {
+    .folder-about.strip-card-view {
+        flex-direction: column;
+    }
+
+    .folder-about.strip-card-view .thumb,
+    .folder-about.strip-card-view .thumb-color {
+        width: 100%;
+        height: 80px;
+    }
+
+    .folder-about.cute-card-band {
+        grid-template-columns: 1fr;
+    }
+}
