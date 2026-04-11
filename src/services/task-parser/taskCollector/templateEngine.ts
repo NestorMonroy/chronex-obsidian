@@ -85,7 +85,9 @@ export class TemplateEngine {
     // Buscar todos {{VALUE:varName}}
     const varPattern = /\{\{VALUE:(\w+)\}\}/g;
     result = result.replace(varPattern, (match, varName) => {
-      return this.resolveVariable(varName, context);
+      const resolved = this.resolveVariable(varName, context);
+      // Si no se resolvió a nada, mantener la sintaxis original
+      return resolved === '' ? match : resolved;
     });
 
     return result;
