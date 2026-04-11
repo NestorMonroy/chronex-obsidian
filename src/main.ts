@@ -16,6 +16,7 @@ import {
   TFolder,
   Notice,
   Command,
+  WorkspaceLeaf,
 } from 'obsidian';
 
 import { ProjectService } from './services/createProject';
@@ -38,6 +39,12 @@ import { QuickAddIntegration } from './services/quickaddIntegration';
 import { CrossPluginFlow } from './services/crossPluginFlow';
 import { Validator } from './utils/validators';
 import { IdGenerator } from './utils/generateUniqueId';
+
+import { ProjectsView, PROJECTS_VIEW_TYPE } from './views/ProjectsView';
+import { TasksCalendarView, TASKS_CALENDAR_VIEW_TYPE } from './views/TasksCalendarView';
+import { KanbanView, KANBAN_VIEW_TYPE } from './views/KanbanView';
+
+import './views/views.css';
 
 // Interfaz de configuración del plugin
 interface ObsidianRepoSettings {
@@ -79,6 +86,9 @@ export default class ObsidianRepoPlugin extends Plugin {
 
     // Crear estructura de carpetas
     await this.createVaultStructure();
+
+    // Registrar vistas personalizadas
+    this.registerViews();
 
     // Registrar comandos
     this.registerCommands();
@@ -126,6 +136,30 @@ export default class ObsidianRepoPlugin extends Plugin {
       } catch (error) {
         console.warn(`[obsidian-repo] Could not create folder: ${folderPath}`, error);
       }
+    }
+  }
+
+  /**
+   * Registrar vistas personalizadas de Obsidian
+   */
+  private registerViews(): void {
+    this.registerView(PROJECTS_VIEW_TYPE, (leaf) => new ProjectsView(leaf));
+    this.registerView(TASKS_CALENDAR_VIEW_TYPE, (leaf) => new TasksCalendarView(leaf));
+    this.registerView(KANBAN_VIEW_TYPE, (leaf) => new KanbanView(leaf));
+
+    // Abrir vista de proyectos por defecto
+    this.app.workspace.onLayoutReady(() => {
+      const leaf = this.app.workspace.getRightLeaf(false);
+      if (leaf) {
+        leaf.setViewState({
+          type: PROJECTS_VIEW_TYPE,
+          active: true,
+        });
+      }
+    });
+
+    if (this.settings.enableLogging) {
+      console.log('[obsidian-repo] Views registered: 3 (Projects, Calendar, Kanban)');
     }
   }
 
@@ -193,9 +227,40 @@ export default class ObsidianRepoPlugin extends Plugin {
       callback: () => this.handleArchiveEntity(),
     });
 
+    // View Commands
+    this.addCommand({
+      id: 'open-projects-view',
+      name: 'Open Projects Dashboard',
+      callback: () => this.openView(PROJECTS_VIEW_TYPE),
+    });
+
+    this.addCommand({
+      id: 'open-tasks-calendar',
+      name: 'Open Tasks Calendar',
+      callback: () => this.openView(TASKS_CALENDAR_VIEW_TYPE),
+    });
+
+    this.addCommand({
+      id: 'open-kanban',
+      name: 'Open Tasks Kanban',
+      callback: () => this.openView(KANBAN_VIEW_TYPE),
+    });
+
     if (this.settings.enableLogging) {
-      console.log('[obsidian-repo] Commands registered: 8');
+      console.log('[obsidian-repo] Commands registered: 11');
     }
+  }
+
+  /**
+   * Abrir una vista específica
+   */
+  private openView(viewType: string): void {
+    const leaf =
+      this.app.workspace.getLeaf(false) || this.app.workspace.getLeaf(true);
+    leaf.setViewState({
+      type: viewType,
+      active: true,
+    });
   }
 
   /**

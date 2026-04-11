@@ -1,0 +1,246 @@
+/* ProjectsView Styles */
+.projects-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.stat-card {
+  background: var(--background-secondary);
+  padding: 16px;
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid var(--background-secondary-alt);
+}
+
+.stat-number {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--text-accent);
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+.projects-list {
+  margin: 20px 0;
+}
+
+.projects-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.projects-table thead {
+  background: var(--background-secondary);
+}
+
+.projects-table th {
+  padding: 12px;
+  text-align: left;
+  font-weight: bold;
+  border-bottom: 2px solid var(--background-secondary-alt);
+}
+
+.projects-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--background-secondary-alt);
+  cursor: pointer;
+}
+
+.projects-table tr:hover {
+  background: var(--background-secondary);
+}
+
+.priority-baja { border-left: 4px solid #64b5f6; }
+.priority-media { border-left: 4px solid #81c784; }
+.priority-alta { border-left: 4px solid #ffb74d; }
+.priority-crítica { border-left: 4px solid #ef5350; }
+
+/* TasksCalendarView Styles */
+.tasks-calendar {
+  margin: 20px 0;
+}
+
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.calendar-day-header {
+  font-weight: bold;
+  text-align: center;
+  padding: 8px;
+  background: var(--background-secondary);
+  border-radius: 4px;
+}
+
+.calendar-date {
+  aspect-ratio: 1;
+  padding: 8px;
+  border: 1px solid var(--background-secondary-alt);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.calendar-date:hover {
+  background: var(--background-secondary);
+  border-color: var(--text-accent);
+}
+
+.calendar-date.other-month {
+  color: var(--text-muted);
+  background: var(--background-secondary);
+}
+
+.calendar-date.has-tasks {
+  background: var(--interactive-accent);
+  color: white;
+  font-weight: bold;
+}
+
+.task-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: red;
+  color: white;
+  font-size: 10px;
+  padding: 2px 4px;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.upcoming-tasks {
+  margin: 20px 0;
+}
+
+.task-item {
+  padding: 12px;
+  margin: 8px 0;
+  border-left: 4px solid;
+  border-radius: 4px;
+  background: var(--background-secondary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-status {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* KanbanView Styles */
+.kanban-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.kanban-column {
+  background: var(--background-secondary);
+  border-radius: 8px;
+  padding: 16px;
+  border: 1px solid var(--background-secondary-alt);
+}
+
+.kanban-column h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--background-secondary-alt);
+}
+
+.kanban-tasks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 100px;
+}
+
+.kanban-task {
+  background: var(--background-primary);
+  padding: 12px;
+  border-radius: 6px;
+  border-left: 4px solid;
+  cursor: move;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+}
+
+.kanban-task:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.kanban-task strong {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.task-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+}
+
+.priority-badge,
+.due-date {
+  padding: 2px 6px;
+  background: var(--background-secondary);
+  border-radius: 3px;
+  color: var(--text-muted);
+}
+
+.empty-column {
+  color: var(--text-muted);
+  text-align: center;
+  padding: 32px 16px;
+}
+
+/* Button Styles */
+button {
+  padding: 8px 16px;
+  margin: 4px;
+  background: var(--interactive-accent);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+button:hover {
+  background: var(--interactive-accent-hover);
+  opacity: 0.8;
+}
+
+.button-group {
+  display: flex;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.empty-message {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 32px 16px;
+}
