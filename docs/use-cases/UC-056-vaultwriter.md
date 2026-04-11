@@ -557,80 +557,165 @@ FrontmatterError
 
 ═══════════════════════════════════════════════════════════════════════════════
 
-## 10. COMPATIBILIDAD CON BOTONES EXISTENTES
+## 10. BUTTON REGISTRY - REGISTRO CENTRALIZADO
 
-### 10.1 Botones Identificados en 100-INBOX.md
+### 10.1 Archivo Maestro: buttonRegistry.md
 
-**Botones YA EXISTENTES en la bóveda:**
+**Ubicación:** `990-UTILIDADES/buttonRegistry.md`
 
-```
-1. button-home-principal
-   Localización: 100-INBOX.md
-   Propósito: Navegación al home principal
-   Estructura: Referencia por ID
+**Propósito:** Documento central que define todos los botones disponibles en la bóveda.
 
-2. button-add-fugaz
-   Localización: 100-INBOX.md (dentro de ad-flex/ad-blank)
-   Propósito: Crear notas fugaces (fleeting notes)
-   Estructura: Referencia dentro de admonitions
-```
+**Contiene:**
+- 9 botones únicos documentados
+- Configuración completa de cada botón
+- SVGs asignados
+- Parámetros y acciones
+- Apariciones en templates
+- Convenciones y estándares
 
-### 10.2 Requisitos de Compatibilidad
+### 10.2 Los 9 Botones Únicos
 
-UC-056 **DEBE MANTENER COMPATIBILIDAD** con botones existentes:
+**Categoría 1: Notas**
+1. `button-add-nota-pilar` (3 apariciones)
+2. `button-add-nota-tarea` (3 apariciones)
 
-✅ **NO ROMPER** referencias por ID (`button-*`)
-✅ **SOPORTAR** botones dentro de admonitions (ad-flex, ad-blank)
-✅ **MANTENER** patrón de backticks (`button-id`)
-✅ **FUNCIONAR** sin interferir con estructura existente
-✅ **AGREGAR** SVGs sin quebrar referencias
+**Categoría 2: Objetivos y Resultados**
+3. `button-add-objetivo` (2 apariciones)
+4. `button-add-resultado` (3 apariciones)
 
-### 10.3 Patrón de Compatibilidad
+**Categoría 3: Tareas**
+5. `button-add-task` (3 apariciones)
 
-```
-ACTUAL (100-INBOX.md):
-  `button-home-principal`
-  `button-add-fugaz`
+**Categoría 4: Repositorio**
+6. `button-add-500-categoria-repositorio` (1 aparición)
+7. `button-add-500-file-nota-repositorio` (1 aparición)
 
-COMPATIBLE CON UC-056:
-  [🏠_SVG Home](button://home)  ← Mantiene funcionalidad
-  [➕_SVG Fugaz](button://add?type=fugaz)  ← Mejora UI
+**Categoría 5: Navegación**
+8. `button-home-principal` (1 aparición)
+9. `button-add-fugaz` (1 aparición)
+
+**Total: 18 apariciones en 8 templates + 100-INBOX**
+
+### 10.3 ButtonRegistryManager (Nuevo Componente)
+
+**Responsabilidad:** Gestionar el registro centralizado de botones
+
+```typescript
+class ButtonRegistryManager {
   
-  PERO: Sigue siendo compatible con referencias por ID
+  // Leer y parsear buttonRegistry.md
+  async readRegistry(vaultPath: string): Promise<ButtonRegistry>
+  
+  // Obtener configuración de un botón por ID
+  getButtonConfig(buttonId: string): ButtonConfig | undefined
+  
+  // Obtener todos los botones
+  getAllButtons(): ButtonConfig[]
+  
+  // Validar integridad del registro
+  validateRegistry(): ValidationResult
+  
+  // Buscar botones por categoría
+  getButtonsByCategory(category: string): ButtonConfig[]
+  
+  // Obtener apariciones de un botón
+  getButtonAppearances(buttonId: string): string[]
+}
 ```
 
-### 10.4 Tests de Compatibilidad
+### 10.4 ButtonResolver (Nuevo Componente)
 
-Agregar a `vaultWriter.test.ts`:
+**Responsabilidad:** Resolver referencias a botones e inyectar SVGs
 
 ```typescript
-describe('VaultWriter - Backwards Compatibility', () => {
-  test('debe respetar button-home-principal existente')
-  test('debe respetar button-add-fugaz existente')
-  test('debe soportar botones dentro de ad-flex/ad-blank')
-  test('debe mantener referencias backtick funcionales')
-  test('debe agregar SVGs sin romper referencias existentes')
-  test('debe detectar y preservar estructura de admonitions')
-})
+class ButtonResolver {
+  
+  // Detectar todas las referencias a botones en contenido
+  detectButtonReferences(content: string): string[]
+  
+  // Resolver referencia única: obtener configuración
+  resolveReference(
+    referenceId: string, 
+    registry: ButtonRegistry
+  ): ResolvedButton
+  
+  // Resolver todas las referencias en contenido
+  resolveAllReferences(
+    content: string, 
+    registry: ButtonRegistry
+  ): Map<string, ResolvedButton>
+  
+  // Inyectar SVG en referencia manteniendo estructura
+  injectSvgIntoReference(
+    reference: string,
+    svgIcon: string,
+    buttonConfig: ButtonConfig
+  ): string
+}
 ```
 
-### 10.5 VaultWriter Compatibilidad
+### 10.5 Integración con VaultWriter
 
-Métodos adicionales:
+**Flujo de resolución:**
 
-```typescript
-// Detectar referencias existentes
-detectButtonReferences(content: string): string[]
-
-// Mapear ID a configuración de botón
-getButtonConfigById(buttonId: string): ButtonConfig
-
-// Preservar estructura de admonitions
-preserveAdmonitionStructure(content: string): string
-
-// Inyectar SVG sin romper referencias
-injectSvgIntoReference(reference: string, svgIcon: string): string
 ```
+1. VaultWriter lee archivo
+   ↓
+2. Detecta referencias `button-*` usando regex
+   ↓
+3. Carga ButtonRegistry desde 990-UTILIDADES/buttonRegistry.md
+   ↓
+4. Para cada referencia encontrada:
+   a. Busca en ButtonRegistry
+   b. Obtiene configuración (nombre, SVG, acción)
+   c. Inyecta SVG sin romper estructura
+   ↓
+5. Escribe archivo actualizado con SVGs integrados
+   ↓
+6. Mantiene compatibilidad backwards:
+   - Referencias por ID siguen funcionando
+   - Estructura ad-flex/ad-blank intacta
+   - Emojis + SVGs mejorados
+```
+
+### 10.6 Compatibilidad Backwards
+
+**ANTES (Sin UC-056):**
+```ad-flex
+  ```ad-blank
+  > +🧭 Objetivo
+  `button-add-objetivo`
+  ```
+```
+
+**DESPUÉS (Con UC-056):**
+```ad-flex
+  ```ad-blank
+  > +🧭 Objetivo
+  `button-add-objetivo` ← Misma referencia
+  ```
+```
+
+**PERO internamente:**
+- Se inyecta SVG correspondiente (target icon naranja)
+- Se mantiene la referencia por ID
+- Se actualiza el markdown renderizado
+- Estructura ad-flex/ad-blank preservada
+
+**RESULTADO EN OBSIDIAN:**
+- Botón hermoso con SVG
+- Funcionalidad intacta
+- Referencias resueltas dinámicamente
+
+### 10.7 Beneficios del Sistema
+
+✅ **Un solo punto de verdad:** buttonRegistry.md
+✅ **Centralizado:** Todos los botones en un lugar
+✅ **Mantenible:** Cambiar un botón afecta todos los usos
+✅ **Escalable:** Agregar nuevos botones es simple
+✅ **Compatible:** Templates no necesitan cambios
+✅ **Dinámico:** SVGs inyectados automáticamente
+✅ **Profesional:** Sistema robusto y documentado
 
 
 ═══════════════════════════════════════════════════════════════════════════════

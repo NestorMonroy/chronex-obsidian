@@ -680,6 +680,209 @@ describe('UC-056: FrontmatterManager - Gestionar YAML frontmatter', () => {
 
 // ═══════════════════════════════════════════════════════════════════════════════
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// PARTE 4: BUTTONREGISTRY TESTS (5+ tests)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+describe('UC-056: ButtonRegistryManager - Gestionar registro de botones', () => {
+  let registryManager: any;
+  let mockRegistry: any;
+
+  beforeEach(() => {
+    const ButtonRegistryManager = require('../../src/services/vaultWriter').ButtonRegistryManager;
+    registryManager = new ButtonRegistryManager();
+    
+    mockRegistry = {
+      buttons: {
+        'button-add-nota-pilar': {
+          name: 'Agregar Nota',
+          emoji: '📝',
+          color: '#2196F3',
+          action: 'QuickAdd: add-nota-pilar'
+        },
+        'button-add-tarea': {
+          name: 'Agregar Tarea',
+          emoji: '⌚',
+          color: '#4CAF50',
+          action: 'QuickAdd: add-tarea'
+        }
+      }
+    };
+  });
+
+  describe('ButtonRegistryManager - Read and Parse', () => {
+    test('debe leer buttonRegistry.md correctamente', async () => {
+      const registry = await registryManager.readRegistry('buttonRegistry.md');
+
+      expect(registry).toBeDefined();
+      expect(registry.buttons).toBeDefined();
+      expect(Object.keys(registry.buttons).length).toBeGreaterThan(0);
+    });
+
+    test('debe obtener configuración de botón por ID', () => {
+      const config = registryManager.getButtonConfig('button-add-nota-pilar', mockRegistry);
+
+      expect(config).toBeDefined();
+      expect(config.name).toBe('Agregar Nota');
+      expect(config.emoji).toBe('📝');
+      expect(config.color).toBe('#2196F3');
+    });
+
+    test('debe retornar undefined para ID no existente', () => {
+      const config = registryManager.getButtonConfig('button-inexistente', mockRegistry);
+
+      expect(config).toBeUndefined();
+    });
+
+    test('debe obtener todos los botones del registro', () => {
+      const allButtons = registryManager.getAllButtons(mockRegistry);
+
+      expect(Array.isArray(allButtons)).toBe(true);
+      expect(allButtons.length).toBeGreaterThan(0);
+    });
+
+    test('debe validar integridad del registro', () => {
+      const validation = registryManager.validateRegistry(mockRegistry);
+
+      expect(validation.valid).toBe(true);
+      expect(validation.errors).toEqual([]);
+    });
+
+    test('debe detectar botones duplicados en registro', () => {
+      const invalidRegistry = {
+        buttons: {
+          'button-test': { name: 'Test 1' },
+          'button-test': { name: 'Test 2' }  // Duplicado
+        }
+      };
+
+      const validation = registryManager.validateRegistry(invalidRegistry);
+
+      expect(validation.valid).toBe(false);
+      expect(validation.errors.length).toBeGreaterThan(0);
+    });
+
+    test('debe agrupar botones por categoría', () => {
+      const grouped = registryManager.groupByCategory(mockRegistry);
+
+      expect(grouped).toBeDefined();
+      expect(typeof grouped).toBe('object');
+    });
+
+    test('debe buscar botones por categoría', () => {
+      const notaButtons = registryManager.getButtonsByCategory('nota', mockRegistry);
+
+      expect(Array.isArray(notaButtons)).toBe(true);
+    });
+  });
+
+  describe('ButtonRegistryManager - Button Resolver', () => {
+    test('debe detectar referencias a botones en contenido', () => {
+      const content = '`button-add-nota-pilar` y `button-add-tarea`';
+
+      const references = registryManager.detectButtonReferences(content);
+
+      expect(references).toContain('button-add-nota-pilar');
+      expect(references).toContain('button-add-tarea');
+      expect(references.length).toBe(2);
+    });
+
+    test('debe resolver referencia individual correctamente', () => {
+      const resolved = registryManager.resolveReference('button-add-nota-pilar', mockRegistry);
+
+      expect(resolved).toBeDefined();
+      expect(resolved.id).toBe('button-add-nota-pilar');
+      expect(resolved.name).toBe('Agregar Nota');
+    });
+
+    test('debe resolver todas las referencias en contenido', () => {
+      const content = '`button-add-nota-pilar` y `button-add-tarea`';
+
+      const allResolved = registryManager.resolveAllReferences(content, mockRegistry);
+
+      expect(allResolved.size).toBe(2);
+      expect(allResolved.has('button-add-nota-pilar')).toBe(true);
+      expect(allResolved.has('button-add-tarea')).toBe(true);
+    });
+
+    test('debe inyectar SVG en referencia manteniendo estructura', () => {
+      const reference = '`button-add-nota-pilar`';
+      const svg = '<svg>...</svg>';
+      const config = mockRegistry.buttons['button-add-nota-pilar'];
+
+      const injected = registryManager.injectSvgIntoReference(reference, svg, config);
+
+      expect(injected).toContain('svg');
+      expect(injected).toContain('Agregar Nota');
+      expect(injected).toContain('button-add-nota-pilar');
+    });
+
+    test('debe mantener estructura ad-flex/ad-blank', () => {
+      const content = `\`\`\`ad-flex
+\`\`\`ad-blank
+> +📝 Nota
+\`button-add-nota-pilar\`
+\`\`\`
+\`\`\``;
+
+      const resolved = registryManager.resolveAllReferences(content, mockRegistry);
+      
+      expect(resolved.size).toBeGreaterThan(0);
+      // Debe mantener estructura ad-flex/ad-blank intacta
+      expect(content).toContain('ad-flex');
+      expect(content).toContain('ad-blank');
+    });
+
+    test('debe ser compatible con backticks', () => {
+      const references = registryManager.detectButtonReferences('`button-test` y `button-otro`');
+
+      expect(references.length).toBe(2);
+      expect(references[0]).toBe('button-test');
+      expect(references[1]).toBe('button-otro');
+    });
+  });
+
+  describe('ButtonRegistryManager - Compatibility', () => {
+    test('debe mantener referencias por ID sin romper', () => {
+      const oldReference = '`button-add-nota-pilar`';
+      
+      const resolved = registryManager.resolveReference('button-add-nota-pilar', mockRegistry);
+      
+      expect(resolved.id).toBe('button-add-nota-pilar');
+      // ID se mantiene igual
+    });
+
+    test('debe soportar múltiples apariciones del mismo botón', () => {
+      const content = '`button-add-tarea` primer uso\n`button-add-tarea` segundo uso';
+
+      const references = registryManager.detectButtonReferences(content);
+
+      expect(references.length).toBe(2);
+    });
+
+    test('debe validar que todos los botones en templates existan en registry', () => {
+      const templatesButtons = [
+        'button-add-nota-pilar',
+        'button-add-nota-tarea',
+        'button-add-resultado',
+        'button-add-objetivo',
+        'button-add-task',
+        'button-add-500-categoria-repositorio',
+        'button-add-500-file-nota-repositorio',
+        'button-home-principal',
+        'button-add-fugaz'
+      ];
+
+      const validation = registryManager.validateAllButtons(templatesButtons, mockRegistry);
+
+      expect(validation.missing.length).toBe(0);
+      // Todos los botones deben estar en registry
+    });
+  });
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+
 /**
  * RESUMEN TESTS UC-056:
  * 
@@ -700,9 +903,16 @@ describe('UC-056: FrontmatterManager - Gestionar YAML frontmatter', () => {
  *   ✓ Parse (5 tests)
  *   ✓ Update and validate (5 tests)
  * 
- * TOTAL: 45+ TESTS
+ * ButtonRegistryManager (15+ tests):
+ *   ✓ Read and parse (8 tests)
+ *   ✓ Button resolver (7 tests)
+ *   ✓ Compatibility (3 tests)
+ * 
+ * TOTAL: 50+ TESTS
  * 
  * ESTADO: RED (Tests especifican, código NO EXISTE AÚN)
+ * 
+ * BOTONES: 9 únicos documentados en buttonRegistry.md
  * 
  * PRÓXIMO: TDD GREEN - Implementar código
  */
