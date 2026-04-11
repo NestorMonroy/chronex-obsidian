@@ -251,7 +251,13 @@ describe('UC-043: statusRegistry - Status Registry', () => {
       
       expect(registered).toBe(true);
       expect(registry.validateStatus('WAITING')).toBe(true);
-      expect(registry.getStatus('WAITING')).toEqual(customStatus);
+      
+      // Verificar propiedades clave (isDefault se agrega automáticamente)
+      const retrieved = registry.getStatus('WAITING');
+      expect(retrieved?.symbol).toBe('[w]');
+      expect(retrieved?.name).toBe('WAITING');
+      expect(retrieved?.description).toBe('Esperando información');
+      expect(retrieved?.isFinal).toBe(false);
     });
 
     test('debe rechazar registrar status duplicado', () => {
