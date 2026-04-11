@@ -1,11 +1,11 @@
 {
-	"id": "obsidian-repo",
-	"name": "Obsidian Repository Manager",
-	"version": "1.0.0",
-	"minAppVersion": "1.5.0",
-	"description": "Automated repository, task, project, and pillar management with QuickAdd and Templater integration. Create structured notes with validation, unique IDs, and metadata.",
-	"author": "Nestor Monroy",
-	"authorUrl": "https://github.com/NestorMonroy",
-	"fundingUrl": "https://www.buymeacoffee.com",
-	"isDesktopOnly": false
+  "id": "obsidian-repo",
+  "name": "Obsidian Repo",
+  "version": "1.0.0",
+  "minAppVersion": "1.0.0",
+  "description": "Sistema integral de gestión documental y proyectos para Obsidian. Crea proyectos, objetivos, tareas y documentos con estructura automática.",
+  "author": "Nestor Monroy",
+  "authorUrl": "https://github.com/nestormonroy",
+  "fundingUrl": "https://github.com/nestormonroy",
+  "isDesktopOnly": false
 }

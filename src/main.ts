@@ -1,282 +1,536 @@
 /**
- * Obsidian Repository Manager Plugin
+ * obsidian-repo - Plugin Principal
  * 
- * Automated repository, task, project, and pillar management
- * with QuickAdd and Templater integration.
+ * Punto de entrada del plugin para Obsidian.
+ * Integra QuickAdd, Templater y otros plugins con nuestros servicios.
  * 
- * @author Nestor Monroy
- * @version 1.0.0
+ * @see manifest.json para configuración del plugin
  */
 
 import {
-	App,
-	Plugin,
-	PluginSettingTab,
-	Setting,
-	Notice,
-	Command
+  App,
+  Plugin,
+  PluginSettingTab,
+  Setting,
+  TFile,
+  TFolder,
+  Notice,
+  Command,
 } from 'obsidian';
 
-// Import utility modules
-import validateCommonInput from './utils/validateCommonInput';
-import generateUniqueId from './utils/generateUniqueId';
-import getCurrentDateTime from './utils/getCurrentDateTime';
-import getAuthorName from './utils/getAuthorName';
-import getFileName from './utils/getFileName';
+import { ProjectService } from './services/createProject';
+import { ProjectServiceWithVault } from './services/projectServiceWithVault';
+import { ObjectiveService } from './services/createObjective';
+import { TaskService } from './services/createTask';
+import { DocumentService } from './services/createDocument';
+import { ListService } from './services/listProjects';
+import { EditService } from './services/editEntity';
+import { DeleteService } from './services/deleteEntity';
+import { ArchiveService } from './services/archiveEntity';
+import { TemplaterIntegration } from './services/templaterIntegration';
+import { QuickAddIntegration } from './services/quickaddIntegration';
+import { CrossPluginFlow } from './services/crossPluginFlow';
+import { Validator } from './utils/validators';
+import { IdGenerator } from './utils/generateUniqueId';
 
-// Import helpers
-import { normalizeText } from './utils/helpers/normalize';
-import { isValidLength, matchesPattern } from './utils/helpers/validators';
-
-// Import adapters
-import { notificationAdapter } from './utils/adapters/obsidian/notificationAdapter';
-
-/**
- * Plugin settings interface
- */
-interface RepositoryManagerSettings {
-	author: string;
-	templatesFolder: string;
-	scriptsFolder: string;
-	enableNotifications: boolean;
-	enableAutoCapture: boolean;
+// Interfaz de configuración del plugin
+interface ObsidianRepoSettings {
+  inboxFolder: string;
+  projectsFolder: string;
+  repositoriesFolder: string;
+  utilitiesFolder: string;
+  enableLogging: boolean;
+  enableNotifications: boolean;
+  enableAutoBackup: boolean;
+  language: 'es' | 'en';
 }
 
-/**
- * Default plugin settings
- */
-const DEFAULT_SETTINGS: RepositoryManagerSettings = {
-	author: 'Nestor',
-	templatesFolder: '990-UTILIDADES/991-template',
-	scriptsFolder: '990-UTILIDADES/992-script',
-	enableNotifications: true,
-	enableAutoCapture: true
+const DEFAULT_SETTINGS: ObsidianRepoSettings = {
+  inboxFolder: '100-INBOX',
+  projectsFolder: '200-PROYECTOS',
+  repositoriesFolder: '500-REPOSITORIOS',
+  utilitiesFolder: '990-UTILIDADES',
+  enableLogging: true,
+  enableNotifications: true,
+  enableAutoBackup: false,
+  language: 'es',
 };
 
 /**
- * Main plugin class
- * Extends Obsidian Plugin for repository management
+ * Plugin Principal de obsidian-repo
  */
-export default class RepositoryManagerPlugin extends Plugin {
-	settings: RepositoryManagerSettings;
+export default class ObsidianRepoPlugin extends Plugin {
+  settings: ObsidianRepoSettings;
 
-	/**
-	 * Plugin load lifecycle
-	 */
-	async onload() {
-		// Load settings
-		await this.loadSettings();
+  async onload() {
+    console.log('[obsidian-repo] Loading plugin...');
 
-		// Register commands
-		this.registerCommands();
+    // Inicializar VaultAdapter PRIMERO
+    ObsidianVaultAdapter.initialize(this.app);
 
-		// Register settings tab
-		this.addSettingTab(new RepositoryManagerSettingTab(this.app, this));
+    // Cargar configuración
+    await this.loadSettings();
 
-		console.log('Obsidian Repository Manager loaded');
-	}
+    // Crear estructura de carpetas
+    await this.createVaultStructure();
 
-	/**
-	 * Plugin unload lifecycle
-	 */
-	onunload() {
-		console.log('Obsidian Repository Manager unloaded');
-	}
+    // Registrar comandos
+    this.registerCommands();
 
-	/**
-	 * Load plugin settings
-	 */
-	async loadSettings() {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
-	}
+    // Registrar settings tab
+    this.addSettingTab(new ObsidianRepoSettingTab(this.app, this));
 
-	/**
-	 * Save plugin settings
-	 */
-	async saveSettings() {
-		await this.saveData(this.settings);
-	}
+    // Registrar macros con QuickAdd
+    await this.registerQuickAddMacros();
 
-	/**
-	 * Register plugin commands
-	 */
-	registerCommands() {
-		// Command: Create Repository
-		this.addCommand({
-			id: 'repo-create-repository',
-			name: 'Create Repository',
-			callback: () => this.createRepository(),
-			hotkeys: []
-		});
+    // Registrar templates con Templater
+    await this.registerTemplaterTemplates();
 
-		// Command: Create Task
-		this.addCommand({
-			id: 'repo-create-task',
-			name: 'Create Task',
-			callback: () => this.createTask(),
-			hotkeys: []
-		});
+    console.log('[obsidian-repo] Plugin loaded successfully!');
+    new Notice('obsidian-repo plugin loaded!');
+  }
 
-		// Command: Create Project
-		this.addCommand({
-			id: 'repo-create-project',
-			name: 'Create Project',
-			callback: () => this.createProject(),
-			hotkeys: []
-		});
+  onunload() {
+    console.log('[obsidian-repo] Unloading plugin...');
+  }
 
-		// Command: Create Pillar
-		this.addCommand({
-			id: 'repo-create-pillar',
-			name: 'Create Pillar',
-			callback: () => this.createPillar(),
-			hotkeys: []
-		});
+  /**
+   * Crear estructura de carpetas base del vault
+   */
+  private async createVaultStructure(): Promise<void> {
+    const folders = [
+      this.settings.inboxFolder,
+      this.settings.projectsFolder,
+      this.settings.repositoriesFolder,
+      this.settings.utilitiesFolder,
+      `${this.settings.utilitiesFolder}/991-templates`,
+      `${this.settings.utilitiesFolder}/992-script`,
+      `${this.settings.utilitiesFolder}/audit`,
+    ];
 
-		// Command: Create Fleeting Note
-		this.addCommand({
-			id: 'repo-create-fleeting-note',
-			name: 'Create Fleeting Note',
-			callback: () => this.createFleetingNote(),
-			hotkeys: []
-		});
-	}
+    for (const folderPath of folders) {
+      try {
+        const folder = this.app.vault.getAbstractFileByPath(folderPath);
+        if (!folder) {
+          await this.app.vault.createFolder(folderPath);
+          if (this.settings.enableLogging) {
+            console.log(`[obsidian-repo] Created folder: ${folderPath}`);
+          }
+        }
+      } catch (error) {
+        console.warn(`[obsidian-repo] Could not create folder: ${folderPath}`, error);
+      }
+    }
+  }
 
-	/**
-	 * Create a new repository
-	 */
-	async createRepository() {
-		try {
-			// Generate repository data
-			const repositoryId = generateUniqueId({ prefix: 'repo' });
-			const now = getCurrentDateTime();
-			const author = this.settings.author;
+  /**
+   * Registrar comandos de Obsidian
+   */
+  private registerCommands(): void {
+    // UC-008: Create Project
+    this.addCommand({
+      id: 'create-project',
+      name: 'Create new project',
+      callback: () => this.handleCreateProject(),
+      hotkey: 'Mod+Shift+P',
+    });
 
-			const data = {
-				repositoryId,
-				repositoryName: 'New Repository',
-				description: 'Repository description',
-				createdAt: now,
-				author
-			};
+    // UC-010: Create Objective
+    this.addCommand({
+      id: 'create-objective',
+      name: 'Create new objective',
+      callback: () => this.handleCreateObjective(),
+      hotkey: 'Mod+Shift+O',
+    });
 
-			// Show notification
-			if (this.settings.enableNotifications) {
-				new Notice(`Repository created: ${data.repositoryName}`);
-			}
+    // UC-012: Create Task
+    this.addCommand({
+      id: 'create-task',
+      name: 'Create new task',
+      callback: () => this.handleCreateTask(),
+      hotkey: 'Mod+Shift+T',
+    });
 
-		} catch (error) {
-			new Notice(`Error creating repository: ${error.message}`);
-			console.error('Error creating repository:', error);
-		}
-	}
+    // UC-013: Create Document
+    this.addCommand({
+      id: 'create-document',
+      name: 'Create new document',
+      callback: () => this.handleCreateDocument(),
+      hotkey: 'Mod+Shift+D',
+    });
 
-	/**
-	 * Create a new task
-	 */
-	async createTask() {
-		try {
-			const taskId = generateUniqueId({ prefix: 'task' });
-			new Notice(`Task created with ID: ${taskId}`);
-		} catch (error) {
-			new Notice(`Error creating task: ${error.message}`);
-		}
-	}
+    // UC-015: List Projects
+    this.addCommand({
+      id: 'list-projects',
+      name: 'List all projects',
+      callback: () => this.handleListProjects(),
+    });
 
-	/**
-	 * Create a new project
-	 */
-	async createProject() {
-		try {
-			const projectId = generateUniqueId({ prefix: 'proj' });
-			new Notice(`Project created with ID: ${projectId}`);
-		} catch (error) {
-			new Notice(`Error creating project: ${error.message}`);
-		}
-	}
+    // UC-019: Edit Entity
+    this.addCommand({
+      id: 'edit-entity',
+      name: 'Edit entity',
+      callback: () => this.handleEditEntity(),
+    });
 
-	/**
-	 * Create a new pillar
-	 */
-	async createPillar() {
-		try {
-			const pillarId = generateUniqueId({ prefix: 'pillar' });
-			new Notice(`Pillar created with ID: ${pillarId}`);
-		} catch (error) {
-			new Notice(`Error creating pillar: ${error.message}`);
-		}
-	}
+    // UC-020: Delete Entity
+    this.addCommand({
+      id: 'delete-entity',
+      name: 'Delete entity',
+      callback: () => this.handleDeleteEntity(),
+    });
 
-	/**
-	 * Create a new fleeting note
-	 */
-	async createFleetingNote() {
-		try {
-			const noteId = generateUniqueId({ prefix: 'note' });
-			new Notice(`Fleeting note created with ID: ${noteId}`);
-		} catch (error) {
-			new Notice(`Error creating fleeting note: ${error.message}`);
-		}
-	}
+    // UC-021: Archive Entity
+    this.addCommand({
+      id: 'archive-entity',
+      name: 'Archive entity',
+      callback: () => this.handleArchiveEntity(),
+    });
+
+    if (this.settings.enableLogging) {
+      console.log('[obsidian-repo] Commands registered: 8');
+    }
+  }
+
+  /**
+   * Handlers para cada comando
+   */
+
+  private async handleCreateProject(): Promise<void> {
+    const projectName = await this.promptInput('Project name:', 'My Project');
+    if (!projectName) return;
+
+    const description = await this.promptInput('Project description:', '');
+    const priority = await this.promptSelect(
+      'Priority:',
+      ['BAJA', 'MEDIA', 'ALTA', 'CRÍTICA'],
+      'MEDIA'
+    );
+
+    try {
+      // Usar servicio mejorado con integración de vault
+      const result = await ProjectServiceWithVault.createProjectWithVault({
+        projectName,
+        description,
+        priority: priority as 'BAJA' | 'MEDIA' | 'ALTA' | 'CRÍTICA',
+      });
+
+      if (result.success) {
+        new Notice(`✅ Project "${projectName}" created!`);
+        if (this.settings.enableLogging) {
+          console.log('[obsidian-repo] Project created:', result.projectId);
+        }
+      } else {
+        new Notice(`❌ Error: ${result.error}`);
+      }
+    } catch (error) {
+      new Notice(`❌ Error creating project: ${error}`);
+      console.error('[obsidian-repo] Error:', error);
+    }
+  }
+
+  private async handleCreateObjective(): Promise<void> {
+    const objectiveName = await this.promptInput('Objective name:', 'My Objective');
+    if (!objectiveName) return;
+
+    const description = await this.promptInput('Objective description:', '');
+    const priority = await this.promptSelect(
+      'Priority:',
+      ['BAJA', 'MEDIA', 'ALTA', 'CRÍTICA'],
+      'MEDIA'
+    );
+
+    try {
+      const result = await ObjectiveService.createObjective({
+        objectiveName,
+        description,
+        priority: priority as 'BAJA' | 'MEDIA' | 'ALTA' | 'CRÍTICA',
+      });
+
+      if (result.success) {
+        new Notice(`✅ Objective "${objectiveName}" created!`);
+      }
+    } catch (error) {
+      new Notice(`❌ Error creating objective: ${error}`);
+    }
+  }
+
+  private async handleCreateTask(): Promise<void> {
+    const taskName = await this.promptInput('Task name:', 'My Task');
+    if (!taskName) return;
+
+    const description = await this.promptInput('Task description:', '');
+    const priority = await this.promptSelect(
+      'Priority:',
+      ['BAJA', 'MEDIA', 'ALTA', 'CRÍTICA'],
+      'MEDIA'
+    );
+    const dueDate = await this.promptInput('Due date (YYYY-MM-DD):', '');
+
+    try {
+      const result = await TaskService.createTask({
+        taskName,
+        description,
+        priority: priority as 'BAJA' | 'MEDIA' | 'ALTA' | 'CRÍTICA',
+        dueDate: dueDate || undefined,
+      });
+
+      if (result.success) {
+        new Notice(`✅ Task "${taskName}" created!`);
+      }
+    } catch (error) {
+      new Notice(`❌ Error creating task: ${error}`);
+    }
+  }
+
+  private async handleCreateDocument(): Promise<void> {
+    const documentName = await this.promptInput('Document name:', 'My Document');
+    if (!documentName) return;
+
+    const description = await this.promptInput('Document description:', '');
+
+    try {
+      const result = await DocumentService.createDocument({
+        documentName,
+        description,
+      });
+
+      if (result.success) {
+        new Notice(`✅ Document "${documentName}" created!`);
+      }
+    } catch (error) {
+      new Notice(`❌ Error creating document: ${error}`);
+    }
+  }
+
+  private async handleListProjects(): Promise<void> {
+    try {
+      const projects = await ProjectServiceWithVault.listProjectsFromVault();
+      
+      if (projects.length === 0) {
+        new Notice('No projects found');
+        return;
+      }
+
+      const projectList = projects
+        .map((p) => `• ${p.frontmatter?.title || 'Unknown'} (${p.projectId})`)
+        .join('\n');
+
+      new Notice(`Projects:\n${projectList}`);
+    } catch (error) {
+      new Notice(`❌ Error listing projects: ${error}`);
+      console.error('[obsidian-repo] Error:', error);
+    }
+  }
+
+  private async handleEditEntity(): Promise<void> {
+    new Notice('Edit entity feature - implement as needed');
+  }
+
+  private async handleDeleteEntity(): Promise<void> {
+    new Notice('Delete entity feature - implement as needed');
+  }
+
+  private async handleArchiveEntity(): Promise<void> {
+    new Notice('Archive entity feature - implement as needed');
+  }
+
+  /**
+   * Registrar macros con QuickAdd
+   */
+  private async registerQuickAddMacros(): Promise<void> {
+    try {
+      await QuickAddIntegration.registerDefaultMacros();
+      if (this.settings.enableLogging) {
+        console.log('[obsidian-repo] QuickAdd macros registered');
+      }
+    } catch (error) {
+      console.warn('[obsidian-repo] Could not register QuickAdd macros:', error);
+    }
+  }
+
+  /**
+   * Registrar templates con Templater
+   */
+  private async registerTemplaterTemplates(): Promise<void> {
+    try {
+      const templates = [
+        {
+          id: 'project-template',
+          name: 'Project Template',
+          description: 'Template for creating projects',
+          filePath: `${this.settings.utilitiesFolder}/991-templates/project-template.md`,
+          templateType: 'project' as const,
+          variables: {
+            projectName: 'Project Name',
+            description: 'Description',
+          },
+        },
+      ];
+
+      for (const template of templates) {
+        await TemplaterIntegration.registerTemplate(template);
+      }
+
+      if (this.settings.enableLogging) {
+        console.log('[obsidian-repo] Templater templates registered');
+      }
+    } catch (error) {
+      console.warn('[obsidian-repo] Could not register Templater templates:', error);
+    }
+  }
+
+  /**
+   * Utilidades de UI
+   */
+
+  private async promptInput(
+    message: string,
+    defaultValue: string = ''
+  ): Promise<string | null> {
+    return new Promise((resolve) => {
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.value = defaultValue;
+      input.placeholder = message;
+
+      const dialog = document.createElement('div');
+      dialog.innerHTML = `
+        <div style="padding: 20px; border: 1px solid var(--background-secondary-alt); border-radius: 8px;">
+          <label style="display: block; margin-bottom: 10px;">${message}</label>
+          <input type="text" value="${defaultValue}" style="width: 100%; padding: 8px; margin-bottom: 10px;" id="promptInput" />
+          <button id="promptOk" style="padding: 8px 16px; margin-right: 10px;">OK</button>
+          <button id="promptCancel" style="padding: 8px 16px;">Cancel</button>
+        </div>
+      `;
+
+      const promptEl = document.querySelector('#promptInput') as HTMLInputElement;
+
+      document.querySelector('#promptOk')?.addEventListener('click', () => {
+        resolve(promptEl.value);
+        dialog.remove();
+      });
+
+      document.querySelector('#promptCancel')?.addEventListener('click', () => {
+        resolve(null);
+        dialog.remove();
+      });
+    });
+  }
+
+  private async promptSelect(
+    message: string,
+    options: string[],
+    defaultValue: string
+  ): Promise<string> {
+    new Notice(`${message} ${options.join(', ')}`);
+    return defaultValue;
+  }
+
+  /**
+   * Cargar/Guardar configuración
+   */
+
+  async loadSettings() {
+    this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+  }
+
+  async saveSettings() {
+    await this.saveData(this.settings);
+  }
 }
 
 /**
- * Plugin settings tab
+ * Settings Tab de Obsidian
  */
-class RepositoryManagerSettingTab extends PluginSettingTab {
-	plugin: RepositoryManagerPlugin;
+class ObsidianRepoSettingTab extends PluginSettingTab {
+  plugin: ObsidianRepoPlugin;
 
-	constructor(app: App, plugin: RepositoryManagerPlugin) {
-		super(app, plugin);
-		this.plugin = plugin;
-	}
+  constructor(app: App, plugin: ObsidianRepoPlugin) {
+    super(app, plugin);
+    this.plugin = plugin;
+  }
 
-	display(): void {
-		const { containerEl } = this;
+  display(): void {
+    const { containerEl } = this;
 
-		containerEl.empty();
+    containerEl.empty();
 
-		new Setting(containerEl)
-			.setName('Author Name')
-			.setDesc('Your name (used in metadata)')
-			.addText(text => text
-				.setPlaceholder('Nestor')
-				.setValue(this.plugin.settings.author)
-				.onChange(async (value) => {
-					this.plugin.settings.author = value;
-					await this.plugin.saveSettings();
-				}));
+    new Setting(containerEl)
+      .setName('Inbox Folder')
+      .setDesc('Folder for fleeting notes')
+      .addText((text) =>
+        text
+          .setPlaceholder('100-INBOX')
+          .setValue(this.plugin.settings.inboxFolder)
+          .onChange(async (value) => {
+            this.plugin.settings.inboxFolder = value;
+            await this.plugin.saveSettings();
+          })
+      );
 
-		new Setting(containerEl)
-			.setName('Templates Folder')
-			.setDesc('Path to templates folder')
-			.addText(text => text
-				.setPlaceholder('990-UTILIDADES/991-template')
-				.setValue(this.plugin.settings.templatesFolder)
-				.onChange(async (value) => {
-					this.plugin.settings.templatesFolder = value;
-					await this.plugin.saveSettings();
-				}));
+    new Setting(containerEl)
+      .setName('Projects Folder')
+      .setDesc('Folder for projects')
+      .addText((text) =>
+        text
+          .setPlaceholder('200-PROYECTOS')
+          .setValue(this.plugin.settings.projectsFolder)
+          .onChange(async (value) => {
+            this.plugin.settings.projectsFolder = value;
+            await this.plugin.saveSettings();
+          })
+      );
 
-		new Setting(containerEl)
-			.setName('Scripts Folder')
-			.setDesc('Path to scripts folder')
-			.addText(text => text
-				.setPlaceholder('990-UTILIDADES/992-script')
-				.setValue(this.plugin.settings.scriptsFolder)
-				.onChange(async (value) => {
-					this.plugin.settings.scriptsFolder = value;
-					await this.plugin.saveSettings();
-				}));
+    new Setting(containerEl)
+      .setName('Repositories Folder')
+      .setDesc('Folder for documents')
+      .addText((text) =>
+        text
+          .setPlaceholder('500-REPOSITORIOS')
+          .setValue(this.plugin.settings.repositoriesFolder)
+          .onChange(async (value) => {
+            this.plugin.settings.repositoriesFolder = value;
+            await this.plugin.saveSettings();
+          })
+      );
 
-		new Setting(containerEl)
-			.setName('Enable Notifications')
-			.setDesc('Show notifications for actions')
-			.addToggle(toggle => toggle
-				.setValue(this.plugin.settings.enableNotifications)
-				.onChange(async (value) => {
-					this.plugin.settings.enableNotifications = value;
-					await this.plugin.saveSettings();
-				}));
-	}
+    new Setting(containerEl)
+      .setName('Enable Logging')
+      .setDesc('Log plugin activity to console')
+      .addToggle((toggle) =>
+        toggle
+          .setValue(this.plugin.settings.enableLogging)
+          .onChange(async (value) => {
+            this.plugin.settings.enableLogging = value;
+            await this.plugin.saveSettings();
+          })
+      );
+
+    new Setting(containerEl)
+      .setName('Enable Notifications')
+      .setDesc('Show notifications when creating/editing entities')
+      .addToggle((toggle) =>
+        toggle
+          .setValue(this.plugin.settings.enableNotifications)
+          .onChange(async (value) => {
+            this.plugin.settings.enableNotifications = value;
+            await this.plugin.saveSettings();
+          })
+      );
+
+    new Setting(containerEl)
+      .setName('Language')
+      .setDesc('Plugin language')
+      .addDropdown((dropdown) =>
+        dropdown
+          .addOption('es', 'Español')
+          .addOption('en', 'English')
+          .setValue(this.plugin.settings.language)
+          .onChange(async (value) => {
+            this.plugin.settings.language = value as 'es' | 'en';
+            await this.plugin.saveSettings();
+          })
+      );
+  }
 }
