@@ -1,7 +1,7 @@
 /**
  * UC-P01: Instalar Plugin
  * 
- * Servicio completo para instalar el plugin obsidian-repo:
+ * Servicio completo para instalar el plugin chronex-obsidian:
  * 1. Detectar URL de release en GitHub
  * 2. Validar estructura de manifest.json
  * 3. Crear carpetas necesarias (100-INBOX, 200-PROYECTOS, etc.)
@@ -59,7 +59,7 @@ export interface WizardResult {
 }
 
 /**
- * Instalador del plugin obsidian-repo
+ * Instalador del plugin chronex-obsidian
  * 
  * Responsabilidades:
  * - Descargar plugin desde releases de GitHub
@@ -80,14 +80,14 @@ export class PluginInstaller {
   /**
    * Detectar URL de GitHub release para descargar el plugin
    * 
-   * @param pluginId ID único del plugin (ejemplo: obsidian-repo)
+   * @param pluginId ID único del plugin (ejemplo: chronex-obsidian)
    * @param version Versión a instalar (ejemplo: 1.0.0)
    * @returns URL completa del release en GitHub
    * @throws Error si pluginId o version son inválidos
    * 
    * @example
-   * const url = PluginInstaller.detectReleaseUrl('obsidian-repo', '1.0.0');
-   * // → 'https://github.com/nestormonroy/obsidian-repo/releases/download/v1.0.0/main.js'
+   * const url = PluginInstaller.detectReleaseUrl('chronex-obsidian', '1.0.0');
+   * // → 'https://github.com/nestormonroy/chronex-obsidian/releases/download/v1.0.0/main.js'
    */
   static detectReleaseUrl(pluginId: string, version: string): string {
     // Validar que pluginId existe y es válido
@@ -127,7 +127,7 @@ export class PluginInstaller {
    * 
    * @example
    * const isValid = PluginInstaller.validatePluginStructure({
-   *   id: 'obsidian-repo',
+   *   id: 'chronex-obsidian',
    *   name: 'Repository Manager',
    *   version: '1.0.0'
    * });
@@ -276,7 +276,7 @@ export class PluginInstaller {
    * 
    * @example
    * const result = await PluginInstaller.install({
-   *   pluginName: 'obsidian-repo',
+   *   pluginName: 'chronex-obsidian',
    *   version: '1.0.0'
    * });
    * // → { success: true, installed: true, releaseUrl: '...', ... }

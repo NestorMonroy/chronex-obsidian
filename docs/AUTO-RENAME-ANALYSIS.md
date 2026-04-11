@@ -1,8 +1,8 @@
-# Auto-Rename Analysis: Qué en obsidian-repo puede beneficiarse
+# Auto-Rename Analysis: Qué en chronex-obsidian puede beneficiarse
 
 ## 🎯 CONTEXTO
 
-El sistema de obsidian-repo crea TRES archivos principales:
+El sistema de chronex-obsidian crea TRES archivos principales:
 1. **README.md** - Contenido técnico + frontmatter
 2. **_index_.md** (folderNote) - Metadata + descripción visual
 3. **.index.json** - Índice del vault (root level)
@@ -221,7 +221,7 @@ CERO PASOS MANUALES. TODO AUTOMÁTICO.
 
 ## 💡 LO IMPORTANTE
 
-**Auto-Rename en obsidian-repo NO significa cambiar nombres de archivos.**
+**Auto-Rename en chronex-obsidian NO significa cambiar nombres de archivos.**
 
 Significa: **CUANDO CAMBIAS METADATOS, TODO SE ACTUALIZA AUTOMÁTICAMENTE**
 

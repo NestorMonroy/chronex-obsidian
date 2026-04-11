@@ -1,6 +1,6 @@
 ```yaml
 type: Gu√≠a de Convenciones
-title: CONVENCIONES DE C√[SPEC]DIGO - obsidian-repo
+title: CONVENCIONES DE C√[SPEC]DIGO - chronex-obsidian
 version: 1.0.0
 scope: FASE 1 - Convenciones y Base
 date: 2026-04-11
@@ -8,7 +8,7 @@ language: Espa√±ol Mexicano - T√©cnico Profesional
 status: Convenciones definidas
 ```
 
-# CONVENCIONES DE C√[SPEC]DIGO - obsidian-repo
+# CONVENCIONES DE C√[SPEC]DIGO - chronex-obsidian
 
 ## FASE 1: Convenciones y Base (7 horas)
 
@@ -16,7 +16,7 @@ status: Convenciones definidas
 
 ## INTRODUCCI√[SPEC]N
 
-Este documento define las convenciones de c√≥digo para el proyecto obsidian-repo. Aplican a:
+Este documento define las convenciones de c√≥digo para el proyecto chronex-obsidian. Aplican a:
 - Scripts orquestadores (5 archivos en `src/scripts/`)
 - M√≥dulos utils (8+ archivos en `src/utils/`)
 - Tests (60+ casos en `tests/`)

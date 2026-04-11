@@ -72,7 +72,7 @@ UC-P02: Configure Settings
 **Precondition**: Plugin installed and enabled
 
 **Main Flow**:
-1. User opens Settings → Community Plugins → Options (obsidian-repo)
+1. User opens Settings → Community Plugins → Options (chronex-obsidian)
 2. Settings tab displays configuration options:
    - **Author Name** (text input, default: "Nestor")
    - **Templates Folder** (path, default: "990-UTILIDADES/991-template")
@@ -274,13 +274,13 @@ vault: <% tp.file.folder(true) %>
 
 ### UC-INT03: Cross-Plugin Data Flow
 
-**Actors**: obsidian-repo + QuickAdd + Templater
+**Actors**: chronex-obsidian + QuickAdd + Templater
 
 **Data Flow**:
 ```
 User Input
     ↓
-obsidian-repo script (validation + metadata)
+chronex-obsidian script (validation + metadata)
     ↓
 QuickAdd macro (variable substitution)
     ↓

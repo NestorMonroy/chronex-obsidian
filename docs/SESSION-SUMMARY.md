@@ -17,7 +17,7 @@
 
 ## 📚 DOCUMENTACIÓN CREADA
 
-### En `/mnt/project/obsidian-repo/docs/`:
+### En `/mnt/project/chronex-obsidian/docs/`:
 
 1. **INDEX.md** - Índice de navegación
    - Punto de entrada para toda la documentación
@@ -70,7 +70,7 @@
 
 ## 💻 CÓDIGO IMPLEMENTADO
 
-### 8 Servicios CRUD (obsidian-repo)
+### 8 Servicios CRUD (chronex-obsidian)
 
 ```
 src/services/
@@ -313,7 +313,7 @@ RENDERERS:          ❌ NO IMPLEMENTADOS
 ## 📁 ARCHIVOS FINALES
 
 ```
-/mnt/project/obsidian-repo/
+/mnt/project/chronex-obsidian/
 ├─ docs/
 │  ├─ INDEX.md                           ← EMPIEZA AQUÍ
 │  ├─ UC-MASTER.md

@@ -205,7 +205,7 @@ ${data.description || 'Sin descripción'}
 <!-- Contenido automático -->
 
 ---
-*Espejo generado por obsidian-repo*
+*Espejo generado por chronex-obsidian*
 `;
   }
 

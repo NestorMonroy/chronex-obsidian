@@ -7,7 +7,7 @@ import { ItemView, WorkspaceLeaf, Notice } from 'obsidian';
 import { ProjectServiceWithVault } from '../services/projectServiceWithVault';
 import { ObjectiveServiceWithVault } from '../services/objectiveServiceWithVault';
 
-export const PROJECTS_VIEW_TYPE = 'obsidian-repo-projects';
+export const PROJECTS_VIEW_TYPE = 'chronex-obsidian-projects';
 
 interface ProjectStats {
   projectId: string;

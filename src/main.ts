@@ -1,5 +1,5 @@
 /**
- * obsidian-repo - Plugin Principal
+ * chronex-obsidian - Plugin Principal
  * 
  * Punto de entrada del plugin para Obsidian.
  * Integra QuickAdd, Templater y otros plugins con nuestros servicios.
@@ -72,13 +72,13 @@ const DEFAULT_SETTINGS: ObsidianRepoSettings = {
 };
 
 /**
- * Plugin Principal de obsidian-repo
+ * Plugin Principal de chronex-obsidian
  */
 export default class ObsidianRepoPlugin extends Plugin {
   settings: ObsidianRepoSettings;
 
   async onload() {
-    console.log('[obsidian-repo] Loading plugin...');
+    console.log('[chronex-obsidian] Loading plugin...');
 
     // Inicializar VaultAdapter PRIMERO
     ObsidianVaultAdapter.initialize(this.app);
@@ -104,12 +104,12 @@ export default class ObsidianRepoPlugin extends Plugin {
     // Registrar templates con Templater
     await this.registerTemplaterTemplates();
 
-    console.log('[obsidian-repo] Plugin loaded successfully!');
-    new Notice('obsidian-repo plugin loaded!');
+    console.log('[chronex-obsidian] Plugin loaded successfully!');
+    new Notice('chronex-obsidian plugin loaded!');
   }
 
   onunload() {
-    console.log('[obsidian-repo] Unloading plugin...');
+    console.log('[chronex-obsidian] Unloading plugin...');
   }
 
   /**
@@ -132,11 +132,11 @@ export default class ObsidianRepoPlugin extends Plugin {
         if (!folder) {
           await this.app.vault.createFolder(folderPath);
           if (this.settings.enableLogging) {
-            console.log(`[obsidian-repo] Created folder: ${folderPath}`);
+            console.log(`[chronex-obsidian] Created folder: ${folderPath}`);
           }
         }
       } catch (error) {
-        console.warn(`[obsidian-repo] Could not create folder: ${folderPath}`, error);
+        console.warn(`[chronex-obsidian] Could not create folder: ${folderPath}`, error);
       }
     }
   }
@@ -161,7 +161,7 @@ export default class ObsidianRepoPlugin extends Plugin {
     });
 
     if (this.settings.enableLogging) {
-      console.log('[obsidian-repo] Views registered: 3 (Projects, Calendar, Kanban)');
+      console.log('[chronex-obsidian] Views registered: 3 (Projects, Calendar, Kanban)');
     }
   }
 
@@ -249,7 +249,7 @@ export default class ObsidianRepoPlugin extends Plugin {
     });
 
     if (this.settings.enableLogging) {
-      console.log('[obsidian-repo] Commands registered: 11');
+      console.log('[chronex-obsidian] Commands registered: 11');
     }
   }
 
@@ -291,14 +291,14 @@ export default class ObsidianRepoPlugin extends Plugin {
       if (result.success) {
         new Notice(`Project "${projectName}" created successfully!`);
         if (this.settings.enableLogging) {
-          console.log('[obsidian-repo] Project created:', result.projectId);
+          console.log('[chronex-obsidian] Project created:', result.projectId);
         }
       } else {
         new Notice(`Error: ${result.error}`);
       }
     } catch (error) {
       new Notice(`Error creating project: ${error}`);
-      console.error('[obsidian-repo] Error:', error);
+      console.error('[chronex-obsidian] Error:', error);
     }
   }
 
@@ -400,7 +400,7 @@ export default class ObsidianRepoPlugin extends Plugin {
       new Notice(`Projects:\n${projectList}`);
     } catch (error) {
       new Notice(`Error listing projects: ${error}`);
-      console.error('[obsidian-repo] Error:', error);
+      console.error('[chronex-obsidian] Error:', error);
     }
   }
 
@@ -423,10 +423,10 @@ export default class ObsidianRepoPlugin extends Plugin {
     try {
       await QuickAddIntegration.registerDefaultMacros();
       if (this.settings.enableLogging) {
-        console.log('[obsidian-repo] QuickAdd macros registered');
+        console.log('[chronex-obsidian] QuickAdd macros registered');
       }
     } catch (error) {
-      console.warn('[obsidian-repo] Could not register QuickAdd macros:', error);
+      console.warn('[chronex-obsidian] Could not register QuickAdd macros:', error);
     }
   }
 
@@ -454,10 +454,10 @@ export default class ObsidianRepoPlugin extends Plugin {
       }
 
       if (this.settings.enableLogging) {
-        console.log('[obsidian-repo] Templater templates registered');
+        console.log('[chronex-obsidian] Templater templates registered');
       }
     } catch (error) {
-      console.warn('[obsidian-repo] Could not register Templater templates:', error);
+      console.warn('[chronex-obsidian] Could not register Templater templates:', error);
     }
   }
 
@@ -625,7 +625,7 @@ class ObsidianRepoSettingTab extends PluginSettingTab {
           .setValue(true)
           .onChange(async (value) => {
             if (this.plugin.settings.enableLogging) {
-              console.log('[obsidian-repo] Folder About auto-generate:', value);
+              console.log('[chronex-obsidian] Folder About auto-generate:', value);
             }
           })
       );
@@ -638,7 +638,7 @@ class ObsidianRepoSettingTab extends PluginSettingTab {
           .setValue(false)
           .onChange(async (value) => {
             if (this.plugin.settings.enableLogging) {
-              console.log('[obsidian-repo] Hide _about_ files:', value);
+              console.log('[chronex-obsidian] Hide _about_ files:', value);
             }
           })
       );
@@ -653,7 +653,7 @@ class ObsidianRepoSettingTab extends PluginSettingTab {
           .setValue('cute')
           .onChange(async (value) => {
             if (this.plugin.settings.enableLogging) {
-              console.log('[obsidian-repo] Card view type:', value);
+              console.log('[chronex-obsidian] Card view type:', value);
             }
           })
       );
@@ -666,7 +666,7 @@ class ObsidianRepoSettingTab extends PluginSettingTab {
           .setValue(true)
           .onChange(async (value) => {
             if (this.plugin.settings.enableLogging) {
-              console.log('[obsidian-repo] Auto-update _about_:', value);
+              console.log('[chronex-obsidian] Auto-update _about_:', value);
             }
           })
       );

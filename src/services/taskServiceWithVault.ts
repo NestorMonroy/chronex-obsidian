@@ -146,7 +146,7 @@ ${frontmatter.description || 'Sin descripción'}
 - [ ] Completar
 
 ## Notas
-Tarea creada automáticamente con obsidian-repo plugin.
+Tarea creada automáticamente con chronex-obsidian plugin.
 `;
   }
 

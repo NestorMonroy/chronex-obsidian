@@ -1,6 +1,6 @@
 # BLUEPRINT: INTEGRACIÓN COMPLETA DE GANTT-CALENDAR
 
-**Plan detallado para clonar TODAS las funcionalidades de obsidian-gantt-calendar en obsidian-repo**
+**Plan detallado para clonar TODAS las funcionalidades de obsidian-gantt-calendar en chronex-obsidian**
 
 ---
 

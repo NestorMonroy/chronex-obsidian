@@ -1,6 +1,6 @@
 # USE CASES MASTER SPECIFICATION
 
-## SINGLE SOURCE OF TRUTH para obsidian-repo
+## SINGLE SOURCE OF TRUTH para Chronex Obsidian
 
 **Última actualización:** 2026-04-11  
 **Patrón:** CADA CARPETA = SU FOLDERNTE  

@@ -1,4 +1,4 @@
-# PROJECT STATUS: obsidian-repo
+# PROJECT STATUS: chronex-obsidian
 
 ## Estado Actual: 2026-04-11
 
@@ -317,7 +317,7 @@ DESARROLLO DEL PROYECTO
 
 ## Contacto y Soporte
 
-**Proyecto**: obsidian-repo  
+**Proyecto**: chronex-obsidian  
 **Autor**: Nestor  
 **Versión**: 1.0.0-alpha  
 **Estado**: En desarrollo  

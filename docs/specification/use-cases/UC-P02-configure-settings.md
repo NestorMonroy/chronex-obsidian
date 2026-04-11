@@ -29,7 +29,7 @@ status: Especificación Completada
 
 ## 2. DESCRIPCIÓN BREVE
 
-Usuario accede a Obsidian Settings → Community Plugins → Options (obsidian-repo), abre settings tab del plugin. Sistema presenta formulario con 5 opciones configurables: Author Name, Templates Folder, Scripts Folder, Enable Notifications, Enable Auto-Capture. Usuario modifica valores según preferencias. Sistema valida rutas, almacena cambios automáticamente en persistencia. Usuario recibe confirmación visual de guardado.
+Usuario accede a Obsidian Settings → Community Plugins → Options (chronex-obsidian), abre settings tab del plugin. Sistema presenta formulario con 5 opciones configurables: Author Name, Templates Folder, Scripts Folder, Enable Notifications, Enable Auto-Capture. Usuario modifica valores según preferencias. Sistema valida rutas, almacena cambios automáticamente en persistencia. Usuario recibe confirmación visual de guardado.
 
 ---
 
@@ -276,7 +276,7 @@ Usuario navega a Settings → Community Plugins → Options, abre tab del plugin
 
 **Actor**: Plugin API (saveSettings)
 
-**Acción**: Sistema guarda automáticamente todos los cambios en `.obsidian/plugins/obsidian-repo/data.json`
+**Acción**: Sistema guarda automáticamente todos los cambios en `.obsidian/plugins/chronex-obsidian/data.json`
 
 **Componentes invocados**:
 - Plugin.saveData()
@@ -444,7 +444,7 @@ Usuario navega a Settings → Community Plugins → Options, abre tab del plugin
 ### Postcondiciones Exitosas
 
 1. **Configuración persistida**
-   - Archivo .obsidian/plugins/obsidian-repo/data.json contiene cambios
+   - Archivo .obsidian/plugins/chronex-obsidian/data.json contiene cambios
    - Valores coinciden con lo ingresado por usuario
 
 2. **Plugin re-inicializado**
@@ -484,7 +484,7 @@ Usuario navega a Settings → Community Plugins → Options, abre tab del plugin
 
 | Artefacto | Tipo | Destino | Ejemplo |
 |-----------|------|---------|---------|
-| data.json | JSON | .obsidian/plugins/obsidian-repo/ | {"author":"Nestor",...} |
+| data.json | JSON | .obsidian/plugins/chronex-obsidian/ | {"author":"Nestor",...} |
 | Settings object | Object | Memory | RepositoryManagerSettings |
 | Confirmación | UI | Toast | "Settings saved" |
 

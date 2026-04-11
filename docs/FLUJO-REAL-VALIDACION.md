@@ -353,25 +353,25 @@ Para que el flujo funcione correctamente, TODOS estos servicios deben estar impl
 ### 1. Verificar que IdGenerator existe
 
 ```bash
-find /mnt/project/obsidian-repo -name "*generateUniqueId*" -o -name "*idGenerator*"
+find /mnt/project/chronex-obsidian -name "*generateUniqueId*" -o -name "*idGenerator*"
 ```
 
 ### 2. Verificar que ObsidianVaultAdapter existe
 
 ```bash
-find /mnt/project/obsidian-repo -name "*ObsidianVaultAdapter*" -o -name "*VaultAdapter*"
+find /mnt/project/chronex-obsidian -name "*ObsidianVaultAdapter*" -o -name "*VaultAdapter*"
 ```
 
 ### 3. Verificar que FolderNoteService existe
 
 ```bash
-find /mnt/project/obsidian-repo -name "*folderNoteService*" -o -name "*FolderNote*"
+find /mnt/project/chronex-obsidian -name "*folderNoteService*" -o -name "*FolderNote*"
 ```
 
 ### 4. Verificar que IndexSyncService existe
 
 ```bash
-find /mnt/project/obsidian-repo -name "*indexSyncService*" -o -name "*IndexSync*"
+find /mnt/project/chronex-obsidian -name "*indexSyncService*" -o -name "*IndexSync*"
 ```
 
 ---

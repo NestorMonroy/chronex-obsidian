@@ -59,7 +59,7 @@ status: COMPLETO
 ## 📁 ESTRUCTURA DE CARPETAS
 
 ```
-/mnt/project/obsidian-repo/
+/mnt/project/chronex-obsidian/
 ├─ docs/specification/use-cases/
 │  ├─ INDEX-MASTER-ESTADO-COMPLETO.md      ← Índice global
 │  ├─ UC-PENDIENTES-LISTADO-COMPLETO.md    ← UC faltantes

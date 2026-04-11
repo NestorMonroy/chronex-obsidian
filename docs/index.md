@@ -1,12 +1,12 @@
 ```yaml
 type: Documentation Index
-title: obsidian-repo Documentation
+title: chronex-obsidian Documentation
 version: 1.0.0
 organization: Arc42 thematic "drawers" pattern
 date: 2026-04-11
 ```
 
-# Documentation Index - obsidian-repo
+# Documentation Index - chronex-obsidian
 
 Documentación del proyecto organizada según el modelo de "cajones independientes" de arc42.
 Cada cajón es claramente etiquetado, autocontenido e independiente.

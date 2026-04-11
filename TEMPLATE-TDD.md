@@ -220,7 +220,7 @@ Próximo: {siguiente UC}"
 # Ejemplo
 git commit -m "FEAT: UC-P01 - Instalar plugin
 
-Implementación de instalación de plugin obsidian-repo:
+Implementación de instalación de plugin chronex-obsidian:
 - Descarga desde GitHub releases
 - Extracción en carpeta plugins/
 - Detección automática de plugin
@@ -272,7 +272,7 @@ describe('UC-P01: Instalar Plugin', () => {
   
   describe('detectReleaseUrl', () => {
     it('debe detectar URL de release correcta', () => {
-      const url = PluginInstaller.detectReleaseUrl('obsidian-repo', '1.0.0');
+      const url = PluginInstaller.detectReleaseUrl('chronex-obsidian', '1.0.0');
       expect(url).toContain('github.com');
       expect(url).toContain('releases');
     });
@@ -376,7 +376,7 @@ export class PluginInstaller {
 ```bash
 git commit -m "FEAT: UC-P01 - Instalar plugin
 
-Implementación de instalación de plugin obsidian-repo:
+Implementación de instalación de plugin chronex-obsidian:
 - detectReleaseUrl: Detecta URL de GitHub releases
 - extractZip: Extrae archivos comprimidos
 - install: Orquesta instalación completa

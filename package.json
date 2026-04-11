@@ -1,7 +1,7 @@
 {
-  "name": "obsidian-repo",
+  "name": "chronex-obsidian",
   "version": "1.0.0",
-  "description": "Automated repository and task management plugin for Obsidian",
+  "description": "Chronex Obsidian: Visual Automation System for Obsidian Vault",
   "main": "main.js",
   "type": "module",
   "scripts": {

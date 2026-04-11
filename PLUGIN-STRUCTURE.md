@@ -7,7 +7,7 @@ This project has been transformed into a professional Obsidian Plugin following 
 ## Plugin Configuration
 
 ### manifest.json
-- **id**: `obsidian-repo`
+- **id**: `chronex-obsidian`
 - **name**: Obsidian Repository Manager
 - **version**: 1.0.0
 - **minAppVersion**: 1.5.0
@@ -25,7 +25,7 @@ This project has been transformed into a professional Obsidian Plugin following 
 ## Directory Structure
 
 ```
-obsidian-repo/
+chronex-obsidian/
 ├── src/
 │   ├── main.ts              ← Plugin entry point (extends Plugin class)
 │   ├── utils/               ← Core utilities (8 modules)
@@ -193,7 +193,7 @@ npm run lint:fix     # Auto-fix issues
 3. **Create manifest.json** (already done):
    ```json
    {
-     "id": "obsidian-repo",
+     "id": "chronex-obsidian",
      "name": "Obsidian Repository Manager",
      "version": "1.0.0",
      "minAppVersion": "1.5.0"

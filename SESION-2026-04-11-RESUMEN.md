@@ -2,7 +2,7 @@
 type: Reporte de Sesión
 title: SESIÓN 2026-04-11 - DOCUMENTACIÓN DE UC COMPLETADA
 version: 1.0.0
-project: obsidian-repo
+project: chronex-obsidian
 fecha_inicio: 2026-04-11 04:00
 fecha_cierre: 2026-04-11 07:30
 duracion: 3.5 horas
@@ -184,7 +184,7 @@ Cada UC incluye:
 - Timeline estimado
 - Criterios de aceptación clave
 
-Ubicación: /mnt/project/obsidian-repo/docs/specification/use-cases/UC-PENDIENTES-LISTADO-COMPLETO.md
+Ubicación: /mnt/project/chronex-obsidian/docs/specification/use-cases/UC-PENDIENTES-LISTADO-COMPLETO.md
 ```
 
 **INDEX-MASTER-ESTADO-COMPLETO.md**
@@ -200,7 +200,7 @@ Documento maestro que contiene:
 - Checklist de documentación
 - Estado actual del proyecto
 
-Ubicación: /mnt/project/obsidian-repo/docs/specification/use-cases/INDEX-MASTER-ESTADO-COMPLETO.md
+Ubicación: /mnt/project/chronex-obsidian/docs/specification/use-cases/INDEX-MASTER-ESTADO-COMPLETO.md
 ```
 
 ---
@@ -216,7 +216,7 @@ Archivo de UC creados:          18 archivos
 ├─ Documentos de referencia:    2 documentos
 └─ Total de líneas escritas:    ~4,500 líneas
 
-Directorio: /mnt/project/obsidian-repo/docs/specification/use-cases/
+Directorio: /mnt/project/chronex-obsidian/docs/specification/use-cases/
 
 Estructura de cada UC:
 ├─ Secciones:               14-16 secciones por UC
@@ -317,7 +317,7 @@ Cada UC sigue estructura:
 ### Inmediatamente Después
 
 1. **Preparar Ambiente de Desarrollo**
-   - [ ] Clonar repositorio obsidian-repo a máquina local
+   - [ ] Clonar repositorio chronex-obsidian a máquina local
    - [ ] Instalar dependencias: npm install
    - [ ] Configurar TypeScript: tsc --init
    - [ ] Configurar Jest para tests
@@ -377,7 +377,7 @@ Orden secuencial:
 ## ARCHIVOS GENERADOS EN ESTA SESIÓN
 
 ```
-/mnt/project/obsidian-repo/docs/specification/use-cases/
+/mnt/project/chronex-obsidian/docs/specification/use-cases/
 
 UC TIER 1:
 ├─ uc-008-crear-proyecto.md

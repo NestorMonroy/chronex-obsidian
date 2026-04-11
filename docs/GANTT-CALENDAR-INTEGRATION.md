@@ -101,7 +101,7 @@ Markdown File (actualizado)
 - `src/tasks/taskParser.ts`
 - `src/tasks/taskParser/` (parsers específicos)
 
-**Cómo integrarlo en obsidian-repo:**
+**Cómo integrarlo en chronex-obsidian:**
 ```
 src/utils/taskParser/
 ├─ TaskParser.ts         (clase principal)
@@ -439,7 +439,7 @@ Un sistema integrado donde:
    - Calendario interactivo
    - Timeline visual
    - Progress tracking
-4. **Sin dependencia externa** → Todo integrado en obsidian-repo
+4. **Sin dependencia externa** → Todo integrado en chronex-obsidian
 
 ---
 

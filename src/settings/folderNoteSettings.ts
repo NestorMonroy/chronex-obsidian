@@ -1,7 +1,7 @@
 /**
  * FolderNoteSettings - Configuración profesional tipo Folder Note
  * 
- * Lógica de Folder Note implementada en obsidian-repo:
+ * Lógica de Folder Note implementada en chronex-obsidian:
  * - folderNoteName: Nombre del archivo (variable, no hardcodeado)
  * - folderNoteHide: Ocultar del árbol de archivos
  * - folderNoteAutoRename: Auto-actualizar metadatos

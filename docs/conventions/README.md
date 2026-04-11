@@ -1,6 +1,6 @@
 # Conventions
 
-Code standards and conventions for obsidian-repo project.
+Code standards and conventions for chronex-obsidian project.
 
 ## Contents
 

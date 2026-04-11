@@ -1,8 +1,8 @@
-# ÍNDICE COMPLETO: obsidian-repo
+# ÍNDICE COMPLETO: chronex-obsidian
 ## Documentación Generada - PASO 1, PASO 2, PASO 3
 
 **Fecha**: 2026-04-11  
-**Proyecto**: obsidian-repo  
+**Proyecto**: chronex-obsidian  
 **Status**: Especificación completada - Implementación iniciada
 
 ---
@@ -11,7 +11,7 @@
 
 ### Proyecto
 ```
-/mnt/project/obsidian-repo/
+/mnt/project/chronex-obsidian/
 ├── README.md
 ├── PROJECT-STATUS.md
 ├── package.json
@@ -486,7 +486,7 @@ IMPLEMENTACIÓN (Iniciada):
 - [x] PASO 1 V4 completado (7 artefactos)
 - [x] PASO 2 completado (5 UCs + 5 templates)
 - [x] PASO 3 completado (5 artefactos, 227 checkboxes)
-- [x] Proyecto creado en /mnt/project/obsidian-repo/
+- [x] Proyecto creado en /mnt/project/chronex-obsidian/
 - [x] Estructura de directorios lista
 - [x] README.md documentado
 - [x] PROJECT-STATUS.md actualizado

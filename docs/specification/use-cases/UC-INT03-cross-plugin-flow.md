@@ -25,7 +25,7 @@ status: Especificación Completada
 
 ## 2. DESCRIPCIÓN BREVE
 
-Flujo completo que integra obsidian-repo, QuickAdd, Templater. Usuario ejecuta comando/macro. obsidian-repo script valida y genera metadata. QuickAdd sustituye variables de template. Templater procesa código dinámico. Obsidian crea archivo. Flujo total: 15-30 segundos. Valida integración perfecta entre 3 plugins.
+Flujo completo que integra chronex-obsidian, QuickAdd, Templater. Usuario ejecuta comando/macro. chronex-obsidian script valida y genera metadata. QuickAdd sustituye variables de template. Templater procesa código dinámico. Obsidian crea archivo. Flujo total: 15-30 segundos. Valida integración perfecta entre 3 plugins.
 
 ---
 
@@ -34,7 +34,7 @@ Flujo completo que integra obsidian-repo, QuickAdd, Templater. Usuario ejecuta c
 ```
 Usuario Input
     ↓
-obsidian-repo Script
+chronex-obsidian Script
   ├─ validateCommonInput() [UC-SYS01]
   ├─ generateUniqueId() [UC-SYS02]
   ├─ getCurrentDateTime()
@@ -64,7 +64,7 @@ Vault Updated
 
 ---
 
-#### **Paso 1-3: obsidian-repo**
+#### **Paso 1-3: chronex-obsidian**
 
 Valida input, genera ID, obtiene metadata (UC-SYS01, UC-SYS02)
 
@@ -103,7 +103,7 @@ Crea archivo, abre editor, muestra notificación (UC-SYS03)
 
 | Componente | Tiempo Típico | Máximo |
 |-----------|---------------|--------|
-| obsidian-repo Script | 10-50ms | 100ms |
+| chronex-obsidian Script | 10-50ms | 100ms |
 | QuickAdd substitution | 5-20ms | 50ms |
 | Templater processing | 20-100ms | 200ms |
 | Obsidian file creation | 50-200ms | 500ms |
@@ -115,10 +115,10 @@ Crea archivo, abre editor, muestra notificación (UC-SYS03)
 
 | Plugin 1 | Plugin 2 | Integración | Verificación |
 |----------|----------|-------------|--------------|
-| obsidian-repo | QuickAdd | Script output → Template input | Variables correctas |
+| chronex-obsidian | QuickAdd | Script output → Template input | Variables correctas |
 | QuickAdd | Templater | Template {{}} → <% %> blocks | Contenido final válido |
 | Templater | Obsidian | Final content → File API | Archivo creado |
-| obsidian-repo | Obsidian | showNotification() → UI | Notificación mostrada |
+| chronex-obsidian | Obsidian | showNotification() → UI | Notificación mostrada |
 
 ---
 

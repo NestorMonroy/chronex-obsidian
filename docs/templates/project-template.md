@@ -25,4 +25,4 @@ status: activo
 - Recursos
 
 ## Notas
-Proyecto creado automáticamente con sistema obsidian-repo.
+Proyecto creado automáticamente con sistema chronex-obsidian.

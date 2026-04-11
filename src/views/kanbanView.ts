@@ -6,7 +6,7 @@
 import { ItemView, WorkspaceLeaf } from 'obsidian';
 import { TaskServiceWithVault } from '../services/taskServiceWithVault';
 
-export const KANBAN_VIEW_TYPE = 'obsidian-repo-kanban';
+export const KANBAN_VIEW_TYPE = 'chronex-obsidian-kanban';
 
 interface TaskItem {
   taskId: string;

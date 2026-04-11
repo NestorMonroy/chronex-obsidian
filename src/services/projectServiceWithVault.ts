@@ -209,7 +209,7 @@ ${dateCreated ? `- **Creado**: ${dateCreated}` : ''}
 
 ---
 
-*Generado por obsidian-repo*
+*Generado por chronex-obsidian*
 `;
   }
 }

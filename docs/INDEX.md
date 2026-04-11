@@ -1,6 +1,6 @@
 # OBSIDIAN-REPO: DOCUMENTACIÓN COMPLETA
 
-**Índice maestro de toda la documentación de obsidian-repo**
+**Índice maestro de toda la documentación de chronex-obsidian**
 
 ---
 

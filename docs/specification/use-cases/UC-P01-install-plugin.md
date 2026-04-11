@@ -105,7 +105,7 @@ El usuario inicia desde Settings → Community Plugins → Browse, busca el plug
 
 **Actor**: Usuario
 
-**Acción**: Usuario ingresa "obsidian-repo" o "repository manager" en buscador, presiona Enter
+**Acción**: Usuario ingresa "chronex-obsidian" o "repository manager" en buscador, presiona Enter
 
 **Componentes invocados**:
 - Community Registry search API
@@ -153,7 +153,7 @@ El usuario inicia desde Settings → Community Plugins → Browse, busca el plug
 
 **Actor**: Obsidian Plugin Manager
 
-**Acción**: Sistema descomprime archivo descargado en `.obsidian/plugins/obsidian-repo/`
+**Acción**: Sistema descomprime archivo descargado en `.obsidian/plugins/chronex-obsidian/`
 
 **Componentes invocados**:
 - File system API
@@ -178,7 +178,7 @@ El usuario inicia desde Settings → Community Plugins → Browse, busca el plug
 - Version checker
 
 **Resultado esperado**: 
-- ID válido: "obsidian-repo" ✓
+- ID válido: "chronex-obsidian" ✓
 - minAppVersion: "1.5.0" ✓
 - Todos los campos requeridos presentes ✓
 
@@ -290,7 +290,7 @@ El usuario inicia desde Settings → Community Plugins → Browse, busca el plug
 
 **Acciones**:
 1. Usuario descarga main.js, manifest.json, styles.css
-2. Usuario crea folder `.obsidian/plugins/obsidian-repo/`
+2. Usuario crea folder `.obsidian/plugins/chronex-obsidian/`
 3. Usuario copia archivos al folder
 4. Usuario reinicia Obsidian
 5. Plugin aparece en Community Plugins list
@@ -346,7 +346,7 @@ El usuario inicia desde Settings → Community Plugins → Browse, busca el plug
 **Manejo**:
 1. Sistema muestra: "Plugin not found"
 2. Sugerir búsqueda alternativa
-3. Link a GitHub: https://github.com/NestorMonroy/obsidian-repo
+3. Link a GitHub: https://github.com/NestorMonroy/chronex-obsidian
 4. Opción para instalación manual
 
 **Postcondición en Excepción**: Ningún archivo descargado, vault sin cambios
@@ -411,7 +411,7 @@ El usuario inicia desde Settings → Community Plugins → Browse, busca el plug
 
 ### Excepción EXC-P01-005: Conflicto de ID de Plugin
 
-**Condición**: Plugin con ID "obsidian-repo" ya instalado
+**Condición**: Plugin con ID "chronex-obsidian" ya instalado
 
 **Causa potencial**:
 - Usuario intenta instalar dos veces
@@ -419,7 +419,7 @@ El usuario inicia desde Settings → Community Plugins → Browse, busca el plug
 
 **Manejo**:
 1. Sistema detecta conflicto
-2. Mostrar: "Plugin with ID 'obsidian-repo' already installed"
+2. Mostrar: "Plugin with ID 'chronex-obsidian' already installed"
 3. Ofrecer: [Update] [Reinstall] [Cancel]
 4. Update: descargar versión nueva, reemplazar
 5. Reinstall: desinstalar anterior + instalar nuevo
@@ -433,7 +433,7 @@ El usuario inicia desde Settings → Community Plugins → Browse, busca el plug
 ### Postcondiciones Exitosas
 
 1. **Plugin instalado**
-   - Directorio `.obsidian/plugins/obsidian-repo/` existe
+   - Directorio `.obsidian/plugins/chronex-obsidian/` existe
    - main.js descargado y descomprimido
    - manifest.json validado y registrado
 
@@ -472,8 +472,8 @@ El usuario inicia desde Settings → Community Plugins → Browse, busca el plug
 
 | Parámetro | Tipo | Origen | Ejemplo |
 |-----------|------|--------|---------|
-| Query búsqueda | String | Usuario | "obsidian-repo" |
-| Plugin ID | String | Community Registry | "obsidian-repo" |
+| Query búsqueda | String | Usuario | "chronex-obsidian" |
+| Plugin ID | String | Community Registry | "chronex-obsidian" |
 | Versión deseada | String | Registry | "1.0.0" |
 | minAppVersion | String | manifest.json | "1.5.0" |
 
@@ -481,11 +481,11 @@ El usuario inicia desde Settings → Community Plugins → Browse, busca el plug
 
 | Artefacto | Tipo | Destino | Ejemplo |
 |-----------|------|---------|---------|
-| main.js | Binario | .obsidian/plugins/obsidian-repo/ | 250 KB compilado |
-| manifest.json | JSON | .obsidian/plugins/obsidian-repo/ | Metadata plugin |
-| styles.css | CSS | .obsidian/plugins/obsidian-repo/ | Estilos opcionales |
+| main.js | Binario | .obsidian/plugins/chronex-obsidian/ | 250 KB compilado |
+| manifest.json | JSON | .obsidian/plugins/chronex-obsidian/ | Metadata plugin |
+| styles.css | CSS | .obsidian/plugins/chronex-obsidian/ | Estilos opcionales |
 | Notificación | UI | Obsidian toast | "Plugin installed" |
-| Settings data | JSON | .obsidian/plugins/obsidian-repo/data.json | Valores por defecto |
+| Settings data | JSON | .obsidian/plugins/chronex-obsidian/data.json | Valores por defecto |
 
 ---
 

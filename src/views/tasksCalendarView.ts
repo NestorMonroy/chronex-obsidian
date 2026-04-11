@@ -7,7 +7,7 @@ import { ItemView, WorkspaceLeaf } from 'obsidian';
 import { TaskServiceWithVault } from '../services/taskServiceWithVault';
 import { dataManager } from '../services/dataManager';
 
-export const TASKS_CALENDAR_VIEW_TYPE = 'obsidian-repo-tasks-calendar';
+export const TASKS_CALENDAR_VIEW_TYPE = 'chronex-obsidian-tasks-calendar';
 
 type ViewMode = 'month' | 'week' | 'day';
 

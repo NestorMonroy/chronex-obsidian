@@ -1,4 +1,4 @@
-# Integración Templater - obsidian-repo
+# Integración Templater - chronex-obsidian
 
 ## Descripción General
 
@@ -160,7 +160,7 @@ Sistema integral para organizar proyectos
 - Recursos
 
 ## Notas
-Proyecto creado automáticamente con sistema obsidian-repo.
+Proyecto creado automáticamente con sistema chronex-obsidian.
 ```
 
 ## Uso en Servicios

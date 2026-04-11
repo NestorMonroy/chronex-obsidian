@@ -1,6 +1,8 @@
-# Obsidian Repository Manager
+# Chronex Obsidian
 
-A professional Obsidian plugin for automated repository, task, project, and pillar management with QuickAdd and Templater integration.
+**Chronex Obsidian: Visual Automation System for Obsidian Vault**
+
+A professional automation plugin that visualizes and controls temporal workflows in Obsidian, with advanced task processing, vault management, and temporal precision.
 
 ## Features
 
@@ -18,14 +20,14 @@ A professional Obsidian plugin for automated repository, task, project, and pill
 ## Installation
 
 1. Open Obsidian Settings → Community Plugins → Browse
-2. Search for "Obsidian Repository Manager"
+2. Search for "Chronex Obsidian"
 3. Click Install
 4. Enable the plugin
 
 ### Manual Installation
 
 1. Download `main.js`, `manifest.json`, and `styles.css`
-2. Create folder: `.obsidian/plugins/obsidian-repo/`
+2. Create folder: `.obsidian/plugins/chronex-obsidian/`
 3. Place files in the folder
 4. Reload Obsidian
 
@@ -65,7 +67,7 @@ Use Obsidian Command Palette (Cmd/Ctrl + P):
 
 ### Settings
 
-Plugin → Options → Obsidian Repository Manager:
+Plugin → Options → Chronex Obsidian:
 
 - **Author Name**: Your name (for metadata)
 - **Templates Folder**: Where templates are stored

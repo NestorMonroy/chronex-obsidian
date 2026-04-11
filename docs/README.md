@@ -1,6 +1,6 @@
 # Documentation
 
-Documentación del proyecto obsidian-repo, organizada según el modelo de **"cajones independientes"** de arc42.
+Documentación del proyecto chronex-obsidian, organizada según el modelo de **"cajones independientes"** de arc42.
 
 ## Estructura
 

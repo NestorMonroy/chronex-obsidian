@@ -129,7 +129,7 @@ export class VersionManager {
   constructor(app: App, plugin: any, currentVersion: string) {
     this.app = app;
     this.plugin = plugin;
-    this.pluginId = plugin.manifest?.id || 'obsidian-repo';
+    this.pluginId = plugin.manifest?.id || 'chronex-obsidian';
     this.currentVersion = currentVersion;
   }
 

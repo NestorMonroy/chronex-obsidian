@@ -14,7 +14,7 @@ describe('UC-P01: Instalar Plugin', () => {
   describe('detectReleaseUrl', () => {
     it('debe detectar URL de GitHub release correcta', () => {
       // ARRANGE
-      const pluginId = 'obsidian-repo';
+      const pluginId = 'chronex-obsidian';
       const version = '1.0.0';
 
       // ACT
@@ -22,7 +22,7 @@ describe('UC-P01: Instalar Plugin', () => {
 
       // ASSERT
       expect(url).toContain('github.com');
-      expect(url).toContain('obsidian-repo');
+      expect(url).toContain('chronex-obsidian');
       expect(url).toContain('v1.0.0');
       expect(url).toContain('releases');
       expect(url).toMatch(/^https:\/\//);
@@ -37,7 +37,7 @@ describe('UC-P01: Instalar Plugin', () => {
     });
 
     it('debe rechazar versión vacía', () => {
-      expect(() => PluginInstaller.detectReleaseUrl('obsidian-repo', '')).toThrow();
+      expect(() => PluginInstaller.detectReleaseUrl('chronex-obsidian', '')).toThrow();
     });
 
     it('debe soportar versiones con números', () => {
@@ -50,7 +50,7 @@ describe('UC-P01: Instalar Plugin', () => {
     it('debe validar estructura de plugin correcta', () => {
       // ARRANGE
       const validManifest = {
-        id: 'obsidian-repo',
+        id: 'chronex-obsidian',
         name: 'Repository Manager',
         version: '1.0.0',
         minAppVersion: '0.15.0',
@@ -135,7 +135,7 @@ describe('UC-P01: Instalar Plugin', () => {
     it('debe ejecutar wizard de setup inicial', async () => {
       // ARRANGE
       const config = {
-        pluginName: 'obsidian-repo',
+        pluginName: 'chronex-obsidian',
         version: '1.0.0'
       };
 
@@ -151,7 +151,7 @@ describe('UC-P01: Instalar Plugin', () => {
     it('debe crear estructura de carpetas en wizard', async () => {
       // ARRANGE
       const config = {
-        pluginName: 'obsidian-repo',
+        pluginName: 'chronex-obsidian',
         version: '1.0.0'
       };
 
@@ -174,7 +174,7 @@ describe('UC-P01: Instalar Plugin', () => {
     it('debe registrar pasos completados', async () => {
       // ARRANGE
       const config = {
-        pluginName: 'obsidian-repo',
+        pluginName: 'chronex-obsidian',
         version: '1.0.0'
       };
 
@@ -225,7 +225,7 @@ describe('UC-P01: Instalar Plugin', () => {
     it('debe completar instalación end-to-end', async () => {
       // ARRANGE
       const config = {
-        pluginName: 'obsidian-repo',
+        pluginName: 'chronex-obsidian',
         version: '1.0.0'
       };
 
@@ -241,7 +241,7 @@ describe('UC-P01: Instalar Plugin', () => {
     it('debe detectar URL, crear carpetas y validar', async () => {
       // ARRANGE
       const config = {
-        pluginName: 'obsidian-repo',
+        pluginName: 'chronex-obsidian',
         version: '1.0.0'
       };
 
@@ -265,7 +265,7 @@ describe('UC-P01: Instalar Plugin', () => {
     it('debe retornar información completa de instalación', async () => {
       // ARRANGE
       const config = {
-        pluginName: 'obsidian-repo',
+        pluginName: 'chronex-obsidian',
         version: '1.0.0'
       };
 
@@ -299,7 +299,7 @@ describe('UC-P01: Instalar Plugin', () => {
     it('debe validar estructura de carpetas antes de completar', async () => {
       // ARRANGE
       const config = {
-        pluginName: 'obsidian-repo',
+        pluginName: 'chronex-obsidian',
         version: '1.0.0'
       };
 
@@ -323,7 +323,7 @@ describe('UC-P01: Instalar Plugin', () => {
     });
 
     it('debe ignorar espacios en nombres', () => {
-      expect(() => PluginInstaller.detectReleaseUrl('  obsidian-repo  ', '1.0.0')).toThrow();
+      expect(() => PluginInstaller.detectReleaseUrl('  chronex-obsidian  ', '1.0.0')).toThrow();
     });
   });
 });

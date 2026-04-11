@@ -2,7 +2,7 @@
 type: Índice Maestro
 title: ÍNDICE MASTER - ESTADO COMPLETO DE UC
 version: 1.0.0
-project: obsidian-repo
+project: chronex-obsidian
 date: 2026-04-11
 language: Español
 status: ACTUALIZADO
@@ -332,5 +332,5 @@ Sesión 2026-04-11:
 **Documento Maestro**
 **Creado**: 2026-04-11
 **Última actualización**: 2026-04-11
-**Responsable**: Equipo obsidian-repo
+**Responsable**: Equipo chronex-obsidian
 **Estado**: ACTUALIZADO - LISTO PARA IMPLEMENTACIÓN

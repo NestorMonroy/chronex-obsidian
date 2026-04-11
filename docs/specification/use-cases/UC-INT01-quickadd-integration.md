@@ -35,7 +35,7 @@ Usuario configura macro en QuickAdd que ejecuta script de creación (ej: createR
 |-------|------|-----|
 | **Usuario** | Humano | Primario |
 | **QuickAdd Plugin** | Sistema | Secundario |
-| **obsidian-repo Plugin** | Sistema | Secundario |
+| **chronex-obsidian Plugin** | Sistema | Secundario |
 | **Templater Plugin** | Sistema | Secundario |
 | **Scripts (createRepository, etc.)** | Artefacto | Consumidor |
 

@@ -17,7 +17,7 @@ Cada carpeta de proyecto, objetivo, tarea o documento tiene una nota **`_about_.
 ## 🏗️ Arquitectura
 
 ```
-obsidian-repo/
+chronex-obsidian/
 ├─ src/
 │  ├─ services/
 │  │  └─ folderAboutService.ts      ← Lógica PROPIA (no dependencia)
@@ -216,7 +216,7 @@ Carpeta:   Gradiente rosa → amarillo
 
 ## ⚙️ Configuración en Settings
 
-En Obsidian Settings → "obsidian-repo":
+En Obsidian Settings → "chronex-obsidian":
 
 ### Folder About Notes (_about_)
 

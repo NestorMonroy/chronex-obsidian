@@ -1,4 +1,4 @@
-# Views Personalizadas - obsidian-repo
+# Views Personalizadas - chronex-obsidian
 
 ## Descripción General
 
@@ -6,7 +6,7 @@ Las vistas personalizadas permiten visualizar los proyectos, objetivos y tareas 
 
 ## 1. Projects Dashboard
 
-**Tipo**: `obsidian-repo-projects`
+**Tipo**: `chronex-obsidian-projects`
 **Icono**: briefcase
 **Comando**: "Open Projects Dashboard"
 
@@ -48,7 +48,7 @@ Projects Dashboard
 
 ## 2. Tasks Calendar
 
-**Tipo**: `obsidian-repo-tasks-calendar`
+**Tipo**: `chronex-obsidian-tasks-calendar`
 **Icono**: calendar
 **Comando**: "Open Tasks Calendar"
 
@@ -94,7 +94,7 @@ Deploy v1.0 - Due: 2026-04-20 [Pending]
 
 ## 3. Tasks Kanban
 
-**Tipo**: `obsidian-repo-kanban`
+**Tipo**: `chronex-obsidian-kanban`
 **Icono**: trello
 **Comando**: "Open Tasks Kanban"
 

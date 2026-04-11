@@ -2,7 +2,7 @@
 type: Status Report
 title: FASE 1 - CONVENCIONES Y BASE
 version: 1.0.0
-scope: obsidian-repo
+scope: chronex-obsidian
 date: 2026-04-11
 status: Completada - Pronto FASE 2
 ```
@@ -145,7 +145,7 @@ status: Completada - Pronto FASE 2
 ## 📝 ESTRUCTURA CREADA
 
 ```
-obsidian-repo/
+chronex-obsidian/
 ├── docs/
 │   └── CONVENTIONS.md             ✅ Nuevas convenciones
 │

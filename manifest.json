@@ -1,9 +1,9 @@
 {
-  "id": "obsidian-repo",
-  "name": "Obsidian Repo",
+  "id": "chronex-obsidian",
+  "name": "Chronex Obsidian",
   "version": "1.0.0",
   "minAppVersion": "1.0.0",
-  "description": "Sistema integral de gestión documental y proyectos para Obsidian. Crea proyectos, objetivos, tareas y documentos con estructura automática.",
+  "description": "Chronex Obsidian: Visual Automation System. Visualize, control, and automate temporal workflows in your Obsidian vault.",
   "author": "Nestor Monroy",
   "authorUrl": "https://github.com/nestormonroy",
   "fundingUrl": "https://github.com/nestormonroy",

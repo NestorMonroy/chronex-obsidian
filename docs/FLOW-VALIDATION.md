@@ -124,7 +124,7 @@ Gestión documental integral
 
 ---
 
-*Generado por obsidian-repo*
+*Generado por chronex-obsidian*
 
 ARCHIVO CREADO: PROJ-202604-ABC.md ✅
 ```

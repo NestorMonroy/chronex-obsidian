@@ -1,6 +1,6 @@
 # JavaScript Conventions
 
-JavaScript-specific conventions for obsidian-repo.
+JavaScript-specific conventions for chronex-obsidian.
 
 ## References
 

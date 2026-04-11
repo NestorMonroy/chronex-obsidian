@@ -145,7 +145,7 @@ ${frontmatter.description || 'Sin descripción'}
 - [ ] Tarea 3
 
 ## Notas
-Objetivo creado automáticamente con obsidian-repo plugin.
+Objetivo creado automáticamente con chronex-obsidian plugin.
 `;
   }
 

@@ -7,7 +7,7 @@ import { ItemView, WorkspaceLeaf } from 'obsidian';
 import { GanttRenderer } } from './ganttRenderer';
 import { dataManager } from '../../services/dataManager';
 
-export const GANTT_VIEW_TYPE = 'obsidian-repo-gantt';
+export const GANTT_VIEW_TYPE = 'chronex-obsidian-gantt';
 
 export class GanttView extends ItemView {
   private ganttRenderer?: GanttRenderer;

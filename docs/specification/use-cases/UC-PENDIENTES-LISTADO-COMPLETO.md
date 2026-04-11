@@ -2,7 +2,7 @@
 type: Documento de Planificación
 title: UC-PENDIENTES - Listado de Casos de Uso Faltantes
 version: 1.0.0
-project: obsidian-repo
+project: chronex-obsidian
 date: 2026-04-11
 language: Español Mexicano - Técnico Profesional
 status: Documento de Referencia
@@ -187,7 +187,7 @@ Estimado de documentación: 8-10 horas (5-7 horas si se agilizan)
 
 ### UC-P01: Instalar Plugin
 
-**Descripción**: Usuario descarga obsidian-repo plugin desde releases de GitHub. Extrae en carpeta plugins/ de vault. Obsidian detecta plugin, usuario habilita. Primera vez: sistema ejecuta setup wizard que crea estructura base (100-INBOX, 200-PROYECTOS, 500-REPOSITORIOS, 990-UTILIDADES). Plugin listo para usar.
+**Descripción**: Usuario descarga chronex-obsidian plugin desde releases de GitHub. Extrae en carpeta plugins/ de vault. Obsidian detecta plugin, usuario habilita. Primera vez: sistema ejecuta setup wizard que crea estructura base (100-INBOX, 200-PROYECTOS, 500-REPOSITORIOS, 990-UTILIDADES). Plugin listo para usar.
 
 **Complejidad**: MEDIA
 **Timeline**: 2-3 horas

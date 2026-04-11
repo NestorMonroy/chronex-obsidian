@@ -1,7 +1,7 @@
 /**
  * UC-P02: Configurar Plugin
  * 
- * Sistema completo de gestión de configuración para obsidian-repo:
+ * Sistema completo de gestión de configuración para chronex-obsidian:
  * 1. Configuración por defecto con valores iniciales
  * 2. Validación robusta de settings
  * 3. Persistencia: cargar/guardar configuración
@@ -19,7 +19,7 @@
  */
 
 /**
- * Configuración del plugin obsidian-repo
+ * Configuración del plugin chronex-obsidian
  * 
  * Propiedades:
  * - Folders: Ubicación de carpetas base (100-INBOX, 200-PROYECTOS, etc.)
@@ -363,7 +363,7 @@ export class SettingsManager {
     ];
 
     return {
-      title: 'obsidian-repo Settings',
+      title: 'chronex-obsidian Settings',
       containerEl: {},
       settings
     };
