@@ -21,12 +21,18 @@ import {
 import { ProjectService } from './services/createProject';
 import { ProjectServiceWithVault } from './services/projectServiceWithVault';
 import { ObjectiveService } from './services/createObjective';
+import { ObjectiveServiceWithVault } from './services/objectiveServiceWithVault';
 import { TaskService } from './services/createTask';
+import { TaskServiceWithVault } from './services/taskServiceWithVault';
 import { DocumentService } from './services/createDocument';
+import { DocumentServiceWithVault } from './services/documentServiceWithVault';
 import { ListService } from './services/listProjects';
 import { EditService } from './services/editEntity';
+import { EditServiceWithVault } from './services/editServiceWithVault';
 import { DeleteService } from './services/deleteEntity';
+import { DeleteServiceWithVault } from './services/deleteServiceWithVault';
 import { ArchiveService } from './services/archiveEntity';
+import { ArchiveServiceWithVault } from './services/archiveServiceWithVault';
 import { TemplaterIntegration } from './services/templaterIntegration';
 import { QuickAddIntegration } from './services/quickaddIntegration';
 import { CrossPluginFlow } from './services/crossPluginFlow';
@@ -241,7 +247,7 @@ export default class ObsidianRepoPlugin extends Plugin {
     );
 
     try {
-      const result = await ObjectiveService.createObjective({
+      const result = await ObjectiveServiceWithVault.createObjectiveWithVault({
         objectiveName,
         description,
         priority: priority as 'BAJA' | 'MEDIA' | 'ALTA' | 'CRÍTICA',
@@ -249,6 +255,8 @@ export default class ObsidianRepoPlugin extends Plugin {
 
       if (result.success) {
         new Notice(`✅ Objective "${objectiveName}" created!`);
+      } else {
+        new Notice(`❌ Error: ${result.error}`);
       }
     } catch (error) {
       new Notice(`❌ Error creating objective: ${error}`);
@@ -268,7 +276,7 @@ export default class ObsidianRepoPlugin extends Plugin {
     const dueDate = await this.promptInput('Due date (YYYY-MM-DD):', '');
 
     try {
-      const result = await TaskService.createTask({
+      const result = await TaskServiceWithVault.createTaskWithVault({
         taskName,
         description,
         priority: priority as 'BAJA' | 'MEDIA' | 'ALTA' | 'CRÍTICA',
@@ -277,6 +285,8 @@ export default class ObsidianRepoPlugin extends Plugin {
 
       if (result.success) {
         new Notice(`✅ Task "${taskName}" created!`);
+      } else {
+        new Notice(`❌ Error: ${result.error}`);
       }
     } catch (error) {
       new Notice(`❌ Error creating task: ${error}`);
@@ -288,15 +298,19 @@ export default class ObsidianRepoPlugin extends Plugin {
     if (!documentName) return;
 
     const description = await this.promptInput('Document description:', '');
+    const category = await this.promptInput('Category (optional):', 'General');
 
     try {
-      const result = await DocumentService.createDocument({
+      const result = await DocumentServiceWithVault.createDocumentWithVault({
         documentName,
         description,
+        category: category || undefined,
       });
 
       if (result.success) {
         new Notice(`✅ Document "${documentName}" created!`);
+      } else {
+        new Notice(`❌ Error: ${result.error}`);
       }
     } catch (error) {
       new Notice(`❌ Error creating document: ${error}`);
