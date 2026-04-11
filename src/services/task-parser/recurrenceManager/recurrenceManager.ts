@@ -200,8 +200,23 @@ export class RecurrenceManager {
     const instances: TaskInstance[] = [];
     const baseDate = new Date(task.dueDate);
 
-    for (let i = 0; i < maxDays; i++) {
-      const instanceDate = new Date(baseDate.getTime() + i * 86400000);
+    // Verificar si es weekday-only
+    const isWeekday = task.recurrence?.includes('weekday') ||
+      (task.recurrenceRule?.includes('MO,TU,WE,TH,FR'));
+
+    let dayCount = 0;
+    let dayIndex = 0;
+
+    while (dayCount < maxDays && dayIndex < 730) {
+      const instanceDate = new Date(baseDate.getTime() + dayIndex * 86400000);
+      const dayOfWeek = instanceDate.getDay();
+
+      // Si es weekday, saltar sábados (6) y domingos (0)
+      if (isWeekday && (dayOfWeek === 0 || dayOfWeek === 6)) {
+        dayIndex++;
+        continue;
+      }
+
       const dateStr = instanceDate.toISOString().split('T')[0];
 
       // Calcular scheduledDate si existe
@@ -222,8 +237,11 @@ export class RecurrenceManager {
         instanceId: `${task.id}@${dateStr}`,
         dueDate: dateStr,
         scheduledDate: instanceScheduledDate,
-        occurrenceIndex: i
+        occurrenceIndex: dayCount
       });
+
+      dayCount++;
+      dayIndex++;
     }
 
     return { success: true, instances };

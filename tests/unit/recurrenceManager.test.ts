@@ -75,7 +75,7 @@ describe('UC-041: recurrenceManager - Recurrence', () => {
 
       expect(result.success).toBe(true);
       expect(result.frequency).toBe('WEEKLY');
-      expect(result.recurrenceRule).toContain('weekday');
+      expect(result.recurrenceRule).toContain('MO,TU,WE,TH,FR');
     });
 
     test('debe parsear "🔁 every week on Monday"', () => {
@@ -85,7 +85,7 @@ describe('UC-041: recurrenceManager - Recurrence', () => {
 
       expect(result.success).toBe(true);
       expect(result.frequency).toBe('WEEKLY');
-      expect(result.recurrenceRule).toContain('Monday');
+      expect(result.recurrenceRule).toContain('MO');
     });
 
     test('debe parsear "🔁 every 2 weeks"', () => {
@@ -95,7 +95,7 @@ describe('UC-041: recurrenceManager - Recurrence', () => {
 
       expect(result.success).toBe(true);
       expect(result.frequency).toBe('WEEKLY');
-      expect(result.recurrenceRule).toContain('interval=2');
+      expect(result.recurrenceRule).toContain('INTERVAL=2');
     });
 
     test('debe parsear "🔁 every month on the 15th"', () => {
