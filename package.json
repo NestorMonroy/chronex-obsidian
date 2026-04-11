@@ -1,0 +1,45 @@
+{
+  "name": "obsidian-repo",
+  "version": "1.0.0-alpha",
+  "description": "Sistema modular de automatización QuickAdd para Obsidian vault",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --passWithNoTests",
+    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
+    "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
+    "lint": "eslint src/ tests/ --fix",
+    "lint:check": "eslint src/ tests/",
+    "build": "echo 'Build script not configured yet'",
+    "setup": "bash scripts/setup.sh",
+    "deploy": "bash scripts/deploy.sh"
+  },
+  "keywords": [
+    "obsidian",
+    "quickadd",
+    "automation",
+    "vault",
+    "repository",
+    "task",
+    "project"
+  ],
+  "author": "Nestor",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^29.5.0",
+    "eslint": "^8.40.0",
+    "jest": "^29.5.0"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nestor/obsidian-repo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nestor/obsidian-repo/issues"
+  },
+  "homepage": "https://github.com/nestor/obsidian-repo#readme"
+}
