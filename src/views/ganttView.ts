@@ -63,8 +63,12 @@ export class GanttView extends ItemView {
       container: ganttContainer,
       taskHeight: 35,
       barHeight: 20,
-      onDateChange: (taskId: string, startDate: string, endDate: string) => {
-        this.handleDateChange(taskId, startDate, endDate);
+      onDateChange: (taskId: string, startDate: Date | string, endDate: Date | string) => {
+        this.handleDateChange(
+          taskId,
+          typeof startDate === 'string' ? new Date(startDate) : startDate,
+          typeof endDate === 'string' ? new Date(endDate) : endDate
+        );
       },
       onTaskClick: (taskId: string) => {
         this.handleTaskClick(taskId);

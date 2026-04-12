@@ -67,8 +67,9 @@ export class EditServiceWithVault {
       const newData = { ...oldData, ...input.updates };
       await FolderNoteService.updateFolderNoteOnMetadataChange(
         input.folderPath,
-        oldData,
-        newData
+        input.folderPath,
+        oldData as any,
+        newData as any
       );
 
       // 5. AUTO-SYNC: Actualizar índice global

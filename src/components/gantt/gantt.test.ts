@@ -176,7 +176,7 @@ describe('GanttRenderer - SEMANA 3', () => {
       // Mock DataManager para lanzar error
       jest.spyOn(require('../../services/dataManager'), 'dataManager').mockImplementation({
         getProjectTasks: jest.fn(() => Promise.reject(new Error('Mock error'))),
-      });
+      } as any);
 
       await renderer.render();
       expect(container.innerHTML).toContain('Error');

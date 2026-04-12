@@ -245,12 +245,12 @@ export class AutoDateManager {
       if (result.task) updatedTask = result.task;
     }
     // Si ANTERIOR era DONE y NUEVO no → limpiar doneDate
-    else if (previousStatus === 'DONE' && task.status !== 'DONE') {
+    else if (previousStatus === 'DONE' && (task.status as any) !== 'DONE') {
       const result = this.clearDoneDate(updatedTask);
       if (result.task) updatedTask = result.task;
     }
     // Si ANTERIOR era CANCELLED y NUEVO no → limpiar cancelledDate
-    else if (previousStatus === 'CANCELLED' && task.status !== 'CANCELLED') {
+    else if (previousStatus === 'CANCELLED' && (task.status as any) !== 'CANCELLED') {
       const result = this.clearCancelledDate(updatedTask);
       if (result.task) updatedTask = result.task;
     }

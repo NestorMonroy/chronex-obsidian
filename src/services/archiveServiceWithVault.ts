@@ -62,8 +62,9 @@ export class ArchiveServiceWithVault {
       // 4. AUTO-UPDATE: Actualizar FolderNote
       await FolderNoteService.updateFolderNoteOnMetadataChange(
         input.folderPath,
-        { status: input.archive ? 'activo' : 'archivado' },
-        { status: newStatus }
+        input.folderPath,
+        { status: input.archive ? 'activo' : 'archivado' } as any,
+        { status: newStatus } as any
       );
 
       // 5. AUTO-SYNC: Actualizar índice global

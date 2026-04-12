@@ -51,8 +51,8 @@ describe('TaskServiceWithVault - SEMANA 1 (Nuevos métodos)', () => {
     test('debería actualizar prioridad', async () => {
       const taskId = 'TSK-202604-ABC';
       const updates = { priority: 'ALTA' };
-      
-      const result = await TaskServiceWithVault.updateTaskWithVault(taskId, updates);
+
+      const result = await TaskServiceWithVault.updateTaskWithVault(taskId, updates as any);
       
       expect(result.success).toBe(true);
       expect(result.frontmatter?.priority).toBe('ALTA');

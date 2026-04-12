@@ -138,7 +138,7 @@ export class ProjectsView extends ItemView {
 
     const newProjectBtn = container.createEl('button', { text: 'New Project' });
     newProjectBtn.addEventListener('click', () => {
-      this.app.commands.executeCommandById('create-project');
+      (this.app as any).commands.executeCommandById('create-project');
     });
   }
 }

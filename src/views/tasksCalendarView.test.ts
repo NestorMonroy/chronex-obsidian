@@ -27,7 +27,7 @@ describe('TasksCalendarView - SEMANA 4', () => {
   });
 
   afterEach(() => {
-    view = null;
+    view = null as any;
     mockContentEl.remove();
   });
 

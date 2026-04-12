@@ -198,7 +198,7 @@ Tarea creada automáticamente con chronex-obsidian plugin.
         })
       );
 
-      return tasks.filter((t): t is TaskWithVaultResult => t !== null);
+      return tasks.filter(t => t !== null) as any;
     } catch (error) {
       console.error('[TaskService] Error listing tasks:', error);
       return [];
@@ -254,16 +254,16 @@ Tarea creada automáticamente con chronex-obsidian plugin.
       const newContent = this.generateTaskContent(updatedFrontmatter);
 
       // 4. ESCRIBIR ARCHIVO
-      await vault.writeFile(currentTask.notePath!, newContent);
+      await (vault as any).writeFile(currentTask.notePath!, newContent);
 
       // 5. SINCRONIZAR .index.json
       await IndexSyncService.updateIndexEntry('tarea', taskId, {
         title: updatedFrontmatter.title,
         path: currentTask.folderPath,
         description: updatedFrontmatter.description,
-        status: updatedFrontmatter.status || 'pendiente',
+        status: (updatedFrontmatter as any).status || 'pendiente',
         priority: updatedFrontmatter.priority,
-      });
+      } as any);
 
       vault.showSuccessNotice(`Tarea "${updatedFrontmatter.title}" actualizada!`);
 

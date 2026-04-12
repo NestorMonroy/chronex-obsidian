@@ -99,7 +99,7 @@ export class ProjectServiceWithVault {
           status: 'activo',
           priority: input.priority,
           dateCreated: dateCreated
-        }
+        } as any
       );
       filesCreated.push(`${projectId}.md`); // PROJ-202604-ABC.md
 

@@ -197,7 +197,7 @@ Objetivo creado automáticamente con chronex-obsidian plugin.
         })
       );
 
-      return objectives.filter((o): o is ObjectiveWithVaultResult => o !== null);
+      return objectives.filter(o => o !== null) as any;
     } catch (error) {
       console.error('[ObjectiveService] Error listing objectives:', error);
       return [];

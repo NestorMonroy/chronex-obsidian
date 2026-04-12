@@ -194,7 +194,7 @@ ${frontmatter.description || 'Sin descripción'}
         })
       );
 
-      return documents.filter((d): d is DocumentWithVaultResult => d !== null);
+      return documents.filter(d => d !== null) as any;
     } catch (error) {
       console.error('[DocumentService] Error listing documents:', error);
       return [];
