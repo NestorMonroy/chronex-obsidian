@@ -175,7 +175,7 @@ export default class ObsidianRepoPlugin extends Plugin {
       id: 'create-project',
       name: 'Create new project',
       callback: () => this.handleCreateProject(),
-      hotkeys: ['Mod+Shift+P'],
+      hotkeys: [{ modifiers: ['Mod', 'Shift'], key: 'p' }],
     });
 
     // UC-010: Create Objective
@@ -183,7 +183,7 @@ export default class ObsidianRepoPlugin extends Plugin {
       id: 'create-objective',
       name: 'Create new objective',
       callback: () => this.handleCreateObjective(),
-      hotkeys: ['Mod+Shift+O'],
+      hotkeys: [{ modifiers: ['Mod', 'Shift'], key: 'o' }],
     });
 
     // UC-012: Create Task
@@ -191,7 +191,7 @@ export default class ObsidianRepoPlugin extends Plugin {
       id: 'create-task',
       name: 'Create new task',
       callback: () => this.handleCreateTask(),
-      hotkeys: ['Mod+Shift+T'],
+      hotkeys: [{ modifiers: ['Mod', 'Shift'], key: 't' }],
     });
 
     // UC-013: Create Document
@@ -199,7 +199,7 @@ export default class ObsidianRepoPlugin extends Plugin {
       id: 'create-document',
       name: 'Create new document',
       callback: () => this.handleCreateDocument(),
-      hotkeys: ['Mod+Shift+D'],
+      hotkeys: [{ modifiers: ['Mod', 'Shift'], key: 'd' }],
     });
 
     // UC-015: List Projects
@@ -274,7 +274,7 @@ export default class ObsidianRepoPlugin extends Plugin {
     const projectName = await this.promptInput('Project name:', 'My Project');
     if (!projectName) return;
 
-    const description = await this.promptInput('Project description:', '');
+    const description = (await this.promptInput('Project description:', '')) || '';
     const priority = await this.promptSelect(
       'Priority:',
       ['BAJA', 'MEDIA', 'ALTA', 'CRÍTICA'],
@@ -307,7 +307,7 @@ export default class ObsidianRepoPlugin extends Plugin {
     const objectiveName = await this.promptInput('Objective name:', 'My Objective');
     if (!objectiveName) return;
 
-    const description = await this.promptInput('Objective description:', '');
+    const description = (await this.promptInput('Objective description:', '')) || '';
     const priority = await this.promptSelect(
       'Priority:',
       ['BAJA', 'MEDIA', 'ALTA', 'CRÍTICA'],
@@ -335,20 +335,20 @@ export default class ObsidianRepoPlugin extends Plugin {
     const taskName = await this.promptInput('Task name:', 'My Task');
     if (!taskName) return;
 
-    const description = await this.promptInput('Task description:', '');
+    const description = (await this.promptInput('Task description:', '')) || '';
     const priority = await this.promptSelect(
       'Priority:',
       ['BAJA', 'MEDIA', 'ALTA', 'CRÍTICA'],
       'MEDIA'
     );
-    const dueDate = await this.promptInput('Due date (YYYY-MM-DD):', '');
+    const dueDate = (await this.promptInput('Due date (YYYY-MM-DD):', '')) || undefined;
 
     try {
       const result = await TaskServiceWithVault.createTaskWithVault({
         taskName,
         description,
         priority: priority as 'BAJA' | 'MEDIA' | 'ALTA' | 'CRÍTICA',
-        dueDate: dueDate || undefined,
+        dueDate,
       });
 
       if (result.success) {
@@ -365,14 +365,14 @@ export default class ObsidianRepoPlugin extends Plugin {
     const documentName = await this.promptInput('Document name:', 'My Document');
     if (!documentName) return;
 
-    const description = await this.promptInput('Document description:', '');
-    const category = await this.promptInput('Category (optional):', 'General');
+    const description = (await this.promptInput('Document description:', '')) || '';
+    const category = (await this.promptInput('Category (optional):', 'General')) || undefined;
 
     try {
       const result = await DocumentServiceWithVault.createDocumentWithVault({
         documentName,
         description,
-        category: category || undefined,
+        category,
       });
 
       if (result.success) {

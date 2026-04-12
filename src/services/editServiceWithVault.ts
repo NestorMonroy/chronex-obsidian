@@ -50,7 +50,7 @@ export class EditServiceWithVault {
       if (!validation.valid) {
         return {
           success: false,
-          error: `Validation failed: ${validation.error?.join(', ')}`,
+          error: `Validation failed: ${validation.error}`,
         };
       }
 
