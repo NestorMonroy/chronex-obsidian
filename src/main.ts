@@ -47,6 +47,7 @@ import { KanbanView, KANBAN_VIEW_TYPE } from './views/kanbanView';
 import { FolderNoteService } from './services/folderNoteService';
 import { ObsidianVaultAdapter } from './adapters/obsidianVaultAdapter';
 import { registerButtonHandler } from './services/buttonHandler';
+import { initializeActionHandler } from './services/actionHandler';
 
 import './views/views.css';
 import './views/folderNote.css';
@@ -86,6 +87,10 @@ export default class ObsidianRepoPlugin extends Plugin {
     // Inicializar VaultAdapter PRIMERO
     ObsidianVaultAdapter.initialize(this.app);
 
+    // Inicializar ActionHandler (sistema central de acciones)
+    initializeActionHandler(this.app);
+    console.log('[chronex-obsidian] ActionHandler initialized');
+
     // Cargar configuración
     await this.loadSettings();
 
@@ -98,7 +103,7 @@ export default class ObsidianRepoPlugin extends Plugin {
     // Registrar comandos
     this.registerCommands();
 
-    // Registrar button handler para button:// links
+    // Registrar button handler para button:// links (PRIORIDAD)
     registerButtonHandler(this.app);
 
     // Registrar settings tab
@@ -111,7 +116,7 @@ export default class ObsidianRepoPlugin extends Plugin {
     await this.registerTemplaterTemplates();
 
     console.log('[chronex-obsidian] Plugin loaded successfully!');
-    new Notice('chronex-obsidian plugin loaded!');
+    new Notice('✅ chronex-obsidian plugin loaded!');
   }
 
   onunload() {

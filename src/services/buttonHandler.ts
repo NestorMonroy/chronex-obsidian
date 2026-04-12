@@ -1,9 +1,28 @@
 /**
- * ButtonHandler - Handle custom button:// URI scheme for interactive actions
- * Processes button:// links in markdown files and executes corresponding commands
+ * ButtonHandler - Sistema de botones interactivos con button:// URIs
+ *
+ * Sistema principal para interacción con el plugin desde notas Markdown.
+ * Los botones usan URIs en formato button:// que son procesados por este handler.
+ *
+ * ARQUITECTURA:
+ * - Los botones son el PRIMARY way de interactuar con el plugin
+ * - Cada botón dispara una acción através del ActionHandler
+ * - No depende de scripts externos en el vault
+ * - Completamente auto-contenido en el plugin
+ *
+ * Ejemplos de button:// URIs:
+ * - button://create?type=task&name=Mi%20Tarea&priority=ALTA
+ * - button://create?type=project&name=Mi%20Proyecto
+ * - button://edit?uid=PROJ-202604-ABC
+ * - button://complete?uid=TSK-202604-XYZ
+ * - button://archive?uid=OBJ-202604-ABC
+ * - button://delete?uid=DOC-202604-XYZ
+ *
+ * @see ActionHandler para implementación de acciones
  */
 
 import { App, Notice, MarkdownPostProcessorContext } from 'obsidian';
+import { ActionHandler, getActionHandler } from './actionHandler';
 
 export interface ButtonAction {
   action: string;
@@ -12,11 +31,23 @@ export interface ButtonAction {
 
 /**
  * Parse button:// URI format
- * Examples:
- * - button://create?type=task&project=PROJ-202604-ABC
- * - button://edit?uid=PROJ-202604-ABC
- * - button://complete?uid=TSK-202604-XYZ
- * - button://archive?uid=OBJ-202604-ABC
+ *
+ * Soporta todos los parámetros que necesita ActionHandler.
+ * Los parámetros se envían directamente como query params.
+ *
+ * @param uri button:// URI a parsear
+ * @returns Objeto con action y params parseados
+ *
+ * @example
+ * // Input: button://create?type=task&name=Mi%20Tarea&priority=ALTA
+ * // Output: {
+ * //   action: 'create',
+ * //   params: {
+ * //     type: 'task',
+ * //     name: 'Mi Tarea',
+ * //     priority: 'ALTA'
+ * //   }
+ * // }
  */
 function parseButtonUri(uri: string): ButtonAction | null {
   try {
@@ -46,150 +77,145 @@ function parseButtonUri(uri: string): ButtonAction | null {
 }
 
 /**
- * Handle button actions
+ * Handle button clicks - dispatcher a ActionHandler
+ *
+ * Esta es la función principal que procesa las acciones de botones.
+ * Delega cada acción al ActionHandler correspondiente y maneja notificaciones.
  */
-async function handleButtonClick(app: App, action: ButtonAction) {
+async function handleButtonClick(action: ButtonAction): Promise<void> {
   const { action: actionType, params } = action;
+  const handler = getActionHandler();
 
-  switch (actionType) {
-    case 'create':
-      await handleCreate(app, params);
-      break;
-    case 'edit':
-      await handleEdit(app, params);
-      break;
-    case 'complete':
-      await handleComplete(params);
-      break;
-    case 'archive':
-      await handleArchive(app, params);
-      break;
-    case 'status':
-      await handleChangeStatus(params);
-      break;
-    case 'priority':
-      await handleChangePriority(params);
-      break;
-    case 'share':
-      await handleShare(params);
-      break;
-    case 'version':
-      await handleCreateVersion(params);
-      break;
-    default:
-      new Notice(`Unknown action: ${actionType}`);
+  console.log(`[ButtonHandler] Acción: ${actionType}`, params);
+
+  try {
+    let result;
+
+    switch (actionType) {
+      case 'create':
+        result = await handler.create(params as any);
+        break;
+
+      case 'edit':
+        result = await handler.edit({
+          uid: params.uid,
+          updates: params,
+        });
+        break;
+
+      case 'complete':
+        result = await handler.complete({ uid: params.uid });
+        break;
+
+      case 'delete':
+        result = await handler.delete({
+          uid: params.uid,
+          permanent: params.permanent === 'true',
+        });
+        break;
+
+      case 'archive':
+        result = await handler.archive({ uid: params.uid });
+        break;
+
+      // Acciones compuestas (editar con cambio de status/priority)
+      case 'status':
+        result = await handler.edit({
+          uid: params.uid,
+          updates: { status: params.value },
+        });
+        break;
+
+      case 'priority':
+        result = await handler.edit({
+          uid: params.uid,
+          updates: { priority: params.value },
+        });
+        break;
+
+      default:
+        new Notice(`⚠️ Acción desconocida: ${actionType}`);
+        return;
+    }
+
+    // Mostrar resultado
+    if (result.success) {
+      new Notice(`✅ ${result.message}`);
+    } else {
+      new Notice(`❌ ${result.message}`, 5000);
+    }
+  } catch (error) {
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    console.error('[ButtonHandler] Error:', errorMsg);
+    new Notice(`❌ Error: ${errorMsg}`, 5000);
   }
-}
-
-async function handleCreate(app: App, params: Record<string, string>) {
-  const { type } = params;
-  const entityType = type || 'task';
-
-  console.log(`[ButtonHandler] Creating ${entityType}`);
-  new Notice(`Creating ${entityType}...`);
-
-  // Trigger the appropriate create command
-  switch (entityType) {
-    case 'task':
-      (app as any).commands?.executeCommandById?.('create-task');
-      break;
-    case 'objective':
-      (app as any).commands?.executeCommandById?.('create-objective');
-      break;
-    case 'document':
-      (app as any).commands?.executeCommandById?.('create-document');
-      break;
-    default:
-      new Notice(`Unknown entity type: ${entityType}`);
-  }
-}
-
-async function handleEdit(app: App, params: Record<string, string>) {
-  const { uid } = params;
-  console.log(`[ButtonHandler] Editing entity:`, uid);
-  new Notice(`Opening editor for: ${uid}`);
-
-  // Execute the edit command
-  (app as any).commands?.executeCommandById?.('edit-entity');
-}
-
-async function handleComplete(params: Record<string, string>) {
-  const { uid } = params;
-  console.log(`[ButtonHandler] Marking complete:`, uid);
-  new Notice(`Marked as complete: ${uid}`);
-}
-
-async function handleArchive(app: App, params: Record<string, string>) {
-  const { uid } = params;
-  console.log(`[ButtonHandler] Archiving entity:`, uid);
-  new Notice(`Archived: ${uid}`);
-
-  // Execute the archive command
-  (app as any).commands?.executeCommandById?.('archive-entity');
-}
-
-async function handleChangeStatus(params: Record<string, string>) {
-  const { uid } = params;
-  console.log(`[ButtonHandler] Changing status for:`, uid);
-  new Notice(`Change status for: ${uid}`);
-}
-
-async function handleChangePriority(params: Record<string, string>) {
-  const { uid } = params;
-  console.log(`[ButtonHandler] Changing priority for:`, uid);
-  new Notice(`Change priority for: ${uid}`);
-}
-
-async function handleShare(params: Record<string, string>) {
-  const { uid } = params;
-  console.log(`[ButtonHandler] Sharing:`, uid);
-  new Notice(`Share options for: ${uid}`);
-}
-
-async function handleCreateVersion(params: Record<string, string>) {
-  const { uid } = params;
-  console.log(`[ButtonHandler] Creating version for:`, uid);
-  new Notice(`Creating version of: ${uid}`);
 }
 
 /**
- * Register button handler with Obsidian markdown processor
- * Call this in Plugin.onload()
+ * Registrar button handler con el markdown processor de Obsidian
+ *
+ * Busca todos los links con href que empiezan con button:// y los convierte
+ * en botones interactivos que disparan acciones del plugin.
+ *
+ * Los botones se estilifan automáticamente con la clase CSS 'chronex-button-link'
+ * para que se vean como botones en lugar de links.
+ *
+ * @param app Instancia de la app Obsidian
+ *
+ * @example
+ * En una nota markdown:
+ * [Crear Tarea](button://create?type=task&name=Nueva%20Tarea&priority=ALTA)
+ *
+ * Al hacer click:
+ * 1. Se previene el comportamiento por defecto del link
+ * 2. Se parsea el button:// URI
+ * 3. Se ejecuta la acción través de ActionHandler
+ * 4. Se muestra una notificación con el resultado
  */
 export function registerButtonHandler(app: App): void {
-  // Register markdown post processor for button:// links
-  (app as any).registerMarkdownPostProcessor?.((el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
-    const links = el.querySelectorAll('a[href^="button://"]') as NodeListOf<HTMLAnchorElement>;
+  console.log('[ButtonHandler] Registrando button handler...');
 
-    Array.from(links).forEach((link) => {
-      const href = link.getAttribute('href');
-      if (!href || !href.startsWith('button://')) return;
+  // Registrar markdown post processor para procesar button:// links
+  (app as any).registerMarkdownPostProcessor?.(
+    (el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
+      const links = el.querySelectorAll('a[href^="button://"]') as NodeListOf<HTMLAnchorElement>;
 
-      // Prevent default link behavior
-      link.addEventListener('click', (e: MouseEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
+      Array.from(links).forEach((link) => {
+        const href = link.getAttribute('href');
+        if (!href || !href.startsWith('button://')) return;
 
-        // Parse and execute button action
-        const parsed = parseButtonUri(href);
-        if (!parsed) {
-          new Notice('Invalid button format');
-          return;
-        }
+        // Prevenir comportamiento por defecto del link
+        link.addEventListener('click', (e: MouseEvent) => {
+          e.preventDefault();
+          e.stopPropagation();
 
-        // Execute button action
-        handleButtonClick(app, parsed).catch((error) => {
-          console.error('[ButtonHandler] Error handling button click:', error);
-          new Notice('Error executing action');
+          // Parsear y ejecutar acción del botón
+          const parsed = parseButtonUri(href);
+          if (!parsed) {
+            new Notice('❌ Formato de botón inválido');
+            console.error('[ButtonHandler] Invalid button URI:', href);
+            return;
+          }
+
+          // Ejecutar acción
+          handleButtonClick(parsed).catch((error) => {
+            console.error('[ButtonHandler] Error handling button click:', error);
+            new Notice('❌ Error ejecutando acción');
+          });
         });
+
+        // Estilar como botón
+        link.classList.add('chronex-button-link');
+        link.style.cursor = 'pointer';
+        link.style.padding = '4px 8px';
+        link.style.borderRadius = '4px';
+        link.style.display = 'inline-block';
+        link.style.textDecoration = 'none';
       });
+    }
+  );
 
-      // Style the button link
-      link.classList.add('chronex-button-link');
-    });
-  });
-
-  console.log('[ButtonHandler] Button handler registered');
+  console.log('[ButtonHandler] Button handler registrado exitosamente ✅');
 }
 
 export const ButtonHandler = {
