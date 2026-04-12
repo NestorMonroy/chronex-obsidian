@@ -126,26 +126,39 @@ export class TaskServiceWithVault {
 ${frontmatterString}
 ---
 
-# ${frontmatter.title}
+# ✅ ${frontmatter.title}
 
 ## Descripción
 ${frontmatter.description || 'Sin descripción'}
 
+## Acciones Rápidas
+
+[Marcar Completada](button://complete?uid=${frontmatter.uid})
+[Editar](button://edit?uid=${frontmatter.uid})
+[Cambiar Prioridad](button://priority?uid=${frontmatter.uid})
+[Archivar](button://archive?uid=${frontmatter.uid})
+
 ## Información
+
 - **UID**: ${frontmatter.uid}
 - **Prioridad**: ${frontmatter.priority}
 - **Vencimiento**: ${frontmatter.dueDate || 'Sin fecha'}
-- **Creado**: ${frontmatter.dateCreated}
 - **Estado**: ${frontmatter.status}
+- **Creado**: ${frontmatter.dateCreated}
 
-## Checklist
+## Subtareas
+
 - [ ] Paso 1
 - [ ] Paso 2
 - [ ] Paso 3
-- [ ] Completar
 
 ## Notas
+
 Tarea creada automáticamente con chronex-obsidian plugin.
+
+---
+
+*Última modificación: ${new Date().toISOString()}*
 `;
   }
 

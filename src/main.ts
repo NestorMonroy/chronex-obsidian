@@ -39,12 +39,14 @@ import { QuickAddIntegration } from './services/quickaddIntegration';
 import { CrossPluginFlow } from './services/crossPluginFlow';
 import { Validator } from './utils/validators';
 import { IdGenerator } from './utils/generateUniqueId';
+import { UIHelper } from './ui/InputModals';
 
 import { ProjectsView, PROJECTS_VIEW_TYPE } from './views/projectsView';
 import { TasksCalendarView, TASKS_CALENDAR_VIEW_TYPE } from './views/tasksCalendarView';
 import { KanbanView, KANBAN_VIEW_TYPE } from './views/kanbanView';
 import { FolderNoteService } from './services/folderNoteService';
 import { ObsidianVaultAdapter } from './adapters/obsidianVaultAdapter';
+import { registerButtonHandler } from './services/buttonHandler';
 
 import './views/views.css';
 import './views/folderNote.css';
@@ -95,6 +97,9 @@ export default class ObsidianRepoPlugin extends Plugin {
 
     // Registrar comandos
     this.registerCommands();
+
+    // Registrar button handler para button:// links
+    registerButtonHandler(this.app);
 
     // Registrar settings tab
     this.addSettingTab(new ObsidianRepoSettingTab(this.app, this));
@@ -463,41 +468,14 @@ export default class ObsidianRepoPlugin extends Plugin {
   }
 
   /**
-   * Utilidades de UI
+   * Utilidades de UI - Now using Obsidian's Modal classes
    */
 
   private async promptInput(
     message: string,
     defaultValue: string = ''
   ): Promise<string | null> {
-    return new Promise((resolve) => {
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.value = defaultValue;
-      input.placeholder = message;
-
-      const dialog = document.createElement('div');
-      dialog.innerHTML = `
-        <div style="padding: 20px; border: 1px solid var(--background-secondary-alt); border-radius: 8px;">
-          <label style="display: block; margin-bottom: 10px;">${message}</label>
-          <input type="text" value="${defaultValue}" style="width: 100%; padding: 8px; margin-bottom: 10px;" id="promptInput" />
-          <button id="promptOk" style="padding: 8px 16px; margin-right: 10px;">OK</button>
-          <button id="promptCancel" style="padding: 8px 16px;">Cancel</button>
-        </div>
-      `;
-
-      const promptEl = document.querySelector('#promptInput') as HTMLInputElement;
-
-      document.querySelector('#promptOk')?.addEventListener('click', () => {
-        resolve(promptEl.value);
-        dialog.remove();
-      });
-
-      document.querySelector('#promptCancel')?.addEventListener('click', () => {
-        resolve(null);
-        dialog.remove();
-      });
-    });
+    return UIHelper.promptText(this.app, message, 'Enter value...', defaultValue);
   }
 
   private async promptSelect(
@@ -505,8 +483,7 @@ export default class ObsidianRepoPlugin extends Plugin {
     options: string[],
     defaultValue: string
   ): Promise<string> {
-    new Notice(`${message} ${options.join(', ')}`);
-    return defaultValue;
+    return UIHelper.promptSelect(this.app, message, options, defaultValue);
   }
 
   /**

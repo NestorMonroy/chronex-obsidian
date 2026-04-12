@@ -124,27 +124,44 @@ export class ObjectiveServiceWithVault {
 ${frontmatterString}
 ---
 
-# ${frontmatter.title}
+# 🎯 ${frontmatter.title}
 
 ## Descripción
 ${frontmatter.description || 'Sin descripción'}
 
+## Acciones Rápidas
+
+[Nueva Tarea](button://create?type=task&parent=${frontmatter.uid})
+[Editar](button://edit?uid=${frontmatter.uid})
+[Cambiar Estado](button://status?uid=${frontmatter.uid})
+[Archivar](button://archive?uid=${frontmatter.uid})
+
 ## Información
+
 - **UID**: ${frontmatter.uid}
 - **Prioridad**: ${frontmatter.priority}
-- **Creado**: ${frontmatter.dateCreated}
 - **Estado**: ${frontmatter.status}
+- **Creado**: ${frontmatter.dateCreated}
 
 ## Tareas
+
 <!-- Crear tareas con UC-012 -->
 
-## Checklist
-- [ ] Tarea 1
-- [ ] Tarea 2
-- [ ] Tarea 3
+- [ ] Subtarea 1
+- [ ] Subtarea 2
+- [ ] Subtarea 3
+
+## Progreso
+
+**0/3 completadas** (0%)
 
 ## Notas
+
 Objetivo creado automáticamente con chronex-obsidian plugin.
+
+---
+
+*Última modificación: ${new Date().toISOString()}*
 `;
   }
 

@@ -244,3 +244,30 @@ button:hover {
   color: var(--text-muted);
   padding: 32px 16px;
 }
+
+/* Button Link Styles */
+.chronex-button-link {
+  display: inline-block;
+  padding: 8px 16px;
+  margin: 4px 4px 4px 0;
+  background: var(--interactive-accent);
+  color: white;
+  border-radius: 4px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  user-select: none;
+}
+
+.chronex-button-link:hover {
+  background: var(--interactive-accent-hover);
+  opacity: 0.9;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.chronex-button-link:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}

@@ -123,25 +123,41 @@ export class DocumentServiceWithVault {
 ${frontmatterString}
 ---
 
-# ${frontmatter.title}
+# 📄 ${frontmatter.title}
 
 ## Descripción
 ${frontmatter.description || 'Sin descripción'}
 
+## Acciones Rápidas
+
+[Editar](button://edit?uid=${frontmatter.uid})
+[Compartir](button://share?uid=${frontmatter.uid})
+[Crear Versión](button://version?uid=${frontmatter.uid})
+[Archivar](button://archive?uid=${frontmatter.uid})
+
 ## Información
+
 - **UID**: ${frontmatter.uid}
 - **Categoría**: ${frontmatter.category}
-- **Creado**: ${frontmatter.dateCreated}
 - **Estado**: ${frontmatter.status}
+- **Creado**: ${frontmatter.dateCreated}
 
 ## Contenido
+
 <!-- Agregar contenido aquí -->
 
 ## Referencias
+
 <!-- Enlaces a otros documentos -->
 
 ## Historial
+
 - Creado: ${frontmatter.dateCreated}
+- Última modificación: ${new Date().toISOString()}
+
+---
+
+*Documento gestionado por chronex-obsidian*
 `;
   }
 
