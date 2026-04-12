@@ -6,7 +6,7 @@ import { FolderNoteService } from './folderNoteService';
 
 import { FolderNoteService } from './folderNoteService';
 import { IndexSyncService } from './indexSyncService';
-import { ObsidianVaultAdapter } from './obsidianVaultAdapter';
+import { ObsidianVaultAdapter } from '../adapters/obsidianVaultAdapter';
 import { FolderNoteService } from './folderNoteService';
 import { IdGenerator } from '../utils/generateUniqueId';
 import { Validator } from '../utils/validators';

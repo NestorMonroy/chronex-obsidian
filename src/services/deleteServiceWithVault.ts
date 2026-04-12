@@ -9,7 +9,7 @@
  * TODO AUTOMÁTICO. SINCRONIZACIÓN PERFECTA.
  */
 
-import { ObsidianVaultAdapter } from './obsidianVaultAdapter';
+import { ObsidianVaultAdapter } from '../adapters/obsidianVaultAdapter';
 import { FolderNoteService } from './folderNoteService';
 import { IndexSyncService } from './indexSyncService';
 import { Validator } from '../utils/validators';

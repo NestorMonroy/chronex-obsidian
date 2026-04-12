@@ -9,7 +9,7 @@
  * TODO AUTOMÁTICO. CERO PASOS MANUALES.
  */
 
-import { ObsidianVaultAdapter } from './obsidianVaultAdapter';
+import { ObsidianVaultAdapter } from '../adapters/obsidianVaultAdapter';
 import { FolderNoteService } from './folderNoteService';
 import { IndexSyncService } from './indexSyncService';
 import { IdGenerator } from '../utils/generateUniqueId';

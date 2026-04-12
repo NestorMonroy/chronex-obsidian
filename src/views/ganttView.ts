@@ -4,8 +4,9 @@
  */
 
 import { ItemView, WorkspaceLeaf } from 'obsidian';
-import { GanttRenderer } from './ganttRenderer';
-import { dataManager } from '../../services/dataManager';
+import { GanttRenderer } from '../components/gantt/ganttRenderer';
+import { DataManager, dataManager } from '../services/dataManager/dataManager';
+import type { TaskChangeEvent } from '../services/dataManager/types';
 
 export const GANTT_VIEW_TYPE = 'chronex-obsidian-gantt';
 
@@ -62,10 +63,10 @@ export class GanttView extends ItemView {
       container: ganttContainer,
       taskHeight: 35,
       barHeight: 20,
-      onDateChange: (taskId, startDate, endDate) => {
+      onDateChange: (taskId: string, startDate: string, endDate: string) => {
         this.handleDateChange(taskId, startDate, endDate);
       },
-      onTaskClick: (taskId) => {
+      onTaskClick: (taskId: string) => {
         this.handleTaskClick(taskId);
       },
     });
@@ -74,9 +75,9 @@ export class GanttView extends ItemView {
     await this.refreshGantt();
 
     // Suscribirse a cambios
-    dataManager.onChange((event) => {
+    dataManager.onChange((event: TaskChangeEvent) => {
       if (event.type === 'update' || event.type === 'create' || event.type === 'delete') {
-        this.refreshGantt().catch((error) => {
+        this.refreshGantt().catch((error: Error) => {
           console.error('[GanttView] Auto-refresh error:', error);
         });
       }
@@ -135,7 +136,7 @@ export class GanttView extends ItemView {
 
     // Aquí se podría abrir el archivo de la tarea
     // o mostrar un modal con detalles
-    const task = this.ganttRenderer?.getTasks().find((t) => t.getId() === taskId);
+    const task = this.ganttRenderer?.getTasks().find((t: any) => t.getId() === taskId);
     if (task) {
       const filePath = task.getFilePath();
       // TODO: Abrir archivo en Obsidian

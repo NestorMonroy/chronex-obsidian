@@ -40,10 +40,11 @@ import { CrossPluginFlow } from './services/crossPluginFlow';
 import { Validator } from './utils/validators';
 import { IdGenerator } from './utils/generateUniqueId';
 
-import { ProjectsView, PROJECTS_VIEW_TYPE } from './projectsView';
-import { TasksCalendarView, TASKS_CALENDAR_VIEW_TYPE } from './tasksCalendarView';
-import { KanbanView, KANBAN_VIEW_TYPE } from './kanbanView';
+import { ProjectsView, PROJECTS_VIEW_TYPE } from './views/projectsView';
+import { TasksCalendarView, TASKS_CALENDAR_VIEW_TYPE } from './views/tasksCalendarView';
+import { KanbanView, KANBAN_VIEW_TYPE } from './views/kanbanView';
 import { FolderNoteService } from './services/folderNoteService';
+import { ObsidianVaultAdapter } from './adapters/obsidianVaultAdapter';
 
 import './views/views.css';
 import './views/folderNote.css';
@@ -75,7 +76,7 @@ const DEFAULT_SETTINGS: ObsidianRepoSettings = {
  * Plugin Principal de chronex-obsidian
  */
 export default class ObsidianRepoPlugin extends Plugin {
-  settings: ObsidianRepoSettings;
+  settings: ObsidianRepoSettings = DEFAULT_SETTINGS;
 
   async onload() {
     console.log('[chronex-obsidian] Loading plugin...');
@@ -174,7 +175,7 @@ export default class ObsidianRepoPlugin extends Plugin {
       id: 'create-project',
       name: 'Create new project',
       callback: () => this.handleCreateProject(),
-      hotkey: 'Mod+Shift+P',
+      hotkeys: ['Mod+Shift+P'],
     });
 
     // UC-010: Create Objective
@@ -182,7 +183,7 @@ export default class ObsidianRepoPlugin extends Plugin {
       id: 'create-objective',
       name: 'Create new objective',
       callback: () => this.handleCreateObjective(),
-      hotkey: 'Mod+Shift+O',
+      hotkeys: ['Mod+Shift+O'],
     });
 
     // UC-012: Create Task
@@ -190,7 +191,7 @@ export default class ObsidianRepoPlugin extends Plugin {
       id: 'create-task',
       name: 'Create new task',
       callback: () => this.handleCreateTask(),
-      hotkey: 'Mod+Shift+T',
+      hotkeys: ['Mod+Shift+T'],
     });
 
     // UC-013: Create Document
@@ -198,7 +199,7 @@ export default class ObsidianRepoPlugin extends Plugin {
       id: 'create-document',
       name: 'Create new document',
       callback: () => this.handleCreateDocument(),
-      hotkey: 'Mod+Shift+D',
+      hotkeys: ['Mod+Shift+D'],
     });
 
     // UC-015: List Projects
