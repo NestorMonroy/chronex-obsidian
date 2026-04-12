@@ -210,13 +210,49 @@ Aquí aparecerán las tareas del proyecto
   }
 
   /**
-   * Listar todos los proyectos del vault
+   * List all projects from vault
    */
   static async listProjectsFromVault(): Promise<Array<{projectId?: string; frontmatter?: Record<string, any>}>> {
+    const vault = ObsidianVaultAdapter.getInstance();
+
     try {
-      const vault = ObsidianVaultAdapter.getInstance();
-      // Por ahora retornar array vacío, la implementación real vendría aquí
-      return [];
+      // List all folders in the projects folder
+      const projectsFolder = await vault.getFolders(this.BASE_PATH);
+      const projects: Array<{projectId?: string; frontmatter?: Record<string, any>}> = [];
+
+      for (const folder of projectsFolder) {
+        try {
+          // Look for PROJ-XXXXX.md file in the folder
+          const files = await vault.getFiles(folder.path);
+          const projectFile = files.find(f => f.name.startsWith('PROJ-') && f.name.endsWith('.md'));
+
+          if (!projectFile) continue;
+
+          // Read and parse frontmatter
+          const content = await vault.readFile(projectFile.path);
+          const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
+
+          if (!frontmatterMatch) continue;
+
+          const frontmatter: Record<string, any> = {};
+          frontmatterMatch[1].split('\n').forEach((line) => {
+            const [key, ...valueParts] = line.split(': ');
+            if (key && valueParts.length > 0) {
+              frontmatter[key.trim()] = valueParts.join(': ').trim();
+            }
+          });
+
+          projects.push({
+            projectId: frontmatter.UID || frontmatter.uid,
+            frontmatter,
+          });
+        } catch (error) {
+          console.warn(`[ProjectService] Error reading project in ${folder.path}:`, error);
+          continue;
+        }
+      }
+
+      return projects;
     } catch (error) {
       console.error('[ProjectService] Error listing projects:', error);
       return [];

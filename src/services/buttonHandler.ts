@@ -3,7 +3,7 @@
  * Processes button:// links in markdown files and executes corresponding commands
  */
 
-import { App, Notice, MarkdownPostProcessorContext, MarkdownRenderChild } from 'obsidian';
+import { App, Notice, MarkdownPostProcessorContext } from 'obsidian';
 
 export interface ButtonAction {
   action: string;
@@ -46,154 +46,110 @@ function parseButtonUri(uri: string): ButtonAction | null {
 }
 
 /**
- * Handler for button link clicks
+ * Handle button actions
  */
-class ButtonClickHandler extends MarkdownRenderChild {
-  constructor(
-    private app: App,
-    private containerEl: HTMLElement,
-    private buttonUri: string
-  ) {
-    super(containerEl);
+async function handleButtonClick(app: App, action: ButtonAction) {
+  const { action: actionType, params } = action;
+
+  switch (actionType) {
+    case 'create':
+      await handleCreate(app, params);
+      break;
+    case 'edit':
+      await handleEdit(app, params);
+      break;
+    case 'complete':
+      await handleComplete(params);
+      break;
+    case 'archive':
+      await handleArchive(app, params);
+      break;
+    case 'status':
+      await handleChangeStatus(params);
+      break;
+    case 'priority':
+      await handleChangePriority(params);
+      break;
+    case 'share':
+      await handleShare(params);
+      break;
+    case 'version':
+      await handleCreateVersion(params);
+      break;
+    default:
+      new Notice(`Unknown action: ${actionType}`);
   }
+}
 
-  onload() {
-    const parsed = parseButtonUri(this.buttonUri);
-    if (!parsed) {
-      console.error('[ButtonHandler] Invalid URI format:', this.buttonUri);
-      return;
-    }
+async function handleCreate(app: App, params: Record<string, string>) {
+  const { type } = params;
+  const entityType = type || 'task';
 
-    // Find the link element and attach click handler
-    const links = this.containerEl.querySelectorAll('a');
-    for (const link of links) {
-      const href = link.getAttribute('href');
-      if (href === this.buttonUri) {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          this.handleButtonClick(parsed);
-        });
-        // Make it look like a button
-        link.classList.add('chronex-button-link');
-      }
-    }
+  console.log(`[ButtonHandler] Creating ${entityType}`);
+  new Notice(`Creating ${entityType}...`);
+
+  // Trigger the appropriate create command
+  switch (entityType) {
+    case 'task':
+      (app as any).commands?.executeCommandById?.('create-task');
+      break;
+    case 'objective':
+      (app as any).commands?.executeCommandById?.('create-objective');
+      break;
+    case 'document':
+      (app as any).commands?.executeCommandById?.('create-document');
+      break;
+    default:
+      new Notice(`Unknown entity type: ${entityType}`);
   }
+}
 
-  private async handleButtonClick(action: ButtonAction) {
-    const { action: actionType, params } = action;
+async function handleEdit(app: App, params: Record<string, string>) {
+  const { uid } = params;
+  console.log(`[ButtonHandler] Editing entity:`, uid);
+  new Notice(`Opening editor for: ${uid}`);
 
-    switch (actionType) {
-      case 'create':
-        await this.handleCreate(params);
-        break;
-      case 'edit':
-        await this.handleEdit(params);
-        break;
-      case 'complete':
-        await this.handleComplete(params);
-        break;
-      case 'archive':
-        await this.handleArchive(params);
-        break;
-      case 'status':
-        await this.handleChangeStatus(params);
-        break;
-      case 'priority':
-        await this.handleChangePriority(params);
-        break;
-      case 'share':
-        await this.handleShare(params);
-        break;
-      case 'version':
-        await this.handleCreateVersion(params);
-        break;
-      default:
-        new Notice(`Unknown action: ${actionType}`);
-    }
-  }
+  // Execute the edit command
+  (app as any).commands?.executeCommandById?.('edit-entity');
+}
 
-  private async handleCreate(params: Record<string, string>) {
-    const { type, parent, project } = params;
-    const entityType = type || 'task';
-    const parentId = parent || project;
+async function handleComplete(params: Record<string, string>) {
+  const { uid } = params;
+  console.log(`[ButtonHandler] Marking complete:`, uid);
+  new Notice(`Marked as complete: ${uid}`);
+}
 
-    console.log(`[ButtonHandler] Creating ${entityType} with parent:`, parentId);
-    new Notice(`Creating ${entityType}...`);
+async function handleArchive(app: App, params: Record<string, string>) {
+  const { uid } = params;
+  console.log(`[ButtonHandler] Archiving entity:`, uid);
+  new Notice(`Archived: ${uid}`);
 
-    // Trigger the appropriate create command via app.commands.executeCommandById
-    switch (entityType) {
-      case 'task':
-        await this.app.commands.executeCommandById('create-task');
-        break;
-      case 'objective':
-        await this.app.commands.executeCommandById('create-objective');
-        break;
-      case 'document':
-        await this.app.commands.executeCommandById('create-document');
-        break;
-      default:
-        new Notice(`Unknown entity type: ${entityType}`);
-    }
-  }
+  // Execute the archive command
+  (app as any).commands?.executeCommandById?.('archive-entity');
+}
 
-  private async handleEdit(params: Record<string, string>) {
-    const { uid } = params;
-    console.log(`[ButtonHandler] Editing entity:`, uid);
-    new Notice(`Opening editor for: ${uid}`);
+async function handleChangeStatus(params: Record<string, string>) {
+  const { uid } = params;
+  console.log(`[ButtonHandler] Changing status for:`, uid);
+  new Notice(`Change status for: ${uid}`);
+}
 
-    // Execute the edit command
-    await this.app.commands.executeCommandById('edit-entity');
-  }
+async function handleChangePriority(params: Record<string, string>) {
+  const { uid } = params;
+  console.log(`[ButtonHandler] Changing priority for:`, uid);
+  new Notice(`Change priority for: ${uid}`);
+}
 
-  private async handleComplete(params: Record<string, string>) {
-    const { uid } = params;
-    console.log(`[ButtonHandler] Marking complete:`, uid);
-    new Notice(`Marked as complete: ${uid}`);
+async function handleShare(params: Record<string, string>) {
+  const { uid } = params;
+  console.log(`[ButtonHandler] Sharing:`, uid);
+  new Notice(`Share options for: ${uid}`);
+}
 
-    // TODO: Implement actual status update
-    // This would call TaskServiceWithVault.updateTaskWithVault() with status: 'completada'
-  }
-
-  private async handleArchive(params: Record<string, string>) {
-    const { uid } = params;
-    console.log(`[ButtonHandler] Archiving entity:`, uid);
-    new Notice(`Archived: ${uid}`);
-
-    // Execute the archive command
-    await this.app.commands.executeCommandById('archive-entity');
-  }
-
-  private async handleChangeStatus(params: Record<string, string>) {
-    const { uid } = params;
-    console.log(`[ButtonHandler] Changing status for:`, uid);
-    new Notice(`Change status for: ${uid}`);
-
-    // TODO: Show status selector modal
-  }
-
-  private async handleChangePriority(params: Record<string, string>) {
-    const { uid } = params;
-    console.log(`[ButtonHandler] Changing priority for:`, uid);
-    new Notice(`Change priority for: ${uid}`);
-
-    // TODO: Show priority selector modal
-  }
-
-  private async handleShare(params: Record<string, string>) {
-    const { uid } = params;
-    console.log(`[ButtonHandler] Sharing:`, uid);
-    new Notice(`Share options for: ${uid}`);
-
-    // TODO: Implement sharing functionality
-  }
-
-  private async handleCreateVersion(params: Record<string, string>) {
-    const { uid } = params;
-    console.log(`[ButtonHandler] Creating version for:`, uid);
-    new Notice(`Creating version of: ${uid}`);
-
-    // TODO: Implement versioning functionality
-  }
+async function handleCreateVersion(params: Record<string, string>) {
+  const { uid } = params;
+  console.log(`[ButtonHandler] Creating version for:`, uid);
+  new Notice(`Creating version of: ${uid}`);
 }
 
 /**
@@ -201,55 +157,36 @@ class ButtonClickHandler extends MarkdownRenderChild {
  * Call this in Plugin.onload()
  */
 export function registerButtonHandler(app: App): void {
-  // Register markdown post processor to handle button:// links
-  app.workspace.onLayoutReady(() => {
-    // Process existing markdown
-    const processMarkdown = app.workspace.onLayoutReady(() => {
-      // Process markdown documents that contain button:// links
-      const documents = app.vault.getFiles();
-      for (const file of documents) {
-        if (file.extension === 'md') {
-          app.vault.read(file).then((content) => {
-            if (content.includes('button://')) {
-              // Force rerender of the file
-              const leaf = app.workspace.getActiveFile();
-              if (leaf?.path === file.path) {
-                app.workspace.activeLeaf?.rebuildView?.();
-              }
-            }
-          });
-        }
-      }
-    });
-  });
-
   // Register markdown post processor for button:// links
-  app.markdown.registerPostProcessor((el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
-    const links = el.querySelectorAll('a');
-    for (const link of links) {
+  (app as any).registerMarkdownPostProcessor?.((el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
+    const links = el.querySelectorAll('a[href^="button://"]') as NodeListOf<HTMLAnchorElement>;
+
+    Array.from(links).forEach((link) => {
       const href = link.getAttribute('href');
-      if (href && href.startsWith('button://')) {
-        // Prevent default link behavior
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
+      if (!href || !href.startsWith('button://')) return;
 
-          // Parse and execute button action
-          const parsed = parseButtonUri(href);
-          if (!parsed) {
-            new Notice('Invalid button format');
-            return;
-          }
+      // Prevent default link behavior
+      link.addEventListener('click', (e: MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
 
-          // Create handler and execute
-          const handler = new ButtonClickHandler(app, link, href);
-          handler.onload();
+        // Parse and execute button action
+        const parsed = parseButtonUri(href);
+        if (!parsed) {
+          new Notice('Invalid button format');
+          return;
+        }
+
+        // Execute button action
+        handleButtonClick(app, parsed).catch((error) => {
+          console.error('[ButtonHandler] Error handling button click:', error);
+          new Notice('Error executing action');
         });
+      });
 
-        // Style the button link
-        link.classList.add('chronex-button-link');
-      }
-    }
+      // Style the button link
+      link.classList.add('chronex-button-link');
+    });
   });
 
   console.log('[ButtonHandler] Button handler registered');

@@ -9,8 +9,6 @@ import {
   Modal,
   Setting,
   SuggestModal,
-  FuzzyMatch,
-  FuzzySearchString,
 } from 'obsidian';
 
 /**
@@ -134,23 +132,21 @@ export class OptionSelectorModal extends SuggestModal<string> {
     }
   }
 
-  getSuggestions(inputStr: string): FuzzyMatch<string>[] {
+  getSuggestions(inputStr: string): string[] {
     const lowerInput = inputStr.toLowerCase();
 
     return this.options
       .filter((option) => option.toLowerCase().includes(lowerInput))
-      .map((option) => ({
-        item: option,
-        match: FuzzySearchString.fuzzySearch(inputStr, option) || {
-          score: 0,
-          matches: [],
-        },
-      }))
-      .sort((a, b) => b.match.score - a.match.score);
+      .sort((a, b) => {
+        // Sort exact matches first
+        if (a.toLowerCase() === lowerInput) return -1;
+        if (b.toLowerCase() === lowerInput) return 1;
+        return a.localeCompare(b);
+      });
   }
 
-  renderSuggestion(match: FuzzyMatch<string>, el: HTMLElement) {
-    el.setText(match.item);
+  renderSuggestion(value: string, el: HTMLElement) {
+    el.setText(value);
   }
 
   onChooseSuggestion(item: string, evt: MouseEvent | KeyboardEvent) {

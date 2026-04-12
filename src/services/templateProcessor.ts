@@ -18,7 +18,7 @@ export class TemplateProcessor {
   async getAvailableTemplates(templatesFolder: string): Promise<string[]> {
     try {
       const folder = this.app.vault.getAbstractFileByPath(templatesFolder);
-      if (!folder || !folder.isFolder()) {
+      if (!folder || !('children' in folder)) {
         console.warn(`[TemplateProcessor] Templates folder not found: ${templatesFolder}`);
         return [];
       }
@@ -48,7 +48,7 @@ export class TemplateProcessor {
       const templatePath = `${templatesFolder}/${templateName}`;
       const templateFile = this.app.vault.getAbstractFileByPath(templatePath);
 
-      if (!templateFile || templateFile.isFolder()) {
+      if (!templateFile || 'children' in templateFile) {
         throw new Error(`Template not found: ${templatePath}`);
       }
 
