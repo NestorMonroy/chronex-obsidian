@@ -34,9 +34,3 @@ export interface ExecutionRecord {
   results: ActionResult[];
 }
 
-export default {
-  CompletionAction,
-  CompletionEvent,
-  ActionResult,
-  ExecutionRecord
-};

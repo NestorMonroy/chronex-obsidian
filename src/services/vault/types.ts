@@ -44,12 +44,3 @@ export interface FileContent {
   content: string;
 }
 
-export default {
-  TFile,
-  TFolder,
-  VaultAPI,
-  App,
-  TaskInFile,
-  SearchResult,
-  FileContent
-};

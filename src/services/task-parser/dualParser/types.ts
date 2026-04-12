@@ -26,8 +26,3 @@ export interface ParserEvent {
   message: string;
 }
 
-export default {
-  DualParserConfig,
-  DualParseResult,
-  ParserEvent
-};

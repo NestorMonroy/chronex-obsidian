@@ -48,11 +48,3 @@ export interface ValidationResult {
   errors?: string[];
 }
 
-export default {
-  RecurrentTask,
-  TaskInstance,
-  RecurrenceResult,
-  ExpandResult,
-  RescheduleResult,
-  ValidationResult
-};

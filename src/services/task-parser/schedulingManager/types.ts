@@ -28,4 +28,3 @@ export interface ParseResult {
   error?: string;
 }
 
-export default { ScheduledTask, SchedulingResult, ParseResult };

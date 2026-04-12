@@ -162,6 +162,14 @@ export class IdGenerator {
 
     return new Date(year, month - 1, 1);
   }
+
+  static generateCustomId(type: IdType = 'DOC'): string {
+    return this.generate(type);
+  }
+
+  static generateProjectId(): string {
+    return this.generate('PROJ');
+  }
 }
 
 /**

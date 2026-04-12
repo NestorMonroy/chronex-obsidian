@@ -175,6 +175,20 @@ export class ProjectServiceWithVault {
   }
 
   /**
+   * Listar todos los proyectos del vault
+   */
+  static async listProjectsFromVault(): Promise<Array<{projectId?: string; frontmatter?: Record<string, any>}>> {
+    try {
+      const vault = ObsidianVaultAdapter.getInstance();
+      // Por ahora retornar array vacío, la implementación real vendría aquí
+      return [];
+    } catch (error) {
+      console.error('[ProjectService] Error listing projects:', error);
+      return [];
+    }
+  }
+
+  /**
    * Generar contenido de README.md
    */
   private static generateReadmeContent(

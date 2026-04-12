@@ -55,13 +55,3 @@ export interface GraphResult {
   edges: Array<{ from: string; to: string }>;
 }
 
-export default {
-  Task,
-  Dependency,
-  DependencyResult,
-  ResolutionResult,
-  CycleDetectionResult,
-  CriticalPathResult,
-  ImpactResult,
-  GraphResult
-};

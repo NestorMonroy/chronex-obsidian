@@ -1,4 +1,3 @@
-import { FolderNoteService } from './folderNoteService';
 /**
  * DocumentServiceWithVault - Integración Real con Obsidian Vault
  * Crea documentos en la estructura de repositorios
@@ -7,7 +6,6 @@ import { FolderNoteService } from './folderNoteService';
 import { FolderNoteService } from './folderNoteService';
 import { IndexSyncService } from './indexSyncService';
 import { ObsidianVaultAdapter } from '../adapters/obsidianVaultAdapter';
-import { FolderNoteService } from './folderNoteService';
 import { IdGenerator } from '../utils/generateUniqueId';
 import { Validator } from '../utils/validators';
 
@@ -42,7 +40,7 @@ export class DocumentServiceWithVault {
       if (!validation.valid) {
         return {
           success: false,
-          error: `Validation failed: ${validation.errors?.join(', ')}`,
+          error: `Validation failed: ${validation.error?.join(', ')}`,
         };
       }
 

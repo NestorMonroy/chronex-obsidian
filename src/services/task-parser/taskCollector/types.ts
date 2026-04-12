@@ -52,12 +52,3 @@ export interface IncludeValidation {
   exists: boolean;
 }
 
-export default {
-  Task,
-  DateFilter,
-  TaskStats,
-  TemplateVariable,
-  TemplateContext,
-  ValidationResult,
-  IncludeValidation
-};

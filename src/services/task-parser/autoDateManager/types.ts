@@ -38,8 +38,3 @@ export interface DateValidationResult {
   errors?: string[];
 }
 
-export default {
-  AutoTask,
-  DateChangeResult,
-  DateValidationResult
-};

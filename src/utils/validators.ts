@@ -420,6 +420,48 @@ export class Validator {
 
     return { valid: true, value };
   }
+
+  static validateArchiveInput(input: any): ValidationResult {
+    if (!input || typeof input !== 'object') {
+      return { valid: false, error: 'Input must be a valid object' };
+    }
+    return { valid: true, value: input };
+  }
+
+  static validateDeleteInput(input: any): ValidationResult {
+    if (!input || typeof input !== 'object') {
+      return { valid: false, error: 'Input must be a valid object' };
+    }
+    return { valid: true, value: input };
+  }
+
+  static validateDocumentInput(input: any): ValidationResult {
+    if (!input || typeof input !== 'object') {
+      return { valid: false, error: 'Input must be a valid object' };
+    }
+    return { valid: true, value: input };
+  }
+
+  static validateEditInput(input: any): ValidationResult {
+    if (!input || typeof input !== 'object') {
+      return { valid: false, error: 'Input must be a valid object' };
+    }
+    return { valid: true, value: input };
+  }
+
+  static validateObjectiveInput(input: any): ValidationResult {
+    if (!input || typeof input !== 'object') {
+      return { valid: false, error: 'Input must be a valid object' };
+    }
+    return { valid: true, value: input };
+  }
+
+  static validateTaskInput(input: any): ValidationResult {
+    if (!input || typeof input !== 'object') {
+      return { valid: false, error: 'Input must be a valid object' };
+    }
+    return { valid: true, value: input };
+  }
 }
 
 /**

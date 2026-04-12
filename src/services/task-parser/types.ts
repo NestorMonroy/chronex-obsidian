@@ -77,11 +77,3 @@ export interface ParsedTaskResult {
   };
 }
 
-export default {
-  TaskLocation,
-  TaskStatus,
-  TaskPriority,
-  ParsedTask,
-  ValidationResult,
-  ParsedTaskResult
-};

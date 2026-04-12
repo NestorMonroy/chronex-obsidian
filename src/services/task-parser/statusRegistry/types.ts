@@ -44,7 +44,3 @@ export interface IStatusRegistry {
   unregisterStatus(name: string): boolean;
 }
 
-export default {
-  Status,
-  IStatusRegistry
-};
