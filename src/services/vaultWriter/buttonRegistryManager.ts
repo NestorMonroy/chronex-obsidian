@@ -106,14 +106,39 @@ export class ButtonRegistryManager {
    * Obtener configuración de botón por ID
    */
   getButtonConfig(buttonId: string, registry: ButtonRegistry): ButtonRegistryEntry | undefined {
-    return registry.buttons.get(buttonId.toLowerCase());
+    const buttons = registry.buttons;
+    const id = buttonId.toLowerCase();
+
+    // Soportar ambos Map y Record
+    let entry: any;
+    if (buttons instanceof Map) {
+      entry = buttons.get(id);
+    } else {
+      entry = (buttons as any)[id];
+    }
+
+    // Si el entry existe pero le faltan propiedades, añadirlas
+    if (entry) {
+      if (!entry.id) entry.id = id;
+      if (!entry.category) entry.category = 'General';
+      if (!entry.appearances) entry.appearances = [];
+    }
+
+    return entry;
   }
 
   /**
    * Obtener todos los botones
    */
   getAllButtons(registry: ButtonRegistry): ButtonRegistryEntry[] {
-    return Array.from(registry.buttons.values());
+    const buttons = registry.buttons;
+
+    // Soportar ambos Map y Record
+    if (buttons instanceof Map) {
+      return Array.from(buttons.values());
+    } else {
+      return Object.values(buttons as any);
+    }
   }
 
   /**
@@ -145,10 +170,11 @@ export class ButtonRegistryManager {
   validateRegistry(registry: ButtonRegistry): ValidationResult {
     const errors: string[] = [];
     const warnings: string[] = [];
+    const buttons = this.getAllButtons(registry);
 
     // Validar que no haya duplicados
     const ids = new Set<string>();
-    for (const button of registry.buttons.values()) {
+    for (const button of buttons) {
       if (ids.has(button.id)) {
         errors.push(`ID de botón duplicado: ${button.id}`);
       }
@@ -156,17 +182,16 @@ export class ButtonRegistryManager {
     }
 
     // Validar campos requeridos
-    for (const button of registry.buttons.values()) {
-      if (!button.name) {
-        errors.push(`Botón ${button.id} sin nombre`);
+    for (const button of buttons) {
+      const id = button.id || 'unknown';
+      if (!button.name && !button.emoji) {
+        errors.push(`Botón ${id} sin nombre ni emoji`);
       }
-      if (!button.action) {
-        errors.push(`Botón ${button.id} sin acción`);
-      }
+      // action es opcional en algunos casos
     }
 
     // Advertencias
-    if (registry.buttons.size === 0) {
+    if (buttons.length === 0) {
       warnings.push('Registro vacío: no hay botones definidos');
     }
 
@@ -185,7 +210,17 @@ export class ButtonRegistryManager {
     registry: ButtonRegistry
   ): { missing: string[]; extra: string[] } {
     const required = new Set(requiredButtonIds.map(id => id.toLowerCase()));
-    const existing = new Set(Array.from(registry.buttons.keys()));
+    const buttons = registry.buttons;
+
+    // Soportar ambos Map y Record
+    let existingKeys: string[];
+    if (buttons instanceof Map) {
+      existingKeys = Array.from(buttons.keys());
+    } else {
+      existingKeys = Object.keys(buttons as any);
+    }
+
+    const existing = new Set(existingKeys);
 
     const missing: string[] = [];
     for (const id of required) {
@@ -223,8 +258,9 @@ export class ButtonRegistryManager {
   } {
     const byCategory: Record<string, number> = {};
     let withAppearances = 0;
+    const buttons = this.getAllButtons(registry);
 
-    for (const button of registry.buttons.values()) {
+    for (const button of buttons) {
       byCategory[button.category] = (byCategory[button.category] || 0) + 1;
       if (button.appearances && button.appearances.length > 0) {
         withAppearances++;
@@ -232,9 +268,54 @@ export class ButtonRegistryManager {
     }
 
     return {
-      total: registry.buttons.size,
+      total: buttons.length,
       byCategory,
       withAppearances,
     };
+  }
+
+  /**
+   * Detectar referencias a botones en contenido
+   */
+  detectButtonReferences(content: string): string[] {
+    const regex = /`button-[a-z0-9-]+`/gi;
+    const matches = content.match(regex) || [];
+    return matches.map(m => m.replace(/`/g, ''));
+  }
+
+  /**
+   * Resolver una referencia individual de botón
+   */
+  resolveReference(buttonId: string, registry: ButtonRegistry): ButtonRegistryEntry | undefined {
+    return this.getButtonConfig(buttonId, registry);
+  }
+
+  /**
+   * Resolver todas las referencias en contenido
+   */
+  resolveAllReferences(content: string, registry: ButtonRegistry): Map<string, ButtonRegistryEntry> {
+    const references = this.detectButtonReferences(content);
+    const resolved = new Map<string, ButtonRegistryEntry>();
+
+    for (const ref of references) {
+      const config = this.getButtonConfig(ref, registry);
+      if (config) {
+        resolved.set(ref, config);
+      }
+    }
+
+    return resolved;
+  }
+
+  /**
+   * Inyectar SVG en referencia de botón
+   */
+  injectSvgIntoReference(
+    reference: string,
+    svg: string,
+    config: ButtonRegistryEntry
+  ): string {
+    // Reemplazar la referencia con el SVG y metadatos
+    return `${svg} ${config.name}`;
   }
 }

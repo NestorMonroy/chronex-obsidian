@@ -115,7 +115,7 @@ export interface ButtonRegistryEntry {
 }
 
 export interface ButtonRegistry {
-  buttons: Map<string, ButtonRegistryEntry>;
+  buttons: Map<string, ButtonRegistryEntry> | Record<string, ButtonRegistryEntry>;
   categories: string[];
 }
 
