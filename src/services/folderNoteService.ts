@@ -14,7 +14,7 @@
  * - Sin conflictos de nombres
  */
 
-import { ObsidianVaultAdapter } } from './obsidianVaultAdapter';
+import { ObsidianVaultAdapter } from './obsidianVaultAdapter';
 
 export interface FolderNoteConfig {
   folderNoteHide: boolean;

@@ -2,8 +2,8 @@
  * SEMANA 3: Tests para GanttRenderer
  */
 
-import { GanttRenderer } } from './ganttRenderer';
-import { GanttTask } } from './ganttTask';
+import { GanttRenderer } from './ganttRenderer';
+import { GanttTask } from './ganttTask';
 import { CachedTask } from '../../services/dataManager/types';
 
 describe('GanttRenderer - SEMANA 3', () => {

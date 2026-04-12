@@ -4,9 +4,9 @@
  */
 
 import { TaskServiceWithVault } from '../taskServiceWithVault';
-import { TaskCache } } from './taskCache';
-import { EventEmitter } } from './eventEmitter';
-import { DataManager }Config } from './types';
+import { TaskCache } from './taskCache';
+import { EventEmitter } from './eventEmitter';
+import { DataManager, Config } from './types';
 
 export class DataManager {
   private static instance: DataManager;

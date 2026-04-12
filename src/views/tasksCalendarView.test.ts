@@ -3,7 +3,7 @@
  * Vistas múltiples, edición inline, integración DataManager
  */
 
-import { TasksCalendarView }, TASKS_CALENDAR_VIEW_TYPE } from './tasksCalendarView';
+import { TasksCalendarView, TASKS_CALENDAR_VIEW_TYPE } from './tasksCalendarView';
 import { dataManager } from '../services/dataManager';
 
 describe('TasksCalendarView - SEMANA 4', () => {

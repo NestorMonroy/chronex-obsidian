@@ -12,7 +12,7 @@
  * Archivos: 6 (PROJ-ID.md, README.md, objetivos.md, documentos.md, tareas.md, recursos.md)
  */
 
-import { ObsidianVaultAdapter } } from './obsidianVaultAdapter';
+import { ObsidianVaultAdapter } from './obsidianVaultAdapter';
 import { FolderNoteService } from './folderNoteService';
 import { IndexSyncService } from './indexSyncService';
 import { IdGenerator } from '../utils/generateUniqueId';
