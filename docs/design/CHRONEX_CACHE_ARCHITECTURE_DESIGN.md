@@ -1,9 +1,27 @@
 # CHRONEX Cache Architecture Design
 
-**Design Document Version**: 1.0  
+**Design Document Version**: 1.1 (Updated for WebDAV)  
 **Date**: 2026-04-13  
 **Status**: Approved for v1.0 (critical for performance)  
-**References**: SIYUAN_PERFORMANCE_ANALYSIS.md, JOPLIN_PERFORMANCE_ANALYSIS.md, CHRONEX_PERFORMANCE_TARGETS.md
+**References**: CHRONEX_WEBDAV_DUAL_MODE_ARCHITECTURE.md, CHRONEX_API_DESIGN.md, CHRONEX_PERFORMANCE_TARGETS.md
+
+---
+
+## ⚠️ DOCUMENT UPDATE NOTICE
+
+This document has been **UPDATED** to include WebDAV VFS cache integration:
+
+**Added Context**:
+- ✅ WebDAV VFS cache modes (full, writes, minimal, off)
+- ✅ Integration with Rclone-style caching
+- ✅ Block ↔ File translation caching
+- ✅ Path resolution caching
+
+**Unchanged**:
+- ✅ 3-tier cache architecture (still valid)
+- ✅ LRU eviction strategies (still valid)
+- ✅ SQLite buffer cache (still valid)
+- ✅ Encryption/decryption optimization (still valid)
 
 ---
 
@@ -611,7 +629,152 @@ Strategies for memory-constrained environments:
 
 ---
 
-## 9. IMPLEMENTATION ROADMAP
+## 9. WEBDAV VFS CACHE INTEGRATION
+
+### 9.1 VFS Translation Caching
+
+```
+WebDAV VFS Layer (in Go server):
+
+Request: GET /My%20Notebook/First%20Note.md
+    ↓
+Path → Block ID (cached):
+├─ Decode URL: /My%20Notebook/First%20Note.md
+├─ Lookup in path_to_block_id cache: O(1)
+├─ If hit: Use cached block_id
+├─ If miss: Query database, cache result
+└─ Result: <1ms translation (cached)
+
+Block Query (TIER 1 cache):
+├─ Load block from SQLite
+├─ Decrypt content (with master key)
+├─ Build response: ETag + Last-Modified
+└─ Return to client (from TIER 1 cache if recent)
+
+Performance:
+├─ Path lookup: <1ms (cached)
+├─ Block load: <5ms (TIER 1 hit)
+├─ Total WebDAV latency: <100ms P99
+```
+
+### 9.2 WebDAV VFS Cache Modes (Rclone-inspired)
+
+```
+Go server supports configurable cache modes (like Rclone):
+
+full (recommended):
+├─ Caches all accessed blocks
+├─ Poll interval: 5 minutes
+├─ Best for: Desktop clients, fast access
+├─ Memory: 50-200 MB (depends on block count)
+├─ Server start: chronex serve webdav --vfs-cache-mode full
+
+writes:
+├─ Only cache write operations (PUT)
+├─ Read operations: Query database each time
+├─ Best for: Read-heavy workloads
+├─ Memory: Minimal (only pending writes)
+├─ Server start: chronex serve webdav --vfs-cache-mode writes
+
+minimal:
+├─ Only cache open file handles
+├─ Evict when file closes
+├─ Best for: One-off edits, low memory devices
+├─ Memory: Very low
+├─ Server start: chronex serve webdav --vfs-cache-mode minimal
+
+off:
+├─ No caching (always query database)
+├─ Every block load hits SQLite
+├─ Best for: Testing, or when memory is critical
+├─ Memory: None
+├─ Latency: Higher (database query every time)
+├─ Server start: chronex serve webdav --vfs-cache-mode off
+```
+
+### 9.3 Poll Interval Configuration
+
+```
+How often VFS refreshes from database:
+
+Configuration:
+├─ Flag: --vfs-cache-poll-interval 5m
+├─ Default: 5 minutes
+├─ Range: 1m to 1h
+
+When to adjust:
+
+Faster polling (1m):
+├─ Multi-device: All devices edit frequently
+├─ Benefit: See changes faster (up to 1 minute)
+├─ Cost: More database queries
+├─ Use case: Team collaboration
+
+Standard polling (5m):
+├─ Default: Balances responsiveness + efficiency
+├─ Benefit: Good for most users
+├─ Cost: Moderate (5 DB queries per hour per block)
+└─ Use case: Personal or small teams
+
+Slower polling (30m):
+├─ Single device: No multi-device sync needed
+├─ Benefit: Minimal database load
+├─ Cost: Changes visible after up to 30 minutes
+└─ Use case: Local-only usage
+
+Example command:
+├─ chronex serve webdav \
+│    --vfs-cache-mode full \
+│    --vfs-cache-poll-interval 5m \
+│    --addr 0.0.0.0:8080 \
+│    --db ~/.chronex/chronex.db
+```
+
+### 9.4 Cache Coherency with WebDAV
+
+```
+Challenge: TIER 1 cache must stay coherent with WebDAV VFS cache
+
+Edit from WebDAV client (external):
+
+1. Client PUT: /My%20Notebook/First%20Note.md
+2. Server receives: Updated content
+3. VFS cache updated: New block version
+4. TIER 1 cache invalidated: Mark as stale
+5. Next TIER 1 access: Re-fetch from TIER 3
+
+Edit from local app (internal):
+
+1. Local app updates block in SQLite
+2. TIER 1 updated immediately
+3. Add to sync_queue (for WebDAV upload)
+4. Next sync: PUT to WebDAV server
+5. Server VFS cache updated
+
+Multi-device scenario:
+
+Device A:
+├─ Edits block locally
+├─ TIER 1 cache updated
+├─ Sync uploads: PUT to server
+└─ Server updates VFS cache
+
+Device B:
+├─ Polling: Detects server change (every 5m)
+├─ VFS cache invalidated
+├─ Re-fetches: GET from server
+├─ Updates TIER 1 cache
+└─ User sees latest version
+
+Result:
+├─ TIER 1 ↔ VFS ↔ Server consistency
+├─ Eventual consistency (5m window)
+└─ No data corruption (all updates atomic)
+```
+
+---
+
+## 10. IMPLEMENTATION ROADMAP
 
 ### v1.0 (MVP)
 
@@ -629,7 +792,7 @@ Performance:
 └─ Acceptable for: Single device, local operations
 ```
 
-### v1.5 (Tuning)
+### v1.5 (Tuning + WebDAV Optimization)
 
 ```
 Features:
@@ -637,12 +800,16 @@ Features:
 ├─ Hit rate monitoring dashboard
 ├─ Smart invalidation on sync
 ├─ Compression for TIER 2 (optional)
-└─ Mobile memory optimizations
+├─ Mobile memory optimizations
+├─ VFS cache mode configuration (full/writes/minimal/off)
+├─ Polling interval tuning (1m-1h)
+└─ Cache coherency metrics (TIER 1 vs VFS)
 
 Performance:
 ├─ Hit rate: 80-90% (after tuning)
 ├─ Memory: <800 MB for 100k blocks
-└─ Acceptable for: Multi-device, professional users
+├─ WebDAV latency: <100ms P99
+└─ Acceptable for: Multi-device, professional users, WebDAV clients
 ```
 
 ### v2.0 (Advanced)
@@ -652,8 +819,9 @@ Features:
 ├─ Distributed cache (Redis) for team
 ├─ Cache replication across devices
 ├─ Smart prefetching (based on access patterns)
-├─ Full-text search indexing (Elasticsearch)
-└─ Cache compression (Brotli for TIER 2)
+├─ Meilisearch indexing (v2.0+, if needed)
+├─ Cache compression (Brotli for TIER 2)
+└─ WebDAV performance analytics
 
 Scope: Enterprise, collaborative teams
 ```
@@ -662,28 +830,39 @@ Scope: Enterprise, collaborative teams
 
 ## Summary
 
-**CHRONEX Cache Architecture**: 3-tier (Hot/Warm/Cold) optimized for performance
+**CHRONEX Cache Architecture**: 3-tier (Hot/Warm/Cold) + WebDAV VFS caching
 
 **Key Principles**:
 - ✅ TIER 1 (Hot): <1ms latency, 50 MB typical, LRU eviction
 - ✅ TIER 2 (Warm): 10-50ms latency, SQLite buffer (80 MB)
 - ✅ TIER 3 (Cold): 50-500ms latency, persistent SQLite
-- ✅ Coherency: Atomic updates across all tiers
+- ✅ VFS Cache: WebDAV path ↔ block ID translation (cached)
+- ✅ Coherency: Atomic updates across all tiers + VFS cache
 - ✅ Transparency: Application unaware (automatic)
+- ✅ WebDAV Modes: full/writes/minimal/off (configurable)
 
 **Performance SLOs**:
 - Hit rate: 80-90% from TIER 1+2
 - Average latency: <5ms per query
+- WebDAV latency: <100ms P99
 - Memory: <600 MB (personal), <1 GB (professional)
 - Scalability: Efficient up to 100k blocks (SQLite limit)
+
+**WebDAV VFS Caching**:
+- Path translation: <1ms (cached)
+- Cache modes: full, writes, minimal, off
+- Poll interval: 1m to 1h (default 5m)
+- Coherency: 5m eventual consistency (multi-device)
 
 **Tuning**:
 - User-configurable cache size
 - TTL-based eviction (10 min default)
 - Index strategy (5-8 indices recommended)
 - Mobile optimizations (10-20 MB TIER 1)
+- VFS cache mode selection (based on workload)
 
 ---
 
-**Document Status**: Design Complete  
-**Next**: CHRONEX_SEARCH_STRATEGY_DESIGN.md
+**Document Status**: Updated with WebDAV VFS Integration  
+**Primary Reference**: CHRONEX_WEBDAV_DUAL_MODE_ARCHITECTURE.md  
+**Next**: CHRONEX_ENCRYPTION_AT_REST_DESIGN.md

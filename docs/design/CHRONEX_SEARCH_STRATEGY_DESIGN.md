@@ -1,9 +1,111 @@
 # CHRONEX Search Strategy Design
 
-**Design Document Version**: 1.0  
+**Design Document Version**: 1.1 (Updated for WebDAV context)  
 **Date**: 2026-04-13  
-**Status**: Approved for v1.0 (FTS5), v2.0+ (Elasticsearch)  
-**References**: SIYUAN_PERFORMANCE_ANALYSIS.md, JOPLIN_PERFORMANCE_ANALYSIS.md, CHRONEX_PERFORMANCE_TARGETS.md
+**Status**: Approved for v1.0 (FTS5), v1.5+ (PostgreSQL FTS, NOT Elasticsearch)  
+**References**: CHRONEX_WEBDAV_DUAL_MODE_ARCHITECTURE.md, CHRONEX_SEARCH_ENGINE_COMPARISON_ANALYSIS.md, CHRONEX_PERFORMANCE_TARGETS.md
+
+---
+
+## ⚠️ DOCUMENT UPDATE NOTICE
+
+This document has been **UPDATED** with WebDAV context:
+
+**Added Context**:
+- ✅ Search is NOT over WebDAV protocol
+- ✅ Search happens via FTS5/PostgreSQL FTS on blocks table
+- ✅ WebDAV is only for file sync (PUT/GET/DELETE)
+- ✅ Removed Elasticsearch (NO reference uses it)
+- ✅ PostgreSQL FTS is proven by Joplin (production)
+
+**Unchanged**:
+- ✅ FTS5 for local search (still valid)
+- ✅ PostgreSQL FTS for server search (still valid)
+- ✅ Performance targets (still valid)
+
+---
+
+## 0. SEARCH + WEBDAV ARCHITECTURE (NEW CONTEXT)
+
+### 0.1 Search is Independent of WebDAV Sync
+
+```
+Important Clarification:
+
+WebDAV Protocol (RFC 4918):
+├─ Purpose: File synchronization (PUT/GET/DELETE)
+├─ Operations: Block ↔ File translation
+├─ Transport: HTTP/HTTPS
+├─ Use case: Multi-device sync, external clients
+└─ Search: NOT done over WebDAV
+
+Full-Text Search:
+├─ Purpose: Content search (FTS5 or PostgreSQL FTS)
+├─ Operations: Index queries (MATCH, @@ operators)
+├─ Database: SQLite or PostgreSQL
+├─ Use case: User searches "rust", finds matching blocks
+└─ Protocol: SQL queries (not WebDAV)
+
+Result:
+├─ WebDAV handles sync
+├─ FTS/PostgreSQL FTS handle search
+├─ Independent systems (good separation of concerns)
+└─ Both needed for full functionality
+```
+
+### 0.2 Why Search Isn't Over WebDAV
+
+```
+Problem: Could we search over WebDAV?
+
+No, because:
+
+1. WebDAV doesn't support search (RFC 4918):
+   ├─ WebDAV methods: GET, PUT, DELETE, PROPFIND, MKCOL, LOCK
+   ├─ No search method defined
+   ├─ Could use DASL (WebDAV Search Language), but it's rare
+   └─ Most clients don't support it
+
+2. Full-text search requires database:
+   ├─ FTS5: Built into SQLite
+   ├─ PostgreSQL FTS: Built into PostgreSQL
+   ├─ WebDAV: Stateless HTTP protocol (no query engine)
+   └─ Mismatch: WebDAV is for files, not for search queries
+
+3. Performance:
+   ├─ FTS5: 100-500ms query (local index)
+   ├─ PostgreSQL FTS: 100-300ms query (database)
+   ├─ WebDAV DASL (if implemented): Would be much slower
+   └─ Better to use native database search
+
+Solution:
+
+Use both:
+├─ WebDAV: For sync (PUT/GET/DELETE)
+├─ FTS5/PostgreSQL FTS: For search (SQL queries)
+├─ Separate concerns: Clean architecture
+└─ User doesn't see the distinction (transparent to UI)
+
+Example:
+
+1. User searches: "rust"
+   ├─ Local app queries SQLite FTS5
+   ├─ Query: SELECT * FROM blocks_fts WHERE title MATCH 'rust'
+   ├─ Result: Block IDs matching
+   └─ Time: <500ms
+
+2. User edits a block:
+   ├─ Local SQLite update
+   ├─ Then WebDAV PUT to server
+   ├─ Server updates encrypted content
+   └─ Time: <100ms + network
+
+3. Other devices sync:
+   ├─ WebDAV GET/PROPFIND (pull changes)
+   ├─ Update local SQLite
+   ├─ User searches locally (FTS5)
+   └─ Time: 5 minutes (polling interval)
+```
 
 ---
 
@@ -672,6 +774,8 @@ Result:
 
 ---
 
-**Document Status**: Design Complete (REVISED)  
-**Updated**: Removed Elasticsearch, promoted PostgreSQL FTS (reference-proven)
-**References**: SEARCH_ENGINE_COMPARISON_ANALYSIS.md (companion analysis)
+**Document Status**: Updated with WebDAV Architecture Context  
+**Updated**: Added WebDAV separation, removed Elasticsearch, promoted PostgreSQL FTS  
+**Key Finding**: Search (FTS5/PostgreSQL FTS) is independent of WebDAV sync  
+**Primary Reference**: CHRONEX_WEBDAV_DUAL_MODE_ARCHITECTURE.md  
+**Companion Analysis**: SEARCH_ENGINE_COMPARISON_ANALYSIS.md

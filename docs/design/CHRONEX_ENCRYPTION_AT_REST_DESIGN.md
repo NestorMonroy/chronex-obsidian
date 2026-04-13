@@ -1,9 +1,28 @@
 # CHRONEX Encryption at Rest Design
 
-**Design Document Version**: 1.0  
+**Design Document Version**: 1.1 (Updated for WebDAV)  
 **Date**: 2026-04-13  
 **Status**: Approved for v1.0 (mandatory E2EE)  
-**References**: JOPLIN_SECURITY_STRATEGY.md, RCLONE_SECURITY_STRATEGY.md, CHRONEX_PERFORMANCE_TARGETS.md
+**References**: CHRONEX_WEBDAV_DUAL_MODE_ARCHITECTURE.md, CHRONEX_API_DESIGN.md, CHRONEX_PERFORMANCE_TARGETS.md
+
+---
+
+## ⚠️ DOCUMENT UPDATE NOTICE
+
+This document has been **UPDATED** with WebDAV context:
+
+**Added Context**:
+- ✅ How encryption integrates with WebDAV VFS
+- ✅ Client-side encryption before WebDAV PUT
+- ✅ Decryption after WebDAV GET
+- ✅ ETag calculation on encrypted content
+
+**Unchanged**:
+- ✅ AES-256-GCM cipher (still correct)
+- ✅ Argon2id key derivation (still correct)
+- ✅ Per-block encryption (still correct)
+- ✅ Master key management (still correct)
+- ✅ Multi-device key exchange (still correct)
 
 ---
 
@@ -143,7 +162,123 @@ Security properties:
 
 ---
 
-## 3. BLOCK ENCRYPTION DETAILS
+## 3. ENCRYPTION WITH WEBDAV (NEW)
+
+### 3.0 WebDAV + Encryption Flow
+
+```
+Local Client (Edit Block):
+
+1. User edits block content: "Learn Rust"
+2. Local SQLite storage:
+   ├─ Generate IV: 12-byte random
+   ├─ Encrypt: AES-256-GCM(master_key, content, aad=block_id||updated_at)
+   ├─ Auth tag: 16-byte authentication
+   ├─ Store encrypted: INSERT into blocks(content_encrypted)
+   └─ Time: <5ms
+
+3. WebDAV Sync (to server):
+   ├─ Serialize block: JSON with encrypted_content
+   ├─ PUT /My%20Notebook/First%20Note.md
+   ├─ HTTP Body: Encrypted content (plaintext never sent)
+   ├─ Headers: If-Match (for conflict detection)
+   └─ Time: Network dependent
+
+Server (WebDAV storage):
+
+1. Receive PUT request
+   ├─ Content: Encrypted bytes (server can't read)
+   ├─ Check If-Match: Compare ETag
+   └─ Update: Store encrypted blob
+
+2. Store in database:
+   ├─ content_encrypted: BLOB (server can't decrypt)
+   ├─ updated_at: TIMESTAMP (plaintext, for sync)
+   ├─ version_vector: JSON (plaintext, for conflict detection)
+   └─ Note: Server never sees plaintext
+
+3. Return 204 No Content
+   ├─ ETag: FastCDC hash of encrypted content
+   └─ Next sync: Check this ETag for conflicts
+
+Other Devices (Multi-device sync):
+
+1. Polling: Detect server change (every 5 minutes)
+   ├─ GET /My%20Notebook/First%20Note.md
+   ├─ Receive: Encrypted content + ETag
+   └─ Time: <100ms
+
+2. Decrypt locally:
+   ├─ Decrypt: AES-256-GCM.decrypt(master_key, encrypted_content)
+   ├─ Verify: Auth tag (detect tampering)
+   ├─ Result: Plaintext "Learn Rust"
+   └─ Time: <5ms
+
+3. Update local SQLite:
+   ├─ Update blocks table
+   ├─ Verify: 3-way merge (if conflict)
+   └─ Show: Updated content to user
+
+Privacy Guarantee:
+├─ Server never has plaintext (E2EE)
+├─ Network: Only encrypted bytes (HTTPS + encryption)
+├─ Client: Only client has master key
+└─ Result: Server compromise doesn't leak data
+```
+
+### 3.0.1 ETag Calculation with Encryption
+
+```
+Standard WebDAV uses MD5(content) for ETag.
+Chronex uses FastCDC on encrypted content:
+
+Why FastCDC?
+
+1. Content-defined chunking:
+   ├─ Similar edits → Similar chunks
+   ├─ Encrypted: Very different (due to IV)
+   ├─ FastCDC detects similarity despite IV
+   └─ Better conflict detection than MD5
+
+2. More stable:
+   ├─ Plaintext: Small change = large hash change
+   ├─ FastCDC: Small change = similar chunks
+   └─ Better for incremental sync
+
+3. Performance:
+   ├─ FastCDC: 1-3ms per block
+   ├─ MD5: 1-2ms per block (simpler)
+   ├─ Trade-off: Slightly slower but better conflict detection
+   └─ Acceptable: Still <5ms total for encryption + ETag
+
+Implementation:
+├─ encrypted_content = AES-256-GCM(master_key, plaintext)
+├─ etag = FastCDC(encrypted_content)
+├─ Return: ETag header with etag
+└─ Next sync: PUT with If-Match: etag (detect if server version changed)
+
+Example:
+
+Device A:
+├─ Encrypts block → ETag: "abc123"
+├─ PUTs to server with If-Match: "abc123"
+├─ Server accepts (match) → 204 No Content
+
+Device B (mean while):
+├─ Already fetched same block → Has ETag: "abc123"
+├─ Edits locally
+├─ Encrypts different plaintext → ETag: "xyz789"
+├─ PUTs to server with If-Match: "abc123"
+├─ Server rejects (no match, now "abc123") → 412 Precondition Failed
+├─ Client detects conflict
+├─ Decrypts both versions (server's + local)
+├─ Performs 3-way merge
+└─ Re-encrypts merged result → New ETag
+```
+
+---
+
+## 4. BLOCK ENCRYPTION DETAILS
 
 ### 3.1 Encryption Algorithm: AES-256-GCM
 
@@ -259,7 +394,7 @@ Optimization:
 
 ---
 
-## 4. KEY DERIVATION: ARGON2ID
+## 5. KEY DERIVATION: ARGON2ID
 
 ### 4.1 Why Argon2id (Not PBKDF2)?
 
@@ -360,7 +495,7 @@ verify_result = ph.verify(master_key_derived, entered_password)
 
 ---
 
-## 5. MULTI-DEVICE MASTER KEY EXCHANGE
+## 6. MULTI-DEVICE MASTER KEY EXCHANGE
 
 ### 5.1 How Joplin Does It
 
@@ -429,7 +564,7 @@ Why this is secure:
 
 ---
 
-## 6. KEY ROTATION (FUTURE)
+## 7. KEY ROTATION (FUTURE)
 
 ### 6.1 Key Rotation Strategy
 
@@ -491,7 +626,7 @@ Trade-off:
 
 ---
 
-## 7. ENCRYPTION ERROR HANDLING
+## 8. ENCRYPTION ERROR HANDLING
 
 ### 7.1 Decryption Failures
 
@@ -564,7 +699,7 @@ Recommendation:
 
 ---
 
-## 8. IMPLEMENTATION ROADMAP
+## 9. IMPLEMENTATION ROADMAP
 
 ### v1.0 (MVP)
 
@@ -609,7 +744,7 @@ Scope: Enterprise, highest security
 
 ---
 
-## 9. COMPLIANCE & STANDARDS
+## 10. COMPLIANCE & STANDARDS
 
 ### 9.1 Cryptographic Standards
 
@@ -669,7 +804,7 @@ Right to Data Portability (Art. 20):
 
 ## Summary
 
-**CHRONEX Encryption**: Mandatory E2EE with Argon2id-derived keys
+**CHRONEX Encryption**: Mandatory E2EE with Argon2id-derived keys + WebDAV integration
 
 **Key Principles**:
 - ✅ AES-256-GCM (NIST approved, no known attacks)
@@ -677,20 +812,26 @@ Right to Data Portability (Art. 20):
 - ✅ Per-block encryption (fine-grained, 2-5ms overhead)
 - ✅ Master key never leaves client (E2EE guarantee)
 - ✅ Multi-device: Same password → Same key
+- ✅ WebDAV transport: Client encrypts before PUT, decrypts after GET
+- ✅ Server-side: Only sees ciphertext (never plaintext)
 
 **Security SLOs**:
 - Master key derivation: 100-200ms (acceptable on login)
 - Block encryption: <5ms per block (background)
+- WebDAV encryption overhead: <10ms (encryption + HTTP)
 - Password strength: >50 bits entropy (recommended)
 - Brute force time: >47 years (2^50 attempts at 150ms each)
 
 **Compliance**:
 - NIST SP 800-38D ✅
 - RFC 9106 (Argon2) ✅
+- RFC 4918 (WebDAV) ✅
 - OWASP password storage ✅
 - GDPR Article 32 ✅
 
 ---
 
-**Document Status**: Design Complete  
-**Next**: CHRONEX_CACHE_ARCHITECTURE_DESIGN.md
+**Document Status**: Updated with WebDAV Encryption Integration  
+**Primary Reference**: CHRONEX_WEBDAV_DUAL_MODE_ARCHITECTURE.md  
+**Protocol**: WebDAV (RFC 4918) + E2EE  
+**Next**: CHRONEX_SEARCH_STRATEGY_DESIGN.md (low priority, mostly valid)

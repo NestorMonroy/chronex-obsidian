@@ -1,9 +1,26 @@
 # CHRONEX Hybrid Storage Design
 
-**Design Document Version**: 1.0  
+**Design Document Version**: 2.0 (UPDATED to WebDAV + Go)  
 **Date**: 2026-04-13  
 **Status**: Approved for v1.0  
-**References**: RCLONE_PROJECT_STRUCTURE.md, JOPLIN_PERFORMANCE_ANALYSIS.md, CHRONEX_PERFORMANCE_TARGETS.md
+**References**: CHRONEX_WEBDAV_DUAL_MODE_ARCHITECTURE.md, CHRONEX_API_DESIGN.md, CHRONEX_PERFORMANCE_TARGETS.md
+
+---
+
+## ⚠️ DOCUMENT UPDATE NOTICE
+
+This document has been **UPDATED** to reflect Go + WebDAV architecture:
+
+**OLD (Pre-correction)**:
+- ❌ NestJS backend references
+- ❌ POST /api/blocks REST endpoints
+- ❌ Custom sync protocol
+
+**NEW (Official)**:
+- ✅ Go WebDAV server (golang.org/x/net/webdav)
+- ✅ WebDAV PUT/GET/DELETE operations
+- ✅ Vector clocks + 3-way merge (unchanged)
+- ✅ SQLite local + PostgreSQL optional (unchanged)
 
 ---
 
@@ -14,9 +31,14 @@
 ```
 CHRONEX Storage = SiYuan's instant local operations 
                 + Joplin's multi-device consistency
-                + Rclone's reliable sync
+                + Rclone's reliable sync via WebDAV
 
 Key Principle: "Optimize for the common case, handle edge cases gracefully"
+
+Backend: Go + WebDAV protocol (RFC 4918)
+├─ No TypeScript/NestJS complexity
+├─ Follows Rclone serve webdav pattern
+└─ Universal client support (Obsidian, WinSCP, Finder, etc.)
 ```
 
 ### 1.2 Two-Tier Storage Model
@@ -27,8 +49,8 @@ TIER 1: LOCAL (SQLite)
 ├─ Purpose: Instant operations (<100ms)
 ├─ Scope: Full blocktree + metadata
 ├─ Consistency: Immediately persistent
-├─ Encryption: Per-block E2EE
-└─ Replicated to: Tier 2 (async)
+├─ Encryption: Per-block E2EE (AES-256-GCM)
+└─ Replicated to: Tier 2 (async via WebDAV)
 
 TIER 2: REMOTE (PostgreSQL, optional)
 ├─ Primary: Chronex server (if sync enabled)
@@ -36,7 +58,15 @@ TIER 2: REMOTE (PostgreSQL, optional)
 ├─ Scope: Same blocktree as Tier 1
 ├─ Consistency: Eventually consistent
 ├─ Encryption: Server stores ciphertext only
+├─ Protocol: WebDAV (PUT/GET/DELETE)
 └─ Availability: Handles offline mode
+
+Access via: WebDAV Protocol (RFC 4918)
+├─ VFS translates: Blocks ↔ Filesystem paths
+├─ HTTP Methods: GET, PUT, DELETE, PROPFIND
+├─ Conflict detection: ETag + If-Match headers
+├─ Vector clocks: Track causality across devices
+└─ 3-way merge: Resolve conflicts automatically
 ```
 
 ---
@@ -390,18 +420,19 @@ User creates new block: "Learn Rust"
    ├─ Render UI
    └─ User sees block instantly (<50ms)
 
-2. BACKGROUND (Async):
+2. BACKGROUND (Async, via WebDAV):
    ├─ Encrypt: AES-256-GCM(master_key, full_block_data)
-   ├─ POST /api/blocks with encrypted payload
+   ├─ PUT to WebDAV server with If-Match header
+   ├─ Server path: /My%20Notebook/Learn%20Rust.md
    ├─ Server stores: INSERT into blocks table
-   ├─ Server returns: version_vector, server_id
+   ├─ Server returns: 204 No Content + new ETag
    ├─ Update local: sync_queue status='synced'
    └─ Total: 200-500ms (non-blocking)
 
 Timeline:
 ├─ 0-50ms: User sees block
 ├─ 50-100ms: Sync queue updated
-├─ 100-500ms: Server confirms
+├─ 100-500ms: Server confirms (via WebDAV)
 └─ Result: Responsive UI + eventual durability
 ```
 
@@ -417,17 +448,20 @@ User edits block: "Learn Rust & Go"
    ├─ Add to sync_queue
    └─ Total latency: 1000ms (debounce) + 50ms (local)
 
-2. BACKGROUND (Async, Batched):
+2. BACKGROUND (Async, Batched, via WebDAV):
    ├─ Collect changes: 1-5 minutes (configurable)
    ├─ Batch encrypt: All pending updates
-   ├─ POST /api/blocks/sync with batch payload
-   ├─ Server processes: Update with version vectors
+   ├─ PUT to WebDAV server (one PUT per block)
+   ├─ Include If-Match header (ETag for conflict detection)
+   ├─ Server processes: Update with vector clocks
+   ├─ On conflict (412): Perform 3-way merge
    └─ Total: 1-2 seconds (batched)
 
 Optimization:
 ├─ Don't sync every keystroke (huge overhead)
 ├─ Batch updates (reduce network round-trips 10x)
 ├─ Debounce (balance responsiveness + efficiency)
+├─ WebDAV If-Match prevents conflicts (optimistic locking)
 └─ Result: Instant local feel + efficient sync
 ```
 
@@ -443,16 +477,17 @@ User deletes block (with 10 children):
    ├─ Add to sync_queue
    └─ UI: Hide deleted blocks immediately
 
-2. BACKGROUND (Async):
+2. BACKGROUND (Async, via WebDAV):
    ├─ Batch with other changes: 1-5 minutes
-   ├─ POST /api/blocks/sync (operation='delete')
-   ├─ Server marks: is_deleted=TRUE
-   └─ Result: Consistent across devices
+   ├─ DELETE /My%20Notebook/Learn%20Rust.md (WebDAV)
+   ├─ Server marks: is_deleted=TRUE (soft delete)
+   ├─ Result: Consistent across devices
+   └─ Note: Block remains in database (recoverable)
 
 3. RECOVERY (If needed):
    ├─ Server keeps deleted blocks: 30 days
    ├─ User can restore: FROM recycle bin
-   ├─ Restore: Set is_deleted=FALSE
+   ├─ Restore: PUT block back (with is_deleted=FALSE)
    └─ Total: Zero data loss, recycle bin support
 ```
 
@@ -576,9 +611,9 @@ SQLite local database: COMPLETE
 ├─ Sync queue: Pending changes tracking
 └─ Full-text search: FTS5 index
 
-Manual sync only:
-├─ User initiates: "Sync Now" button
-├─ Backend: Rclone or WebDAV
+Manual sync via WebDAV:
+├─ Backend: Go + WebDAV server (chronex serve webdav)
+├─ Client: Pulls from remote WebDAV (Nextcloud, S3-to-WebDAV, etc.)
 ├─ Frequency: On-demand
 └─ Scope: v1.0 MVP
 
@@ -586,6 +621,7 @@ No server required (optional):
 ├─ Works completely offline
 ├─ No account needed
 ├─ Data stored locally (user has full control)
+├─ Can connect to any WebDAV server (Nextcloud, etc.)
 └─ Suitable for: Personal users, privacy-focused
 ```
 
@@ -598,16 +634,18 @@ PostgreSQL server database: NEW
 ├─ Changelog: For incremental sync
 └─ Conflict detection: 3-way merge
 
-Automatic sync: NEW
+Automatic sync via WebDAV: NEW
+├─ Backend: Go WebDAV server
 ├─ Frequency: Every 5 minutes
 ├─ Or: On-demand (user triggered)
-├─ Frequency: Exponential backoff (offline)
-├─ Background: Non-blocking (async)
+├─ Backoff: Exponential backoff (offline)
+├─ Non-blocking: Async background sync
 
 Multi-device support: NEW
 ├─ Register devices: Phone, laptop, tablet
 ├─ Master key exchange: Derived from password (like Joplin)
 ├─ Conflict resolution: Vector clocks + 3-way merge
+├─ Sync protocol: WebDAV with ETag/If-Match headers
 └─ Suitable for: Professional users, multiple devices
 ```
 
@@ -616,8 +654,8 @@ Multi-device support: NEW
 ```
 Advanced features: FUTURE
 ├─ Block-level locking: Concurrent editing
-├─ Real-time collab: WebSocket updates
-├─ Elasticsearch: Full-text search at scale (500k+ blocks)
+├─ Real-time collab: WebSocket updates (optional)
+├─ Meilisearch: Full-text search at scale (500k+ blocks)
 ├─ Team permissions: Share notebooks with colleagues
 └─ Audit logging: Track who changed what
 
@@ -663,7 +701,7 @@ Migration path (since Joplin uses similar E2EE):
 
 ## Summary
 
-**CHRONEX Storage Design**: Hybrid SQLite (local) + PostgreSQL (remote, optional)
+**CHRONEX Storage Design**: Hybrid SQLite (local) + PostgreSQL (remote, optional) via WebDAV
 
 **Key Principles**:
 - ✅ Local-first: All operations <100ms
@@ -671,19 +709,29 @@ Migration path (since Joplin uses similar E2EE):
 - ✅ Offline-ready: Works without server
 - ✅ Eventually consistent: Multi-device sync with conflict detection
 - ✅ Scalable: SQLite up to 100k blocks, PostgreSQL beyond
+- ✅ WebDAV protocol: Universal client support (Obsidian, WinSCP, Finder, etc.)
+- ✅ Go backend: Rclone-style serve webdav command
+
+**Protocol**:
+- Format: WebDAV (RFC 4918)
+- Methods: GET (read), PUT (write), DELETE (soft delete), PROPFIND (list)
+- Conflict detection: ETag + If-Match headers
+- Sync: Vector clocks + 3-way merge
 
 **Performance SLOs**:
 - Local create: <100ms
 - Server sync: <2 seconds (batched)
+- WebDAV operations: <300ms P99
 - Search: <500ms (10k blocks), <1 second (100k blocks)
 - Memory: <600MB (personal), <1GB (professional)
 
 **Migration Path**:
-- v1.0: SQLite only, manual sync
-- v1.5: PostgreSQL optional, automatic sync
+- v1.0: SQLite only, manual WebDAV sync
+- v1.5: PostgreSQL optional, automatic WebDAV sync
 - v2.0: PostgreSQL enterprise, collaboration
 
 ---
 
-**Document Status**: Design Complete  
-**Next**: CHRONEX_SYNC_PROTOCOL_DESIGN.md
+**Document Status**: Updated to WebDAV + Go Architecture  
+**Primary Reference**: CHRONEX_WEBDAV_DUAL_MODE_ARCHITECTURE.md  
+**Next**: CHRONEX_CACHE_ARCHITECTURE_DESIGN.md
