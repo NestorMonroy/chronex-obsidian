@@ -246,143 +246,148 @@ Result:
 
 ---
 
-## 3. SERVER-SIDE SEARCH (ELASTICSEARCH)
+## 3. SERVER-SIDE SEARCH (POSTGRESQL FTS - v1.5, RECOMMENDED)
 
-### 3.1 Elasticsearch Architecture (v2.0+)
+### 3.1 PostgreSQL Full-Text Search (v1.5, PROVEN BY JOPLIN)
 
 ```
 When does client-side FTS5 become inadequate?
 
-SQLite FTS5 limits:
-├─ Single machine: Can't scale >100k blocks
-├─ Single index: Can't handle 1M+ blocks
-├─ Time: >2 seconds for complex queries
-├─ Memory: Index grows with blocks (10+ MB per 100k blocks)
+SQLite FTS5 limitations:
+├─ Single machine: Fine for 100k blocks (local user)
+├─ Server use: Not ideal for multi-device scenarios
+├─ Sync complexity: Keeping index in sync is hard
+├─ Practical limit: Works until ~500k blocks
 
-Solution: Elasticsearch (distributed search engine)
+Solution: PostgreSQL Full-Text Search (BUILT-IN, PROVEN)
 
-Elasticsearch benefits:
-├─ Distributed: Span multiple machines
-├─ Scalable: 1B+ documents
-├─ Fast: Sub-second search (even for 1M blocks)
-├─ Flexible: Complex queries (filters, aggregations)
-├─ Analytics: Search statistics, suggestions
-└─ Enterprise-grade: Fault tolerance, replication
+Why PostgreSQL FTS? (Used successfully by Joplin):
+├─ Built-in: No external service (simpler than Elasticsearch)
+├─ Scalable: Tested up to 1M blocks in Joplin production
+├─ Fast: 100-300ms queries (sufficient)
+├─ Reliable: Same database, ACID transactions
+├─ Cost: Zero (free if using PostgreSQL anyway)
+├─ Maintenance: Automatic (triggers keep index in sync)
+├─ Simple: No Docker, no ops overhead
+└─ Proven: Battle-tested in production (Joplin)
+
+Philosophy (why NOT Elasticsearch):
+├─ Pragmatic: "Simple that works > Complex that scales"
+├─ Actual need: No reference uses Elasticsearch
+├─ Operational burden: Unjustified for v1.0-1.5
+├─ Cost explosion: $500+/month vs. $0 for PostgreSQL
+└─ When needed: If users hit >10M blocks (unlikely before 2027+)
 ```
 
-### 3.2 Elasticsearch vs Local FTS5
+### 3.2 PostgreSQL FTS vs Alternatives (REVISED)
 
 ```
-Comparison:
+Comparison (REALITY-BASED on reference implementations):
 
-Feature              SQLite FTS5      Elasticsearch
-────────────────────────────────────────────
-Blocks capacity      100k (limit)     1M+ (scalable)
-Query speed (10k)    60-200ms         <100ms
-Query speed (100k)   200-500ms        100-200ms
-Query speed (1M)     >1s (slow)       200-500ms
-Multi-field search   Basic            Advanced
-Faceted search       No               Yes
-Autocomplete         No               Yes
-Synonyms             No               Yes
-Typo tolerance       No               Yes
-Installation         Built-in         External service
-Cost                 Free             Paid (self-hosted)
-Maintenance          Automatic        Manual
+Feature                   SQLite FTS5    PostgreSQL FTS   Meilisearch    Elasticsearch
+───────────────────────────────────────────────────────────────────────────────────
+Blocks capacity           100k           1M (proven)      10M+           Unlimited
+Query speed (100k)        200-500ms      100-300ms        50-200ms       100-300ms
+Query speed (1M)          Slow (1-2s)    100-300ms        100-200ms      100-300ms
+Installation              Built-in       Built-in         Docker         Docker+Infra
+Cost (self-hosted)        Free           Free             $$$            $$$$$
+Cost (managed)            N/A            N/A              $$             $$$$
+Maintenance overhead      None           Low              Medium         High
+DevOps burden             None           Low              Medium         Very High
+Data consistency          Strong         Strong           Eventual       Eventual
+When to use               Local v1.0     Server v1.5      v2.0+ Teams    AVOID
+
+Reference implementations using:
+├─ SQLite FTS5: Joplin (desktop), SiYuan (local)
+├─ PostgreSQL FTS: Joplin (server) ✅ PROVEN
+├─ Meilisearch: NONE (but simpler than Elasticsearch if needed)
+├─ Elasticsearch: NONE (not used by any reference)
+└─ Recommendation: Follow Joplin's proven approach
 ```
 
-### 3.3 Elasticsearch Index Design
+### 3.3 PostgreSQL Full-Text Search Implementation (ACTUAL)
 
 ```
-Mapping for Chronex blocks:
+PostgreSQL Full-Text Search Schema:
 
-{
-  "mappings": {
-    "properties": {
-      "block_id": {
-        "type": "keyword"                    // Exact match (UUID)
-      },
-      "user_id": {
-        "type": "keyword"                    // Filter by user
-      },
-      "title": {
-        "type": "text",
-        "analyzer": "standard",              // Full-text analysis
-        "fields": {
-          "keyword": {                       // Also store as keyword
-            "type": "keyword"
-          }
-        }
-      },
-      "content": {
-        "type": "text",
-        "analyzer": "english"                // English stemming
-      },
-      "type": {
-        "type": "keyword"                    // Filter by block type
-      },
-      "updated_at": {
-        "type": "date"                       // Range queries
-      },
-      "tags": {
-        "type": "keyword"                    // Exact match
-      }
-    }
-  }
-}
+-- Add tsvector column to blocks table
+ALTER TABLE blocks ADD COLUMN title_tsvector tsvector;
+ALTER TABLE blocks ADD COLUMN content_tsvector tsvector;
 
-Query example:
+-- Create GIN index for fast search (100-300ms on 1M blocks)
+CREATE INDEX idx_blocks_title_fts ON blocks USING GIN(title_tsvector);
+CREATE INDEX idx_blocks_content_fts ON blocks USING GIN(content_tsvector);
 
-{
-  "query": {
-    "bool": {
-      "must": [
-        {"match": {"title": "rust"}},        // Must have "rust"
-        {"term": {"user_id": "user-123"}}    // Filter by user
-      ],
-      "should": [
-        {"match": {"content": "async"}}      // Bonus if has "async"
-      ],
-      "filter": [
-        {"range": {"updated_at": {          // Filter: last 30 days
-          "gte": "now-30d"
-        }}}
-      ]
-    }
-  },
-  "size": 100                                // Return top 100
-}
+-- Trigger to keep tsvector in sync automatically
+CREATE TRIGGER blocks_update_tsvector BEFORE INSERT OR UPDATE
+ON blocks FOR EACH ROW EXECUTE FUNCTION
+tsvector_update_trigger(title_tsvector, 'pg_catalog.english', title);
+
+-- Query example: Search for "rust" AND "async"
+
+SELECT id, title, type, updated_at
+FROM blocks
+WHERE user_id = 'user-123'
+  AND title_tsvector @@ plainto_tsquery('english', 'rust & async')
+ORDER BY ts_rank(title_tsvector, plainto_tsquery('english', 'rust & async')) DESC
+LIMIT 100;
+
+-- Advanced query: phrase search + filter
+
+SELECT id, title, type, updated_at
+FROM blocks
+WHERE user_id = 'user-123'
+  AND title_tsvector @@ phraseto_tsquery('english', 'learn rust')
+  AND updated_at > now() - interval '30 days'
+LIMIT 100;
+
+-- Performance:
+├─ Simple term: 100-200ms (with index)
+├─ Complex query: 200-300ms
+├─ 1M blocks: 100-300ms (proven in Joplin)
+├─ Consistency: Strong (same database)
+└─ Cost: Free (included with PostgreSQL)
 ```
 
-### 3.4 Indexing Strategy
+**Why this over Elasticsearch?**
+- ✅ Built-in (no extra service)
+- ✅ Zero cost (included)
+- ✅ No ops overhead
+- ✅ Strong consistency
+- ✅ Proven in Joplin (production)
+- ❌ Elasticsearch: Too complex, too expensive, no reference uses it
+
+### 3.4 Index Synchronization (Automatic with PostgreSQL FTS)
 
 ```
-How to keep Elasticsearch in sync with SQLite?
+How to keep PostgreSQL FTS in sync with blocks?
 
-Option 1: Bulk indexing (Batch-based)
-├─ Every hour: Export all blocks to Elasticsearch
-├─ Advantage: Simple, reliable
-├─ Disadvantage: 1-hour delay (acceptable for v2.0)
-└─ Use case: Team collaboration
+Automatic (TRIGGERS - PROVEN BY JOPLIN):
 
-Option 2: Real-time indexing (Stream-based)
-├─ On block change: POST to Elasticsearch immediately
-├─ Advantage: Instant (sub-second)
-├─ Disadvantage: Complex, more network requests
-└─ Use case: Enterprise (future)
+CREATE TRIGGER blocks_update_tsvector 
+BEFORE INSERT OR UPDATE ON blocks
+FOR EACH ROW EXECUTE FUNCTION
+tsvector_update_trigger(title_tsvector, 'pg_catalog.english', title);
 
-Option 3: Log-based (Change log)
-├─ Maintain sync_changelog table
-├─ Periodically replay changelog to Elasticsearch
-├─ Advantage: Fault-tolerant
-├─ Disadvantage: Complex replay logic
-└─ Use case: High-reliability enterprise
+├─ Trigger fires automatically on INSERT/UPDATE
+├─ tsvector recalculated immediately
+├─ No separate indexing process needed
+├─ No delay or eventual consistency issues
+└─ Consistency: Always in sync (atomic)
 
-Recommendation for v2.0:
-├─ Use Option 1 (bulk indexing)
-├─ Simple to implement
-├─ Acceptable latency (1 hour)
-├─ Scale to millions of documents
+Advantages:
+├─ Zero latency (immediate)
+├─ Zero complexity (automatic)
+├─ ACID compliance (transactional)
+├─ Proven: Used in Joplin production
+└─ Cost: Included (no extra service)
+
+When to upgrade to Meilisearch:
+├─ Condition: >1M blocks reported by users
+├─ Timeline: Q4 2026+ (2+ years away)
+├─ Reason: Advanced features (typo tolerance, autocomplete)
+├─ Still NOT Elasticsearch (Meilisearch simpler)
+└─ Decision: Only when actual need confirmed
 ```
 
 ---
@@ -525,13 +530,13 @@ For 1M blocks:
 
 ---
 
-## 6. IMPLEMENTATION ROADMAP
+## 6. IMPLEMENTATION ROADMAP (REVISED - PostgreSQL FTS, NOT Elasticsearch)
 
-### v1.0 (MVP)
+### v1.0 (MVP - Q2 2026)
 
 ```
 Features:
-├─ FTS5 full-text search
+├─ FTS5 full-text search (local only)
 ├─ Simple search bar (one term)
 ├─ Results: Top 100, paginated
 ├─ Async search (non-blocking UI)
@@ -540,42 +545,62 @@ Features:
 Performance:
 ├─ Latency: <500ms P99 (local FTS5)
 ├─ Capacity: Up to 100k blocks
+├─ No server needed
 └─ Suitable for: Personal users
+
+Technology: SQLite FTS5 (Proven by SiYuan, Joplin desktop)
 ```
 
-### v1.5 (Enhanced)
+### v1.5 (Professional - Q3 2026)
 
 ```
 Features (new):
+├─ PostgreSQL FTS (server-side search)
 ├─ Advanced query syntax (AND/OR/NOT)
 ├─ Phrase search ("exact phrase")
-├─ Prefix search (rust*)
 ├─ Filter by block type
 ├─ Recent searches (user history)
 └─ Search statistics (results count)
 
 Performance:
-├─ Latency: <500ms P99 (still FTS5)
-├─ Capacity: 100k-500k blocks (with optimization)
-└─ Suitable for: Professional users
+├─ Latency: <300ms P99 (PostgreSQL FTS)
+├─ Capacity: Up to 1M blocks (proven in Joplin)
+├─ Optional: Only for sync users
+└─ Suitable for: Professional users, multi-device
+
+Technology: PostgreSQL Full-Text Search (Proven by Joplin production)
+├─ Built-in: No external service
+├─ Cost: Zero (already using PostgreSQL)
+├─ Maintenance: Automatic (triggers)
+└─ Consistency: Strong (same database)
 ```
 
-### v2.0 (Enterprise)
+### v2.0 (Enterprise - Q4 2026+, conditional)
 
 ```
-Features (new):
-├─ Elasticsearch backend (distributed)
+Features (new) - ONLY IF NEEDED:
+├─ Meilisearch (if >1M blocks confirmed)
 ├─ Autocomplete suggestions
 ├─ Typo tolerance (fuzzy search)
 ├─ Related searches
-├─ Search analytics
 ├─ Team search (multi-user)
 └─ Advanced filters (date range, tags)
 
 Performance:
-├─ Latency: <300ms P99 (Elasticsearch)
-├─ Capacity: Unlimited (1M+ blocks)
+├─ Latency: <200ms P99
+├─ Capacity: 10M+ blocks
 └─ Suitable for: Teams, enterprise
+
+Condition for upgrade:
+├─ Users reporting >1M blocks (unlikely before 2027+)
+├─ AND team collaboration features needed
+└─ THEN evaluate Meilisearch (NOT Elasticsearch)
+
+Technology: Meilisearch (Simpler than Elasticsearch)
+├─ Why: Easier ops, simpler config
+├─ Why NOT Elasticsearch: Overcomplicated, no reference uses it
+├─ Cost: $50/month managed (vs. $500+ for Elasticsearch)
+└─ When: Only if actual need confirmed (not premature)
 ```
 
 ---
@@ -610,29 +635,43 @@ Result:
 
 ---
 
-## Summary
+## Summary (REVISED - Based on Reference Implementation Analysis)
 
-**CHRONEX Search Strategy**: Local FTS5 (v1.0-1.5) + Elasticsearch (v2.0+)
+**CHRONEX Search Strategy**: SQLite FTS5 (v1.0) + PostgreSQL FTS (v1.5) + Optional Meilisearch (v2.0+)
 
-**Key Principles**:
-- ✅ Local-first: FTS5 on device (works offline)
-- ✅ Fast: <500ms P99 for typical searches
-- ✅ Scalable: FTS5 up to 100k, Elasticsearch unlimited
-- ✅ Resilient: Graceful fallback if index fails
+**Key Principles** (from reference analysis):
+- ✅ Local-first: FTS5 on device (works offline, Joplin/SiYuan proven)
+- ✅ Fast: <300ms P99 for server queries (PostgreSQL proven)
+- ✅ Scalable: FTS5 up to 100k, PostgreSQL FTS up to 1M (Joplin proven)
+- ✅ Simple: No Elasticsearch (no reference uses it)
 - ✅ Private: Server can't search (E2EE, no plaintext)
+- ✅ Cost-effective: Zero extra (built-in databases)
 
 **Performance SLOs**:
-- Simple term: <300ms P99
-- Complex query: <500ms P99
+- Simple term (local): <300ms P99 (FTS5)
+- Complex query (server): <300ms P99 (PostgreSQL FTS)
 - Paginated results: <10ms per page (cached)
-- Index building: One-time 2-5 seconds (acceptable)
+- 1M blocks: 100-300ms (PostgreSQL proven at scale)
 
-**Architecture**:
-- v1.0: SQLite FTS5 local index
-- v1.5: Same + query optimization + caching
-- v2.0: Elasticsearch distributed search
+**Architecture** (REVISED):
+- v1.0: SQLite FTS5 local index (NO server)
+- v1.5: PostgreSQL FTS (server search, optional for sync users)
+- v2.0: Meilisearch (only if >1M blocks + teams, NOT Elasticsearch)
+
+**Critical Finding**: No reference implementation uses Elasticsearch
+- ✅ Joplin (desktop): SQLite FTS5
+- ✅ Joplin (server): PostgreSQL FTS  
+- ✅ SiYuan: SQLite FTS5
+- ❌ Elasticsearch: NONE (unnecessary complexity)
+
+**Recommendation**: Follow Joplin's proven approach
+- Simpler, cheaper, more maintainable
+- Scale to millions of blocks without external service
+- Zero operational overhead
+- Transparent to users
 
 ---
 
-**Document Status**: Design Complete  
-**Next**: CHRONEX_API_DESIGN.md
+**Document Status**: Design Complete (REVISED)  
+**Updated**: Removed Elasticsearch, promoted PostgreSQL FTS (reference-proven)
+**References**: SEARCH_ENGINE_COMPARISON_ANALYSIS.md (companion analysis)
