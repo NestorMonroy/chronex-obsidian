@@ -1,886 +1,573 @@
-# CHRONEX API Design
+# CHRONEX WebDAV Protocol Specification
 
-**Design Document Version**: 1.0  
+**Design Document Version**: 2.0 (UPDATED)  
 **Date**: 2026-04-13  
-**Status**: Approved for v1.5 (multi-device sync)  
-**References**: CHRONEX_SYNC_PROTOCOL_DESIGN.md, CHRONEX_PERFORMANCE_TARGETS.md
+**Status**: OFFICIAL - WebDAV Dual-Mode Architecture  
+**Primary Reference**: CHRONEX_WEBDAV_DUAL_MODE_ARCHITECTURE.md
 
 ---
 
-## 1. API ARCHITECTURE OVERVIEW
+## ⚠️ DOCUMENT UPDATE NOTICE
 
-### 1.1 Design Philosophy
+This document has been **COMPLETELY REVISED** to reflect the correct architecture:
+
+**OLD (Obsolete)**:
+- ❌ REST API + JWT
+- ❌ Custom endpoints
+- ❌ gRPC protocol
+- ❌ GraphQL queries
+
+**NEW (Official)**:
+- ✅ WebDAV Protocol (RFC 4918)
+- ✅ Standard methods (GET, PUT, DELETE, PROPFIND)
+- ✅ Basic/Digest Authentication
+- ✅ ETag-based conflict detection
+
+---
+
+## 1. PROTOCOL OVERVIEW
+
+### 1.1 WebDAV (Web Distributed Authoring and Versioning)
 
 ```
-CHRONEX API = REST (simplicity) + gRPC (performance, future)
-
-v1.0: REST only (MVP)
-├─ HTTP/1.1 with Keep-Alive
-├─ JSON payloads
-├─ OAuth2 for authentication
-└─ Simple, widely supported
-
-v1.5: REST + gRPC (optional)
-├─ REST for mobile (ubiquitous)
-├─ gRPC for desktop (high-performance, low-latency)
-├─ Both behind same server
-└─ User chooses automatically
-
-v2.0: GraphQL + gRPC
-├─ GraphQL for flexible queries
-├─ gRPC for real-time sync
-└─ Future enhancement (skip for v1.0)
-
-Focus: v1.5 REST API specification
+Why WebDAV?
+├─ Standard protocol (RFC 4918)
+├─ Universal client support (Obsidian, WinSCP, Finder, Nautilus)
+├─ Proven in production (Nextcloud, ownCloud, etc.)
+├─ Built on HTTP (works everywhere)
+├─ No proprietary protocol needed
+├─ Compatible with 20+ year old systems
+└─ Obsidian native support (WebDAV plugin)
 ```
 
-### 1.2 API Base URL
+### 1.2 Server Endpoints
 
 ```
 Development:
-├─ http://localhost:3000/api/v1
-└─ Unencrypted (ok for dev)
+├─ http://localhost:8080/
+├─ Basic auth: alice/secret
+└─ WebDAV root points to SQLite blocks
 
 Production:
-├─ https://api.chronex.example.com/api/v1
-└─ TLS 1.2+ enforced
+├─ https://chronex.example.com:443/
+├─ HTTPS/TLS 1.2+ required
+├─ Htpasswd or JWT authentication
+└─ WebDAV root points to SQLite blocks
 
-API versioning:
-├─ URL versioning: /api/v1, /api/v2 (future)
-├─ Stability: Each version guaranteed stable for 2+ years
-├─ Deprecation: 6-month notice before removal
-└─ Current: v1 (launched 2026)
+WebDAV Paths:
+├─ /                           (root, lists notebooks)
+├─ /My%20Notebook/             (notebook folder)
+├─ /My%20Notebook/First%20Note.md (block file)
+└─ /My%20Notebook/Subfolder/   (nested notebooks)
 ```
 
 ---
 
 ## 2. AUTHENTICATION
 
-### 2.1 OAuth2 / JWT Token Flow
+### 2.1 Basic Authentication
 
 ```
-Step 1: User Login
+Simplest method. Client sends credentials in every request:
 
-POST /api/v1/auth/login
-Content-Type: application/json
+GET / HTTP/1.1
+Host: chronex.example.com
+Authorization: Basic YWxpY2U6c2VjcmV0
 
-{
-  "email": "alice@example.com",
-  "password": "MySecretPassword123!"
-}
+Where: Base64("alice:secret") = "YWxpY2U6c2VjcmV0"
+
+Server validates against /etc/chronex/users.htpasswd
+├─ If valid: 200 OK
+├─ If invalid: 401 Unauthorized
+└─ Session maintained via HTTP Keep-Alive
+```
+
+### 2.2 Digest Authentication
+
+```
+More secure. Server challenges, client responds with digest:
+
+1. Client requests: GET /
+2. Server responds: 401 + WWW-Authenticate header
+3. Client sends digest of password (not plaintext)
+4. Server validates digest
+5. If valid: 200 OK
+
+More secure than Basic, still standard WebDAV
+```
+
+### 2.3 Configuration
+
+```bash
+# Create users file
+$ htpasswd -c /etc/chronex/users.htpasswd alice
+$ htpasswd /etc/chronex/users.htpasswd bob
+
+# Start Chronex server
+$ chronex serve webdav \
+    --addr 0.0.0.0:443 \
+    --cert /certs/fullchain.pem \
+    --key /certs/privkey.pem \
+    --htpasswd /etc/chronex/users.htpasswd
+```
+
+---
+
+## 3. WEBDAV OPERATIONS
+
+### 3.1 GET (Read Block)
+
+```
+Request:
+GET /My%20Notebook/First%20Note.md HTTP/1.1
+Host: chronex.example.com
+Authorization: Basic YWxpY2U6c2VjcmV0
 
 Response:
+HTTP/1.1 200 OK
+Content-Type: text/markdown; charset=utf-8
+Content-Length: 1234
+ETag: "abc123def456"
+Last-Modified: Mon, 13 Apr 2026 10:00:00 GMT
 
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "expires_in": 3600,
-  "token_type": "Bearer",
-  "refresh_token": "refresh_token_here",
-  "user": {
-    "id": "uuid-user-123",
-    "email": "alice@example.com",
-    "created_at": 1712956800000
-  }
-}
+# First Note
 
-Security:
-├─ Password transmitted over TLS only
-├─ Server hashes: bcryptjs (not plaintext)
-├─ Token issued: JWT (HS256)
-├─ Expiration: 1 hour (short-lived)
-├─ Refresh: Use refresh_token to get new token
-└─ Storage: Client keeps token in secure storage
+This is the block content...
+
+Server side:
+├─ VFS translates path → block_id
+├─ Loads block from SQLite
+├─ Decrypts content (if E2EE enabled)
+├─ Calculates ETag (FastCDC hash)
+└─ Returns file content
 ```
 
-### 2.2 JWT Token Structure
+### 3.2 PUT (Write/Create Block)
 
 ```
-Header:
-{
-  "alg": "HS256",
-  "typ": "JWT"
-}
-
-Payload:
-{
-  "sub": "uuid-user-123",           // Subject (user ID)
-  "iss": "chronex.example.com",     // Issuer
-  "aud": "chronex-client",          // Audience
-  "iat": 1712956800,                // Issued at (Unix timestamp)
-  "exp": 1712960400,                // Expiration (1 hour later)
-  "user_id": "uuid-user-123",
-  "email": "alice@example.com"
-}
-
-Signature:
-├─ HMAC-SHA256(header + payload, server_secret)
-├─ Ensures integrity (token not tampered with)
-└─ Server verifies on each request
-```
-
-### 2.3 Authorization Header
-
-```
-All API requests (except login):
-
-GET /api/v1/blocks
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-Content-Type: application/json
-
-Server validates:
-├─ Extract token from Authorization header
-├─ Verify JWT signature
-├─ Check expiration
-├─ Allow request if valid
-└─ Return 401 Unauthorized if invalid
-```
-
----
-
-## 3. CORE API ENDPOINTS
-
-### 3.1 Blocks API
-
-```
-CREATE Block:
-
-POST /api/v1/blocks
-Content-Type: application/json
-Authorization: Bearer {token}
-
-{
-  "parent_id": "uuid-parent",
-  "root_id": "uuid-notebook",
-  "type": "paragraph",
-  "title": "Learn Rust",
-  "content_encrypted": "base64(iv || ciphertext || auth_tag)",
-  "content_iv": "base64(nonce)",
-  "content_tag": "base64(auth_tag)"
-}
-
-Response (201 Created):
-
-{
-  "id": "uuid-block-001",
-  "parent_id": "uuid-parent",
-  "root_id": "uuid-notebook",
-  "type": "paragraph",
-  "title": "Learn Rust",
-  "created_at": 1712956800000,
-  "updated_at": 1712956800000,
-  "created_by": "uuid-device-A",
-  "updated_by": "uuid-device-A",
-  "version_vector": {"device-A": 1001},
-  "server_id": "server-version-123"
-}
-
-GET Block:
-
-GET /api/v1/blocks/{block_id}
-Authorization: Bearer {token}
-
-Response (200 OK):
-
-{
-  "id": "uuid-block-001",
-  "content_encrypted": "...",
-  ... (same as above)
-}
-
-UPDATE Block:
-
-PATCH /api/v1/blocks/{block_id}
-Content-Type: application/json
-Authorization: Bearer {token}
-
-{
-  "title": "Learn Rust & Go",
-  "content_encrypted": "base64(...)",
-  "version_vector": {"device-A": 1002, "device-B": 1000}
-}
-
-Response (200 OK):
-
-{
-  "id": "uuid-block-001",
-  "title": "Learn Rust & Go",
-  ... (updated fields)
-}
-
-DELETE Block:
-
-DELETE /api/v1/blocks/{block_id}
-Authorization: Bearer {token}
-
-Response (204 No Content):
-
-(empty body, successful deletion)
-
-Note: Soft delete (marked as deleted, not removed)
-```
-
-### 3.2 Sync API (Critical)
-
-```
-Sync Request (Largest endpoint):
-
-POST /api/v1/sync
-Content-Type: application/json
-Authorization: Bearer {token}
-
-{
-  "device_id": "uuid-device-A",
-  "last_sync": 1712956700000,
-  
-  "changes": [
-    {
-      "id": "uuid-block-001",
-      "operation": "create|update|delete",
-      "content_encrypted": "base64(...)",
-      "type": "paragraph",
-      "title": "Learn Rust",
-      "parent_id": "uuid-parent",
-      "root_id": "uuid-notebook",
-      "created_at": 1712956800000,
-      "updated_at": 1712956810000,
-      "created_by": "uuid-device-A",
-      "updated_by": "uuid-device-A",
-      "version_vector": {"device-A": 1001}
-    },
-    ... (more changes, batched)
-  ],
-  
-  "pull_changes_since": 1712956700000
-}
-
-Response (200 OK):
-
-{
-  "status": "success|conflict",
-  "server_version": 1712956820000,
-  
-  "pushed_changes": [
-    {
-      "id": "uuid-block-001",
-      "status": "accepted|conflict",
-      "server_id": "server-version-123",
-      "server_version": {...}  // If conflict
-    }
-  ],
-  
-  "pulled_changes": [
-    {
-      "id": "uuid-block-002",
-      "operation": "update",
-      "content_encrypted": "...",
-      "version_vector": {...},
-      "conflict": false
-    }
-  ],
-  
-  "meta": {
-    "total_changed_blocks": 243,
-    "server_sync_version": 1712956820000,
-    "next_sync_recommended": "2026-04-13T10:30:00Z"
-  }
-}
-
-Latency SLO:
-├─ Request: 100 changes × 500 B = 50 KB
-├─ Compression: 50 KB → 15 KB (gzip)
-├─ Network: 15 KB @ 10 Mbps = 12 ms
-├─ Server processing: 100-300 ms
-├─ Response: 15 KB = 12 ms
-└─ Total: 100-300 ms (P99 <500ms with network)
-
-Compression:
-├─ Request: Accept-Encoding: gzip, deflate
-├─ Response: Content-Encoding: gzip
-└─ Transparent: Client/server handle automatically
-```
-
-### 3.3 Notebooks API
-
-```
-LIST Notebooks:
-
-GET /api/v1/notebooks
-Authorization: Bearer {token}
-
-Response (200 OK):
-
-{
-  "notebooks": [
-    {
-      "id": "uuid-notebook-001",
-      "name": "Learning",
-      "description": "Notes on learning",
-      "created_at": 1712956800000,
-      "updated_at": 1712956810000,
-      "is_deleted": false,
-      "sort_order": 1.0
-    },
-    ...
-  ],
-  "total": 5
-}
-
-CREATE Notebook:
-
-POST /api/v1/notebooks
-Content-Type: application/json
-Authorization: Bearer {token}
-
-{
-  "name": "Learning",
-  "description": "Notes on learning"
-}
-
-Response (201 Created):
-
-{
-  "id": "uuid-notebook-001",
-  "name": "Learning",
-  ... (same as above)
-}
-
-UPDATE Notebook:
-
-PATCH /api/v1/notebooks/{notebook_id}
-Authorization: Bearer {token}
-
-{
-  "name": "Learning & Development"
-}
-
-Response (200 OK):
-
-{
-  "id": "uuid-notebook-001",
-  "name": "Learning & Development",
-  ...
-}
-
-DELETE Notebook:
-
-DELETE /api/v1/notebooks/{notebook_id}
-Authorization: Bearer {token}
-
-Response (204 No Content):
-
-(empty, soft delete)
-```
-
-### 3.4 Search API
-
-```
-Search Blocks:
-
-GET /api/v1/search?q=rust&limit=20&offset=0
-Authorization: Bearer {token}
-
-Response (200 OK):
-
-{
-  "query": "rust",
-  "results": [
-    {
-      "block_id": "uuid-block-001",
-      "title": "Learn Rust Programming",
-      "preview": "# Learn Rust [...]",
-      "type": "heading",
-      "notebook_id": "uuid-notebook-001",
-      "updated_at": 1712956800000,
-      "relevance_score": 0.95  // Elasticsearch relevance
-    },
-    ...
-  ],
-  "total": 42,
-  "limit": 20,
-  "offset": 0
-}
-
-Advanced Search:
-
-GET /api/v1/search?q=rust%20AND%20async&type=paragraph
-Authorization: Bearer {token}
-
-Query parameters:
-├─ q: Search query (URL-encoded)
-├─ limit: Results per page (default 20, max 100)
-├─ offset: Pagination offset
-├─ type: Filter by block type (optional)
-├─ sort: Sort order (relevance, date, etc.)
-└─ filter: Advanced filters (future)
-
-Response time: <500ms P99 (local FTS5)
-```
-
-### 3.5 Attachments API
-
-```
-Upload Attachment:
-
-POST /api/v1/blocks/{block_id}/attachments
-Content-Type: multipart/form-data
-Authorization: Bearer {token}
-
-{
-  "file": <binary file data>,
-  "filename": "image.png",
-  "content_type": "image/png"
-}
-
-Response (201 Created):
-
-{
-  "id": "uuid-attachment-001",
-  "block_id": "uuid-block-001",
-  "filename": "image.png",
-  "size": 102400,
-  "content_type": "image/png",
-  "url": "https://api.chronex.example.com/api/v1/attachments/uuid-attachment-001",
-  "created_at": 1712956800000
-}
-
-Download Attachment:
-
-GET /api/v1/attachments/{attachment_id}
-Authorization: Bearer {token}
-
-Response (200 OK):
-
-<binary file data>
-
-Headers:
-├─ Content-Type: image/png
-├─ Content-Disposition: attachment; filename="image.png"
-├─ Content-Length: 102400
-└─ Cache-Control: public, max-age=31536000 (1 year)
-
-Delete Attachment:
-
-DELETE /api/v1/blocks/{block_id}/attachments/{attachment_id}
-Authorization: Bearer {token}
-
-Response (204 No Content):
-
-(empty)
-```
-
----
-
-## 4. ERROR HANDLING
-
-### 4.1 HTTP Status Codes
-
-```
-2xx Success:
-├─ 200 OK: Request successful, response body included
-├─ 201 Created: Resource created, response body included
-├─ 204 No Content: Request successful, no response body
-└─ 206 Partial Content: Range request (future)
-
-4xx Client Error:
-├─ 400 Bad Request: Invalid request format
-├─ 401 Unauthorized: Missing or invalid token
-├─ 403 Forbidden: Authenticated but not authorized
-├─ 404 Not Found: Resource doesn't exist
-├─ 409 Conflict: Concurrent changes detected
-└─ 429 Too Many Requests: Rate limited
-
-5xx Server Error:
-├─ 500 Internal Server Error: Unexpected error
-├─ 503 Service Unavailable: Server overloaded or down
-└─ 504 Gateway Timeout: Server taking too long
-```
-
-### 4.2 Error Response Format
-
-```
-All errors return structured JSON:
-
-{
-  "error": {
-    "code": "CONFLICT",
-    "message": "Block was modified elsewhere",
-    "details": {
-      "block_id": "uuid-block-001",
-      "server_version": {...},
-      "local_version": {...}
-    },
-    "request_id": "req-12345"  // For debugging
-  }
-}
-
-Common error codes:
-├─ VALIDATION_ERROR: Invalid input
-├─ AUTHENTICATION_FAILED: Wrong credentials
-├─ AUTHORIZATION_FAILED: Not allowed
-├─ NOT_FOUND: Resource missing
-├─ CONFLICT: Concurrent modification
-├─ RATE_LIMITED: Too many requests
-├─ SERVER_ERROR: Internal error
-└─ MAINTENANCE: Server maintenance
-```
-
----
-
-## 5. RATE LIMITING
-
-### 5.1 Rate Limit Strategy
-
-```
-Purpose: Prevent abuse, protect server from DoS
-
-Limits (per user):
-
-Login endpoint:
-├─ 5 attempts per 15 minutes
-├─ After limit: 429 Too Many Requests
-└─ Reset: After 15 minutes
-
-Sync endpoint:
-├─ 100 requests per minute
-├─ Normal: 1 per 5 minutes (typical)
-├─ Acceptable: Multiple devices syncing
-└─ Limit prevents: Crazy automated tools
-
-Search endpoint:
-├─ 60 requests per minute
-├─ Normal: 1-2 per minute (typical)
-├─ Acceptable: User typing search queries
-└─ Limit prevents: Scrapers
-
-Block operations:
-├─ 1000 requests per minute
-├─ Normal: 10-20 per minute (editing)
-└─ Acceptable: Bulk import
-```
-
-### 5.2 Rate Limit Response Headers
-
-```
-All responses include:
-
-X-RateLimit-Limit: 100              // Total limit
-X-RateLimit-Remaining: 87            // Remaining requests
-X-RateLimit-Reset: 1712956860        // Unix timestamp
-
-Example (after 13 requests out of 100):
-
-X-RateLimit-Limit: 100
-X-RateLimit-Remaining: 87
-X-RateLimit-Reset: 1712956860
-
-If limit exceeded:
-
-HTTP/1.1 429 Too Many Requests
-
-{
-  "error": {
-    "code": "RATE_LIMITED",
-    "message": "100 requests per minute limit exceeded",
-    "retry_after": 45
-  }
-}
-
-Headers:
-├─ Retry-After: 45 (seconds until can retry)
-└─ X-RateLimit-Reset: 1712956860
-```
-
----
-
-## 6. PAGINATION
-
-### 6.1 Cursor-Based Pagination
-
-```
-Problem with offset:
-├─ Data changes between requests
-├─ If item inserted before offset: Duplicates or skips
-└─ Solution: Cursor-based pagination (more reliable)
-
-Cursor pagination implementation:
-
-GET /api/v1/notebooks?limit=20&cursor=abc123
+Request:
+PUT /My%20Notebook/First%20Note.md HTTP/1.1
+Host: chronex.example.com
+Authorization: Basic YWlsY2U6c2VjcmV0
+Content-Type: text/markdown
+Content-Length: 1500
+If-Match: "abc123def456"
+
+# First Note (Updated)
+
+This is the updated content...
 
 Response:
+HTTP/1.1 204 No Content
 
-{
-  "notebooks": [
-    {...},
-    {...}
-  ],
-  "pagination": {
-    "limit": 20,
-    "cursor": "abc123",
-    "next_cursor": "def456",
-    "has_more": true
-  }
-}
+Server side:
+├─ VFS translates path → block_id
+├─ Checks If-Match header (ETag)
+├─ If ETag matches:
+│  ├─ Decrypt old content
+│  ├─ Compute diff
+│  ├─ Create sync_operation (increment vector clock)
+│  ├─ Encrypt new content
+│  ├─ Save to SQLite
+│  ├─ Update ETag
+│  └─ Return 204 No Content
+├─ If ETag doesn't match (conflict!):
+│  ├─ Check vector clocks
+│  ├─ Attempt 3-way merge if possible
+│  ├─ Return 412 Precondition Failed
+│  └─ Client re-fetches latest version
+```
 
-Next page:
+### 3.3 DELETE (Soft Delete Block)
 
-GET /api/v1/notebooks?limit=20&cursor=def456
+```
+Request:
+DELETE /My%20Notebook/First%20Note.md HTTP/1.1
+Host: chronex.example.com
+Authorization: Basic YWlsY2U6c2VjcmV0
 
-Benefits:
-├─ Reliable: No duplicates/skips
-├─ Efficient: Can page backwards
-├─ Stable: Works even if data changes
-└─ Concurrent: Multiple clients can page independently
+Response:
+HTTP/1.1 204 No Content
+
+Server side:
+├─ VFS translates path → block_id
+├─ Soft delete: Set deleted_at = NOW()
+├─ Create sync_operation (for multi-device sync)
+├─ Block still in SQLite (recoverable)
+└─ Return 204 No Content
+
+Note: File appears deleted to client, but recoverable from server
+```
+
+### 3.4 PROPFIND (List Contents)
+
+```
+Request:
+PROPFIND /My%20Notebook/ HTTP/1.1
+Host: chronex.example.com
+Authorization: Basic YWlsY2U6c2VjcmV0
+Depth: 1
+Content-Type: application/xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<D:propfind xmlns:D="DAV:">
+  <D:prop>
+    <D:displayname/>
+    <D:resourcetype/>
+    <D:getcontentlength/>
+    <D:getlastmodified/>
+  </D:prop>
+</D:propfind>
+
+Response:
+HTTP/1.1 207 Multi-Status
+
+<?xml version="1.0" encoding="utf-8"?>
+<D:multistatus xmlns:D="DAV:">
+  <D:response>
+    <D:href>/My%20Notebook/</D:href>
+    <D:propstat>
+      <D:prop>
+        <D:displayname>My Notebook</D:displayname>
+        <D:resourcetype><D:collection/></D:resourcetype>
+      </D:prop>
+      <D:status>HTTP/1.1 200 OK</D:status>
+    </D:propstat>
+  </D:response>
+  <D:response>
+    <D:href>/My%20Notebook/First%20Note.md</D:href>
+    <D:propstat>
+      <D:prop>
+        <D:displayname>First Note.md</D:displayname>
+        <D:resourcetype/>
+        <D:getcontentlength>1234</D:getcontentlength>
+        <D:getlastmodified>Mon, 13 Apr 2026 10:00:00 GMT</D:getlastmodified>
+      </D:prop>
+      <D:status>HTTP/1.1 200 OK</D:status>
+    </D:propstat>
+  </D:response>
+</D:multistatus>
+
+Server side:
+├─ VFS queries: SELECT * FROM blocks WHERE notebook_id = 'abc123'
+├─ Returns as XML (WebDAV standard)
+├─ Includes: size, modtime, ETag
+└─ Depth=1: Lists direct children only
+```
+
+### 3.5 MKCOL (Create Collection/Notebook)
+
+```
+Request:
+MKCOL /New%20Notebook/ HTTP/1.1
+Host: chronex.example.com
+Authorization: Basic YWlsY2U6c2VjcmV0
+
+Response:
+HTTP/1.1 201 Created
+
+Server side:
+├─ VFS creates new notebook in SQLite
+├─ Creates new directory entry
+├─ Creates sync_operation for multi-device
+└─ Return 201 Created
 ```
 
 ---
 
-## 7. VERSIONING & DEPRECATION
+## 4. ETAG & CONFLICT DETECTION
 
-### 7.1 API Versioning Strategy
-
-```
-URL-based versioning:
-
-/api/v1  → Current version
-/api/v2  → Next version (future)
-
-Stability guarantee:
-
-v1 will be supported until: 2028-01-01
-├─ 12 months: v1 + v2 both available
-├─ 6 months notice: Before shutdown
-└─ Clients have 12+ months to migrate
-
-Deprecation notice:
-
-In response headers:
-├─ Deprecation: true
-├─ Sunset: Sun, 01 Jan 2028 00:00:00 GMT
-└─ Link: </api/v2/...>; rel="successor-version"
-
-Migration path:
-
-v1 endpoint: GET /api/v1/blocks/{id}
-v2 endpoint: GET /api/v2/blocks/{id}
-
-Backward compatibility:
-├─ v1 endpoints: Always work (never removed)
-├─ v2: Same functionality, improved
-└─ Clients choose: Can use either version
-```
-
----
-
-## 8. MONITORING & OBSERVABILITY
-
-### 8.1 Request Logging
+### 4.1 ETag Hash (FastCDC)
 
 ```
-All API requests logged:
+Chronex uses FastCDC for ETag calculation instead of MD5:
 
-{
-  "timestamp": "2026-04-13T10:30:00Z",
-  "request_id": "req-12345",
-  "method": "POST",
-  "path": "/api/v1/sync",
-  "status": 200,
-  "latency_ms": 234,
-  "user_id": "uuid-user-123",
-  "device_id": "uuid-device-A",
-  "request_size_bytes": 52400,
-  "response_size_bytes": 12300,
-  "error": null
-}
+Why FastCDC?
+├─ Content-defined chunking (stable across edits)
+├─ Similar edits produce similar chunks
+├─ Better conflict detection than MD5
+├─ More efficient for block content
+└─ Faster than SHA-1
 
-Metrics:
-├─ Request count (per endpoint)
-├─ Latency (P50, P95, P99)
-├─ Error rate (4xx, 5xx)
-├─ Payload sizes (request/response)
-└─ Rate limit violations
+Example:
+GET /My%20Notebook/First%20Note.md
+→ ETag: "abc123def456789"
+
+If-Match header (optimistic locking):
+PUT /My%20Notebook/First%20Note.md
+If-Match: "abc123def456789"
+→ Only succeeds if ETag still matches
 ```
 
-### 8.2 Health Checks
+### 4.2 Conflict Resolution
 
 ```
-Health check endpoint:
+Scenario: Two devices edit same block concurrently
 
-GET /api/v1/health
+Device A:
+├─ Reads block, gets ETag: "version1"
+├─ Edits content
+└─ PUTs with If-Match: "version1"
 
-Response (200 OK):
+Device B (meanwhile):
+├─ Reads block, gets ETag: "version1"
+├─ Edits content
+└─ PUTs with If-Match: "version1"
 
-{
-  "status": "healthy",
-  "version": "1.0.0",
-  "timestamp": "2026-04-13T10:30:00Z",
-  "services": {
-    "database": "ok",
-    "cache": "ok",
-    "search": "ok"
-  }
-}
-
-Used by:
-├─ Load balancer: Health checks every 30 seconds
-├─ Monitoring: Alerting on unhealthy status
-└─ Client: Can check before making requests
+Server receives:
+├─ Device A PUT succeeds (If-Match matches)
+├─ Server calculates new ETag: "version2"
+├─ Device B PUT fails (If-Match doesn't match anymore)
+│  └─ Server returns 412 Precondition Failed
+├─ Device B re-fetches block with new ETag
+├─ Server consultsVector clocks to detect conflict
+├─ Attempts 3-way merge if possible
+└─ Client user sees conflict marker if auto-merge fails
 ```
 
 ---
 
-## 9. IMPLEMENTATION ROADMAP
+## 5. VECTOR CLOCKS & SYNC
 
-### v1.0 (MVP)
-
-```
-Endpoints:
-├─ POST /auth/login
-├─ POST /auth/logout
-├─ POST /auth/refresh
-├─ POST /blocks (create)
-├─ GET /blocks/{id}
-├─ PATCH /blocks/{id}
-├─ DELETE /blocks/{id}
-├─ POST /notebooks
-├─ GET /notebooks
-├─ POST /sync
-└─ GET /search
-
-Features:
-├─ REST API only
-├─ JWT authentication
-├─ Basic error handling
-└─ Rate limiting
-
-Scope: Personal users, manual sync
-```
-
-### v1.5 (Multi-Device)
+### 5.1 Multi-Device Sync Over WebDAV
 
 ```
-Endpoints (same as v1.0):
-├─ All v1.0 endpoints
-├─ POST /devices (register new device)
-├─ GET /devices (list devices)
-├─ DELETE /devices/{id}
-└─ POST /attachments (upload files)
+Each block has vector_clock: {device_id: logical_clock}
 
-Features:
-├─ Device management
-├─ Attachment uploads
-├─ Improved error handling
-├─ API documentation (OpenAPI/Swagger)
-└─ Rate limiting tuning
+Example:
+Desktop: {desktop: 5, tablet: 3, cloud: 2}
+Tablet:  {desktop: 4, tablet: 2, cloud: 2}
+Server:  {desktop: 5, tablet: 3, cloud: 3}
 
-Scope: Professional users, automatic sync
-```
+When device edits:
+├─ Increments its own counter
+├─ Desktop edits: {desktop: 6, tablet: 3, cloud: 2}
+├─ Server receives PUT
+├─ Server updates to: {desktop: 6, tablet: 3, cloud: 3}
+└─ Broadcasts to other devices
 
-### v2.0 (Enterprise)
-
-```
-Endpoints (new):
-├─ GraphQL endpoint: POST /graphql
-├─ WebSocket: /ws/sync (real-time)
-├─ Team API: /teams, /permissions
-├─ Audit log: /audit
-└─ Analytics: /analytics
-
-Features:
-├─ GraphQL API
-├─ WebSocket real-time sync
-├─ Team collaboration
-├─ Audit logging
-└─ gRPC alternative (high-performance)
-
-Scope: Teams, enterprise
+Other devices pull:
+├─ Tablet: I have {device: 4, tablet: 2, cloud: 2}
+├─ Server has {device: 6, tablet: 3, cloud: 3}
+├─ Tablet is behind, fetches new version
+├─ Tablet updates local block
+└─ Tablet increments its counter: {device: 6, tablet: 4, cloud: 3}
 ```
 
 ---
 
-## 10. SECURITY CONSIDERATIONS
+## 6. SERVER CONFIGURATION
 
-### 10.1 TLS/HTTPS
+### 6.1 Command-Line Options
 
-```
-All endpoints:
-├─ HTTPS only (TLS 1.2+)
-├─ HTTP requests: Redirected to HTTPS
-└─ Strict-Transport-Security header: Enforced
+```bash
+# Basic server
+$ chronex serve webdav \
+    --addr 127.0.0.1:8080 \
+    --db ~/.chronex/chronex.db \
+    --user alice --pass secret
 
-Certificate:
-├─ Valid domain: api.chronex.example.com
-├─ Certificate pinning: Optional (mobile only)
-└─ Renewal: Automated (Let's Encrypt)
-```
-
-### 10.2 CORS (Cross-Origin)
-
-```
-Web client (if hosted separately):
-
-Allowed origins:
-├─ https://chronex.example.com
-└─ https://www.chronex.example.com
-
-Allowed headers:
-├─ Authorization
-├─ Content-Type
-└─ Accept
-
-Allowed methods:
-├─ GET, POST, PATCH, DELETE
-├─ OPTIONS (preflight)
-└─ No credentials in CORS requests
+# Production server
+$ chronex serve webdav \
+    --addr 0.0.0.0:443 \
+    --cert /certs/fullchain.pem \
+    --key /certs/privkey.pem \
+    --htpasswd /etc/chronex/users.htpasswd \
+    --vfs-cache-mode full \
+    --vfs-cache-max-size 50G \
+    --vfs-cache-poll-interval 5m \
+    --etag-hash fastcdc \
+    --disable-dir-list \
+    --disable-zip \
+    --db ~/.chronex/chronex.db \
+    --max-header-bytes 16384
 ```
 
-### 10.3 Payload Validation
+### 6.2 Configuration File
 
-```
-All inputs validated:
+```toml
+# ~/.chronex/server.toml
 
-Block title:
-├─ Max length: 1000 characters
-├─ No null bytes
-└─ UTF-8 encoding required
+[server]
+addr = "0.0.0.0:443"
+db = "~/.chronex/chronex.db"
+cert = "/etc/letsencrypt/live/chronex.io/fullchain.pem"
+key = "/etc/letsencrypt/live/chronex.io/privkey.pem"
+htpasswd = "/etc/chronex/users.htpasswd"
 
-Block content:
-├─ Max size: 10 MB (after encryption)
-├─ Must be valid base64
-└─ Must have valid IV and auth tag
+[vfs]
+cache_mode = "full"
+cache_max_size = "50G"
+cache_poll_interval = "5m"
+etag_hash = "fastcdc"
+disable_dir_list = true
+disable_zip = true
 
-Search query:
-├─ Max length: 500 characters
-├─ No SQL injection (parameterized)
-└─ No script injection (escaped)
+[limits]
+max_header_bytes = 16384
+rate_limit = "100 req/s"
 ```
 
 ---
 
-## Summary
+## 7. CLIENT EXAMPLES
 
-**CHRONEX API**: RESTful with JWT authentication, batched sync, end-to-end encrypted
+### 7.1 Obsidian WebDAV Plugin
 
-**Key Endpoints**:
-- ✅ Authentication: Login, refresh token, logout
-- ✅ Blocks: Create, read, update, delete, search
-- ✅ Sync: Batched changes + delta download
-- ✅ Notebooks: Organize blocks
-- ✅ Attachments: Upload/download files
+```
+1. Install: Obsidian Vault Sync or WebDAV plugin
+2. Configure:
+   - Server: https://chronex.example.com:443/
+   - Username: alice
+   - Password: secret
+3. Connect: Click "Connect"
+4. Result: Obsidian now syncs with Chronex via WebDAV
+```
 
-**Performance**:
-- Sync: <500ms P99 (100 changes)
-- Search: <500ms P99 (FTS5 local)
-- Compression: 60-70% bandwidth savings
-- Rate limiting: 100 sync/min per user
+### 7.2 Command-Line Client (curl)
 
-**Security**:
-- HTTPS TLS 1.2+
-- JWT token (1 hour expiration)
-- Payload validation
-- Rate limiting (anti-DoS)
-- E2EE (encrypted payloads)
+```bash
+# List notebooks
+$ curl -u alice:secret https://chronex.example.com/
+
+# Get block
+$ curl -u alice:secret https://chronex.example.com/My%20Notebook/Note.md
+
+# Create block
+$ curl -u alice:secret \
+    -X PUT \
+    --data-binary @note.md \
+    https://chronex.example.com/My%20Notebook/Note.md
+
+# Delete block
+$ curl -u alice:secret \
+    -X DELETE \
+    https://chronex.example.com/My%20Notebook/Note.md
+```
+
+### 7.3 Mount as Filesystem (macOS/Linux)
+
+```bash
+# macOS Finder
+$ open "webdav://alice:secret@chronex.example.com/"
+
+# Linux (with davfs2)
+$ sudo mount -t davfs https://chronex.example.com/ /mnt/chronex
+
+# Now browse blocks like regular files
+$ ls /mnt/chronex/
+$ cat /mnt/chronex/My\ Notebook/First\ Note.md
+```
 
 ---
 
-**Document Status**: Design Complete  
-**Reference**: OpenAPI/Swagger spec (to be generated from this document)
+## 8. SECURITY CONSIDERATIONS
+
+### 8.1 HTTPS/TLS Required
+
+```
+Production MUST use HTTPS:
+├─ Protects authentication credentials
+├─ Prevents man-in-the-middle attacks
+├─ Encrypts content in transit
+└─ TLS 1.2+ required (no SSL 3.0/TLS 1.0)
+```
+
+### 8.2 Authentication Best Practices
+
+```
+✅ DO:
+├─ Use HTTPS + TLS 1.2+
+├─ Store passwords hashed (htpasswd with bcrypt)
+├─ Use strong passwords (16+ characters)
+├─ Rotate credentials regularly
+└─ Monitor access logs
+
+❌ DON'T:
+├─ Use HTTP (unencrypted)
+├─ Store plaintext passwords
+├─ Reuse passwords across services
+├─ Share credentials
+└─ Expose htpasswd file publicly
+```
+
+### 8.3 End-to-End Encryption (Optional)
+
+```
+Blocks can be encrypted before WebDAV:
+├─ Master key stored locally (v1.0)
+├─ All blocks encrypted with AES-256-GCM
+├─ Server never sees plaintext
+├─ Works with any WebDAV client (client decrypts)
+└─ Optional: enabled by default v1.5+
+```
+
+---
+
+## 9. PERFORMANCE
+
+### 9.1 Latency
+
+```
+Operation                   P99 Latency
+─────────────────────────────────────────
+GET (read block)            <100ms
+PUT (write block)           <200ms  
+PROPFIND (list)             <300ms
+DELETE (soft delete)        <150ms
+MKCOL (create notebook)     <100ms
+
+Network bandwidth:
+├─ With gzip compression: 60-70% reduction
+├─ Typical block: 5-10 KB
+├─ VFS cache: 5m poll interval
+└─ Sync operations: batched every 5m
+```
+
+### 9.2 Caching
+
+```
+VFS Cache Modes:
+
+full:      Cache all blocks (best performance)
+writes:    Cache write operations only
+minimal:   Cache open files only
+off:       No caching (always fetch from storage)
+
+Recommended: full
+└─ Blocks are small, cache all for optimal speed
+```
+
+---
+
+## 10. SUMMARY
+
+**Chronex Protocol**: WebDAV (RFC 4918)
+- ✅ Universal client support
+- ✅ Obsidian compatible
+- ✅ Standard methods (GET, PUT, DELETE, PROPFIND)
+- ✅ ETag-based conflict detection
+- ✅ Proven, battle-tested protocol
+- ✅ No proprietary protocol needed
+
+**Authentication**: Basic/Digest (htpasswd)
+- ✅ Simple to configure
+- ✅ Standard WebDAV
+- ✅ Works with all clients
+
+**Conflict Resolution**: Vector clocks + 3-way merge
+- ✅ Multi-device safe
+- ✅ Automatic when possible
+- ✅ Manual when necessary
+
+**Security**: HTTPS/TLS + optional E2EE
+- ✅ Credentials protected
+- ✅ Content encrypted in transit
+- ✅ Optional block-level encryption
+
+---
+
+**Document Status**: Updated to WebDAV Protocol Specification  
+**Reference**: CHRONEX_WEBDAV_DUAL_MODE_ARCHITECTURE.md (primary)  
+**Protocol**: RFC 4918 (WebDAV standard)  
+**Implementation**: Go + golang.org/x/net/webdav
